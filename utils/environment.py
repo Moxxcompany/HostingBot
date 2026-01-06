@@ -38,10 +38,11 @@ def get_webhook_domain() -> str:
         logger.info(f"🔍 Detection reason: PRODUCTION_DOMAIN={production_domain}")
         return production_domain
     
-    # Check for other production indicators
+    # Check for other production indicators (Railway or Replit deployment)
     is_production = (
-        os.getenv('REPLIT_DEPLOYMENT') is not None or  # Standard deployment
-        'hostbay.replit.app' in current_domains or     # Custom domain deployed
+        os.getenv('REPLIT_DEPLOYMENT') is not None or  # Standard Replit deployment
+        os.getenv('RAILWAY_ENVIRONMENT') is not None or  # Railway deployment
+        os.getenv('ENVIRONMENT', '').lower() == 'production' or  # Explicit production
         (current_domains and not any(dev_pattern in current_domains 
                                    for dev_pattern in ['.janeway.replit.dev', '.picard.replit.dev', 
                                                       '.kirk.replit.dev', '.data.replit.dev',
@@ -49,11 +50,16 @@ def get_webhook_domain() -> str:
     )
     
     if is_production:
-        # Production deployment - use the custom domain
-        domain = 'hostbay.replit.app'
-        logger.info(f"🌍 Production environment detected - using domain: {domain}")
-        logger.info(f"🔍 Detection reason: REPLIT_DEPLOYMENT={os.getenv('REPLIT_DEPLOYMENT')}, domains={current_domains}")
-        return domain
+        # Production deployment - require PRODUCTION_DOMAIN to be set
+        # No hardcoded fallback to ensure correct domain is always configured
+        logger.warning("⚠️ Production detected but PRODUCTION_DOMAIN not set - please configure it!")
+        logger.warning(f"🔍 Detection reason: REPLIT_DEPLOYMENT={os.getenv('REPLIT_DEPLOYMENT')}, RAILWAY_ENVIRONMENT={os.getenv('RAILWAY_ENVIRONMENT')}, domains={current_domains}")
+        # Return current_domains if available, otherwise use localhost as last resort
+        if current_domains:
+            logger.info(f"🌍 Using detected domain: {current_domains}")
+            return current_domains
+        logger.error("❌ CRITICAL: No PRODUCTION_DOMAIN configured! Webhooks will fail.")
+        return 'localhost:5000'  # Fallback that will fail visibly rather than use wrong domain
     else:
         # Development environment - use project development domain
         dev_domain = current_domains or os.getenv('REPLIT_DEV_DOMAIN') or 'localhost:5000'

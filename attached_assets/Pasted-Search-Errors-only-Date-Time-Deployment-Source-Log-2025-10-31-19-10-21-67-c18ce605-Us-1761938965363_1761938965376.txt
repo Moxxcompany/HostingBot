@@ -1,0 +1,147 @@
+Search
+
+
+Errors only
+
+Date
+Time
+Deployment
+Source
+Log
+2025-10-31 19:10:21.67
+c18ce605
+User
+2025-10-31 19:10:21,676 INFO apscheduler.scheduler: Added job "Daily cPanel Suspension Sync" to job store "default"
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.679893+00:00", "level": "INFO", "component": "fastapi_server", "message": " \ud83e\uddf9 Payment Cleanup: \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: 🌍 Language System: ✅ Loaded
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680096+00:00", "level": "INFO", "component": "fastapi_server", "message": " \ud83c\udf0d Language System: \u2705 Loaded", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: 📬 Message Queue: ✅ Running
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680286+00:00", "level": "INFO", "component": "fastapi_server", "message": " \ud83d\udcec Message Queue: \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: ================================================================================
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680457+00:00", "level": "INFO", "component": "fastapi_server", "message": "================================================================================", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: 🎉 ALL SERVICES STARTED SUCCESSFULLY (7/7)
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680591+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83c\udf89 ALL SERVICES STARTED SUCCESSFULLY (7/7)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: ================================================================================
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680736+00:00", "level": "INFO", "component": "fastapi_server", "message": "================================================================================", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,680 INFO fastapi_server: 🌐 HTTP ENDPOINTS AVAILABLE:
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.680929+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83c\udf10 HTTP ENDPOINTS AVAILABLE:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,681 INFO fastapi_server: • GET / - Service info
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.681142+00:00", "level": "INFO", "component": "fastapi_server", "message": " \u2022 GET / - Service info", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,681 INFO fastapi_server: • GET /health - Health check (always responds)
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.681332+00:00", "level": "INFO", "component": "fastapi_server", "message": " \u2022 GET /health - Health check (always responds)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,681 INFO fastapi_server: • POST /webhook/telegram - Telegram webhook
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.681529+00:00", "level": "INFO", "component": "fastapi_server", "message": " \u2022 POST /webhook/telegram - Telegram webhook", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,681 INFO fastapi_server: • POST /webhook/dynopay - DynoPay webhook
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.681674+00:00", "level": "INFO", "component": "fastapi_server", "message": " \u2022 POST /webhook/dynopay - DynoPay webhook", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,681 INFO fastapi_server: • POST /webhook/blockbee - BlockBee webhook
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.681879+00:00", "level": "INFO", "component": "fastapi_server", "message": " \u2022 POST /webhook/blockbee - BlockBee webhook", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,682 INFO fastapi_server: ================================================================================
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.682008+00:00", "level": "INFO", "component": "fastapi_server", "message": "================================================================================", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.68
+c18ce605
+User
+2025-10-31 19:10:21,682 INFO database: ✅ NEON HARDENING: Starting background database health probe
+2025-10-31 19:10:21.68
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.682274+00:00", "level": "INFO", "component": "database", "message": "\u2705 NEON HARDENING: Starting background database health probe", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.95
+c18ce605
+User
+2025-10-31 19:10:21,955 INFO payment_cleanup_service: 🚀 CLEANUP SERVICE: Starting automated payment cleanup service
+2025-10-31 19:10:21.95
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.955299+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": "\ud83d\ude80 CLEANUP SERVICE: Starting automated payment cleanup service", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.95
+c18ce605
+User
+2025-10-31 19:10:21,955 INFO payment_cleanup_service: • Cleanup interval: 30 minutes
+2025-10-31 19:10:21.95
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.955579+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Cleanup interval: 30 minutes", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 19:10:21.95
+c18ce605
+User
+2025-10-31 19:10:21,955 INFO payment_cleanup_service: • Service started at: 2025-10-31 19:10:21.955269
+2025-10-31 19:10:21.95
+c18ce605
+User
+{"timestamp": "2025-10-31T19:10:21.955752+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Service started at: 2025-10-31 19:10:21.955269", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

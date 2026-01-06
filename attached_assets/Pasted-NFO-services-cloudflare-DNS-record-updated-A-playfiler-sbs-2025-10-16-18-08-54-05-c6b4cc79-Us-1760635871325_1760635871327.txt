@@ -1,0 +1,73 @@
+NFO services.cloudflare: ✅ DNS record updated: A playfiler.sbs
+2025-10-16 18:08:54.05
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.054201+00:00", "level": "INFO", "component": "services.cloudflare", "message": "\u2705 DNS record updated: A playfiler.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.11
+c6b4cc79
+User
+2025-10-16 17:08:54,113 WARNING database: 🚫 CAS CONFLICT: 3ea0efe78048bbd6f3f2de49ae783559 expected:58c62b72... (conflict detected)
+2025-10-16 18:08:54.11
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.113749+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udeab CAS CONFLICT: 3ea0efe78048bbd6f3f2de49ae783559 expected:58c62b72... (conflict detected)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+2025-10-16 17:08:54,133 WARNING handlers: 🔄 POST-APPLY CAS CONFLICT: 3ea0efe78048bbd6f3f2de49ae783559
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.133965+00:00", "level": "WARNING", "component": "handlers", "message": "\ud83d\udd04 POST-APPLY CAS CONFLICT: 3ea0efe78048bbd6f3f2de49ae783559", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+2025-10-16 17:08:54,134 WARNING handlers: Expected: 58c62b72...
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.134305+00:00", "level": "WARNING", "component": "handlers", "message": " Expected: 58c62b72...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+2025-10-16 17:08:54,134 WARNING handlers: Current: None...
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.134571+00:00", "level": "WARNING", "component": "handlers", "message": " Current: None...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+2025-10-16 17:08:54,134 WARNING handlers: New: 2ac06513...
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.134726+00:00", "level": "WARNING", "component": "handlers", "message": " New: 2ac06513...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+2025-10-16 17:08:54,134 WARNING handlers: 🔧 Forcing reconciliation since Cloudflare update succeeded
+2025-10-16 18:08:54.13
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.134851+00:00", "level": "WARNING", "component": "handlers", "message": " \ud83d\udd27 Forcing reconciliation since Cloudflare update succeeded", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.17
+c6b4cc79
+User
+2025-10-16 17:08:54,174 INFO database: 🔧 FORCE RECONCILIATION: 3ea0efe78048bbd6f3f2de49ae783559 -> etag:2ac06513... (overriding version tracking)
+2025-10-16 18:08:54.17
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.174583+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd27 FORCE RECONCILIATION: 3ea0efe78048bbd6f3f2de49ae783559 -> etag:2ac06513... (overriding version tracking)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.22
+c6b4cc79
+User
+2025-10-16 17:08:54,220 INFO database: ✅ FORCE RECONCILIATION SUCCESS: 3ea0efe78048bbd6f3f2de49ae783559 version forcefully updated to etag:2ac06513...
+2025-10-16 18:08:54.22
+c6b4cc79
+User
+{"timestamp": "2025-10-16T17:08:54.220225+00:00", "level": "INFO", "component": "database", "message": "\u2705 FORCE RECONCILIATION SUCCESS: 3ea0efe78048bbd6f3f2de49ae783559 version forcefully updated to etag:2ac06513...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 18:08:54.22
+c6b4cc79
+User
+2025-10-16 17:08:54,220 INFO handlers: ✅ RECONCILIATION

@@ -1,0 +1,84 @@
+36 minutes ago
+Update documentation for API endpoints and data structures
+4 minutes of work
+Run a test to ensure 100% operational
+33 minutes ago
+25 minutes ago
+Update API to use pattern matching and add root/health endpoints
+7 minutes of work
+Analyze whether wallet balance and corrected debited and refunded when the transaction success or fails
+17 minutes ago
+No needto implement but is the API working correctly with wallet debit and refund? Assuming a user attempt to register a domain via API and failed, would refund goes back to wallet balance and if transaction succeeds, would wallet balance be properly debited
+12 minutes ago
+Okay fix and ensure similar issue is fixed with hosting and wherever it exists
+7 minutes ago
+I'll fix this critical revenue issue immediately. Let me create a task list and systematically fix all API endpoints that bypass the wallet system.
+Now let me fix the domain registration API endpoint to integrate with the wallet system:
+Now let me check and fix the hosting API endpoints:
+Let me check the bundle routes as well to see if they have the same issue:
+I can see the pattern - all hosting and bundle API endpoints bypass the wallet system. Let me fix them systematically:
+Now let me fix the hosting order endpoints. I'll need to update all three to integrate with the wallet system:
+Excellent! Now let me fix the bundle endpoint:
+Perfect! Now let me audit all other API endpoints to ensure nothing else bypasses the wallet system:
+Let me check the remaining financial endpoints that need wallet integration:
+Perfect! I've completed the audit. Now let me restart the workflow and call the architect for review:
+Now let me call the architect to review all the wallet integration fixes:
+The architect found critical issues with my fixes. Let me correct them immediately:
+Perfect! Critical fixes applied. Now let me update replit.md to document these changes and mark all tasks complete:
+Optimized Agent memory
+Excellent! All wallet integration tasks are now complete. Let me check the logs to verify the workflow is running correctly with the fixes:
+Checked system logs
+Perfect! All wallet integration fixes are complete and the system is running successfully. Let me provide you with a comprehensive summary:
+
+✅ Critical Revenue Protection Fixes Complete
+I've successfully fixed a critical revenue bug where all REST API endpoints were bypassing the wallet system, allowing users to register domains and order hosting without payment. The Telegram bot was working correctly, but the REST API had no wallet integration at all.
+
+🔒 What Was Fixed
+1. Domain Registration (/api/v1/domains/register)
+
+✅ Checks wallet balance before registration
+✅ Reserves funds with reserve_wallet_balance()
+✅ Registers domain with OpenProvider
+✅ Finalizes payment: debits wallet on success, refunds on failure
+2. Bulk Domain Registration (/api/v1/domains/bulk-register)
+
+✅ NEW: Full wallet integration added
+✅ Each domain processed independently with its own reservation
+✅ Failed domains are automatically refunded
+✅ Returns detailed pricing breakdown per domain
+3. All Hosting Order Endpoints
+
+✅ /hosting/order - Standalone hosting (now calls orchestrator with hold_transaction_id)
+✅ /hosting/order-existing - Hosting for existing domains
+✅ /hosting/order-external - Hosting for external domains
+All now: check balance → reserve funds → pass hold_transaction_id to orchestrator
+4. Bundle Creation (/api/v1/bundles/domain-hosting)
+
+✅ Gets domain pricing from OpenProvider
+✅ Calculates hosting price based on plan
+✅ Reserves total cost (domain + hosting)
+✅ Passes hold_transaction_id to orchestrator for finalization
+🛡️ Financial Safety Features
+All endpoints now implement the reserve→debit/refund pattern:
+
+Balance Check - Verifies sufficient funds before any operations
+Fund Reservation - Creates "hold" transaction (wallet balance - reserved amount)
+Service Provisioning - Attempts domain/hosting creation
+Atomic Finalization - Either debits (success) or refunds (failure)
+This matches the battle-tested pattern used by the Telegram bot and prevents:
+
+❌ Free registrations
+❌ Double charging
+❌ Orphaned reservations
+❌ Revenue loss
+📊 Current Status
+✅ PROTECTED - All financial API endpoints now require wallet funds:
+
+Domain registration (single & bulk)
+All 3 hosting order types
+Domain + hosting bundles
+⚠️ PLACEHOLDERS - These endpoints aren't implemented yet (no risk):
+
+Domain transfer
+Domain renewal
+Hosting renewal

@@ -1,0 +1,28 @@
+05 12:39:15
+{"timestamp": "2025-10-05T11:39:15.384993+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d ADMIN BROADCAST HANDLER: Not admin - user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:15
+2025-10-05 11:39:15,627 INFO services.openprovider: 🔍 USER_DOMAIN_SEARCH: Checking availability for 'pr0prell.com.sg' - potential user search activity
+10-05 12:39:15
+{"timestamp": "2025-10-05T11:39:15.627339+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udd0d USER_DOMAIN_SEARCH: Checking availability for 'pr0prell.com.sg' - potential user search activity", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:15
+2025-10-05 11:39:15,627 INFO services.openprovider: 📝 OpenProvider API: Checking domain availability for: pr0prell.com.sg
+10-05 12:39:15
+{"timestamp": "2025-10-05T11:39:15.627539+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udcdd OpenProvider API: Checking domain availability for: pr0prell.com.sg", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:16
+2025-10-05 11:39:16,764 INFO services.openprovider: 📥 OpenProvider response status: 500 (took 1.14s)
+10-05 12:39:16
+{"timestamp": "2025-10-05T11:39:16.764374+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udce5 OpenProvider response status: 500 (took 1.14s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:16
+2025-10-05 11:39:16,764 ERROR services.openprovider: ❌ HTTP error 500 from OpenProvider API
+10-05 12:39:16
+{"timestamp": "2025-10-05T11:39:16.764603+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c HTTP error 500 from OpenProvider API", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:16
+2025-10-05 11:39:16,764 ERROR services.openprovider: ❌ Error details: {'desc': 'Your domain request contains invalid characters!', 'code': 303}
+10-05 12:39:16
+{"timestamp": "2025-10-05T11:39:16.764793+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c Error details: {'desc': 'Your domain request contains invalid characters!', 'code': 303}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:17
+2025-10-05 11:39:17,007 INFO fastapi_server: ✅ Processed Telegram update: 786434491
+10-05 12:39:17
+{"timestamp": "2025-10-05T11:39:17.007874+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786434491", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-05 12:39:17
+INFO: 35.191.80.59:0 - "POS

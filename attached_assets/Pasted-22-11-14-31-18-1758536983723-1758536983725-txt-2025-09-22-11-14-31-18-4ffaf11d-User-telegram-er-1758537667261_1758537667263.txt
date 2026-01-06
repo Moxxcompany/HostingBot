@@ -1,0 +1,57 @@
+22-11-14-31-18--1758536983723_1758536983725.txt
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+telegram.error.TimedOut: Timed out
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:30.766013+00:00", "level": "ERROR", "component": "asyncio", "message": "Task exception was never retrieved\nfuture: exception=TimedOut('Timed out')>", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+2025-09-22 10:14:31,187 INFO handlers: ✅ DASHBOARD: User 5590563715 started bot - showing dashboard (terms already accepted)
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:31.187840+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5590563715 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+2025-09-22 10:14:31,188 INFO fastapi_server: ✅ Processed Telegram update: 786431316
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:31.188280+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431316", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.18
+4ffaf11d
+User
+INFO: 35.191.74.9:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+2025-09-22 10:14:31,196 INFO handlers: Dashboard shown to user 5590563715 with balance $226.30 USD
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:31.196451+00:00", "level": "INFO", "component": "handlers", "message": "Dashboard shown to user 5590563715 with balance $226.30 USD", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+2025-09-22 10:14:31,198 INFO handlers: ✅ DASHBOARD: User 5590563715 started bot - showing dashboard (terms already accepted)
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:31.198097+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5590563715 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+2025-09-22 10:14:31,198 INFO fastapi_server: ✅ Processed Telegram update: 786431316
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:31.198290+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431316", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:31.19
+4ffaf11d
+User
+INFO: 35

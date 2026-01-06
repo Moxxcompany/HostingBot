@@ -1,0 +1,84 @@
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+ON CONFLICT (provider, metric_window_start, window_duration_minutes)
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+DO UPDATE SET
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_received_webhooks = EXCLUDED.total_received_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_successful_webhooks = EXCLUDED.total_successful_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_failed_webhooks = EXCLUDED.total_failed_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+avg_delivery_delay_seconds = EXCLUDED.avg_delivery_delay_seconds,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+avg_processing_time_ms = EXCLUDED.avg_processing_time_ms,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+delivery_success_rate = EXCLUDED.delivery_success_rate,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+processing_success_rate = EXCLUDED.processing_success_rate,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+health_score = EXCLUDED.health_score,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+health_status = EXCLUDED.health_status
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.652679+00:00", "level": "ERROR", "component": "database", "message": " Query: \n INSERT INTO webhook_provider_health (\n provider, metric_window_start, metric_window_end, window_duration_minutes,\n total_expected_webhooks, total_received_webhooks, total_successful_webhooks,\n total_failed_webhooks, avg_delivery_delay_seconds, avg_processing_time_ms,\n delivery_success_rate, processing_success_rate, health_score, health_status\n ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)\n ON CONFLICT (provider, metric_window_start, window_duration_minutes)\n DO UPDATE SET\n total_received_webhooks = EXCLUDED.total_received_webhooks,\n total_successful_webhooks = EXCLUDED.total_successful_webhooks,\n total_failed_webhooks = EXCLUDED.total_failed_webhooks,\n avg_delivery_delay_seconds = EXCLUDED.avg_delivery_delay_seconds,\n avg_processing_time_ms = EXCLUDED.avg_processing_time_ms,\n delivery_success_rate = EXCLUDED.delivery_success_rate,\n processing_success_rate = EXCLUDED.processing_success_rate,\n health_score = EXCLUDED.health_score,\n health_status = EXCLUDED.health_status\n ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 21:53:11,652 ERROR database: Params: ('dynopay', datetime.datetime(2025, 10, 4, 20, 53, 11, 506877, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 10, 4, 21, 53, 11, 506891, tzinfo=datetime.timezone.utc), 60, 0, 1, 1, 0, 0.0, 494, 1.0, 1.0, 100.0, 'healthy')
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.652904+00:00", "level": "ERROR", "component": "database", "message": " Params: ('dynopay', datetime.datetime(2025, 10, 4, 20, 53, 11, 506877, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 10, 4, 21, 53, 11, 506891, tzinfo=datetime.timezone.utc), 60, 0, 1, 1, 0, 0.0, 494, 1.0, 1.0, 100.0, 'healthy')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 21:53:11,653 ERROR database: Error Type: InvalidColumnReference
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.653037+00:00", "level": "ERROR", "component": "database", "message": " Error Type: InvalidColumnReference", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 21:53:11,653 ERROR database: Error Message: there is no unique or exclusion constraint matching the ON CONFLICT specification
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.653128+00:00", "level": "ERROR", "component": "database", "message": " Error Message: there is no unique or exclusion constraint matching the ON CONFLICT specification\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.66
+3bb2a86c
+User
+2025-10-04 21:53:11,661 INFO webhook_handler: ✅ Message sent to telegram_id 6395648769 (user_id: 497)
+2025-10-04 22:53:11.66

@@ -1,0 +1,18 @@
+INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: New callback registered - wallet_deposit::1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,450 INFO webhook_handler: 💰 Payment 29 - Status: successful, Amount: $5.74
+{"timestamp": "2025-09-21T13:31:56.450701+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83d\udcb0 Payment 29 - Status: successful, Amount: $5.74", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,562 ERROR database: Database query error: operator does not exist: character varying = integer
+LINE 4:                     WHERE order_id = 29 
+                                           ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+{"timestamp": "2025-09-21T13:31:56.562002+00:00", "level": "ERROR", "component": "database", "message": "Database query error: operator does not exist: character varying = integer\nLINE 4:                     WHERE order_id = 29 \n                                           ^\nHINT:  No operator matches the given name and argument types. You might need to add explicit type casts.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,562 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T13:31:56.562180+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,562 ERROR webhook_handler: ❌ No payment intent found for order_id: 29
+{"timestamp": "2025-09-21T13:31:56.562382+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c No payment intent found for order_id: 29", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,673 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit::1
+{"timestamp": "2025-09-21T13:31:56.673592+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit::1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:31:56,673 INFO fastapi_server: ✅ DynoPay webhook processed successfully: None
+{"timestamp": "2025-09-21T13:31:56.673736+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 DynoPay webhook processed successfully: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.120.66:37684 - "POST /webhook/dynopay?order_id=29&auth_token=gz53NwQG1gHngfJF0gsf6LlfVpcFRDO_znQzabYk5hA HTTP/1.1" 200 OK

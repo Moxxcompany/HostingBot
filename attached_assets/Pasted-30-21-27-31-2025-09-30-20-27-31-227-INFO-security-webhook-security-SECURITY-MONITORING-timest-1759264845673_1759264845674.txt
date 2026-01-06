@@ -1,0 +1,20 @@
+30 21:27:31
+2025-09-30 20:27:31,227 INFO security.webhook_security: 📊 SECURITY_MONITORING: {"timestamp": "2025-09-30T20:27:31.226836+00:00", "event_type": "webhook_validated", "client_ip": "162.220.234.95", "details": {"provider": "dynopay", "auth_method": "database_token_validation", "order_id": "domain_bharrissecure.com_2116539246_1759263028"}, "severity": "info"}
+09-30 21:27:31
+{"timestamp": "2025-09-30T20:27:31.227019+00:00", "level": "INFO", "component": "security.webhook_security", "message": "\ud83d\udcca SECURITY_MONITORING: {\"timestamp\": \"2025-09-30T20:27:31.226836+00:00\", \"event_type\": \"webhook_validated\", \"client_ip\": \"162.220.234.95\", \"details\": {\"provider\": \"dynopay\", \"auth_method\": \"database_token_validation\", \"order_id\": \"domain_bharrissecure.com_2116539246_1759263028\"}, \"severity\": \"info\"}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-30 21:27:31
+2025-09-30 20:27:31,227 INFO fastapi_server: ✅ DynoPay webhook security validated
+09-30 21:27:31
+{"timestamp": "2025-09-30T20:27:31.227126+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 DynoPay webhook security validated", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-30 21:27:31
+2025-09-30 20:27:31,228 ERROR fastapi_server: ❌ DynoPay webhook error: The `field` and `config` parameters are not available in Pydantic V2, please use the `info` parameter instead.
+09-30 21:27:31
+09-30 21:27:31
+For further information visit https://errors.pydantic.dev/2.11/u/validator-field-config-info
+09-30 21:27:31
+{"timestamp": "2025-09-30T20:27:31.228655+00:00", "level": "ERROR", "component": "fastapi_server", "message": "\u274c DynoPay webhook error: The `field` and `config` parameters are not available in Pydantic V2, please use the `info` parameter instead.\n\nFor further information visit https://errors.pydantic.dev/2.11/u/validator-field-config-info", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-30 21:27:31
+INFO: 35.191.74.59:0 - "POST /webhook/dynopay?order_id=domain_bharrissecure.com_2116539246_1759263028&auth_token=8NHQSE0DfzfHMaDbUd8eFi6CuXIzLcn7Du9llJsOsQg HTTP/1.1" 500 Internal Server Error
+09-30 21:28:31
+2025-09-30 20:28:31,282 INFO payment_cleanup_service: 🧹 CLEANUP SERVICE: Starting cleanup cycle
+09-30 21:28:31

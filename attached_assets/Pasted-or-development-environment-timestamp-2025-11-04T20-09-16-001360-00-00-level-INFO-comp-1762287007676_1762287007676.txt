@@ -1,0 +1,38 @@
+or development environment
+{"timestamp": "2025-11-04T20:09:16.001360+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for development environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:16,435 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: pay_wallet_host79.sbs_25.0_USD
+{"timestamp": "2025-11-04T20:09:16.435924+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: pay_wallet_host79.sbs_25.0_USD", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:16,769 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_14189
+{"timestamp": "2025-11-04T20:09:16.769006+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_14189", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:16,769 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-11-04T20:09:16.769263+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:17,024 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-11-04T20:09:17.024335+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:17,451 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_14189
+{"timestamp": "2025-11-04T20:09:17.451833+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_14189", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:17,452 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-11-04T20:09:17.452012+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:17,683 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-11-04T20:09:17.683016+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:17,933 INFO database: ✅ RESERVATION SUCCESS: $25.00 reserved for user 3 | Old: $607.00 → New: $582.00 | Transaction ID: 280 | Description: Domain registration: host79.sbs
+{"timestamp": "2025-11-04T20:09:17.933385+00:00", "level": "INFO", "component": "database", "message": "\u2705 RESERVATION SUCCESS: $25.00 reserved for user 3 | Old: $607.00 \u2192 New: $582.00 | Transaction ID: 280 | Description: Domain registration: host79.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,004 INFO database: 🔍 SQL UPDATE: Executing query with 7 parameters
+{"timestamp": "2025-11-04T20:09:18.004300+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 7 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,110 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T20:09:18.110871+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,217 INFO handlers: 🎯 HANDLERS: Routing domain registration through orchestrator for host79.sbs
+{"timestamp": "2025-11-04T20:09:18.217088+00:00", "level": "INFO", "component": "handlers", "message": "\ud83c\udfaf HANDLERS: Routing domain registration through orchestrator for host79.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,323 INFO services.registration_orchestrator: 🎯 ORCHESTRATOR: Starting registration for order 2147000090, domain host79.sbs
+{"timestamp": "2025-11-04T20:09:18.323398+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83c\udfaf ORCHESTRATOR: Starting registration for order 2147000090, domain host79.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,429 INFO database: ⚡ USER DB QUERY: 3 in 105.7ms (cached for 5min)
+{"timestamp": "2025-11-04T20:09:18.429359+00:00", "level": "INFO", "component": "database", "message": "\u26a1 USER DB QUERY: 3 in 105.7ms (cached for 5min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,816 INFO database: 🔍 SQL UPDATE: Executing query with 3 parameters
+{"timestamp": "2025-11-04T20:09:18.816750+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 3 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:18,924 INFO database: ✅ SQL UPDATE: Successfully affected 0 rows
+{"timestamp": "2025-11-04T20:09:18.924655+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 0 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:19,032 WARNING services.registration_orchestrator: 🚫 ORCHESTRATOR: Cannot claim lock - order 2147000090 status: cancelled in orders (attempt 1/3)
+{"timestamp": "2025-11-04T20:09:19.032611+00:00", "level": "WARNING", "component": "services.registration_orchestrator", "message": "\ud83d\udeab ORCHESTRATOR: Cannot claim lock - order 2147000090 status: cancelled in orders (attempt 1/3)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:19,032 WARNING services.registration_orchestrator: 🚫 ORCHESTRATOR: Registration already claimed/completed for order 2147000090
+{"timestamp": "2025-11-04T20:09:19.032763+00:00", "level": "WARNING", "component": "services.registration_orchestrator", "message": "\ud83d\udeab ORCHESTRATOR: Registration already claimed/completed for order 2147000090", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:09:19,032 INFO handlers: 🚫 HANDLERS: Domain registration already processed for host79.sbs
+{"timestamp": "2025-11-

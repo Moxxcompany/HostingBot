@@ -1,0 +1,60 @@
+{"timestamp": "2025-11-04T21:07:50.781967+00:00", "level": "INFO", "component": "database", "message": "\u2705 Wallet deposit created with UUID: cd90c8a6-17e1-41f0-8b55-0d1e7aec70b9 for user 3 (ETH)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:07:50,782 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_14221
+{"timestamp": "2025-11-04T21:07:50.782238+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_14221", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:07:50,782 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-11-04T21:07:50.782461+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:07:51,015 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-11-04T21:07:51.015806+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:07:51,016 INFO handlers: 💰 Flexible wallet deposit payment generated for user 5590563715: 0xe3dc84534dd3b33b56df4da6a49ca8c3c2bf652c (any amount)
+{"timestamp": "2025-11-04T21:07:51.016521+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\udcb0 Flexible wallet deposit payment generated for user 5590563715: 0xe3dc84534dd3b33b56df4da6a49ca8c3c2bf652c (any amount)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:11,908 INFO utils.environment_manager: 📊 Using default DATABASE_URL for development environment
+{"timestamp": "2025-11-04T21:08:11.908824+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for development environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:32,885 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+{"timestamp": "2025-11-04T21:08:32.885466+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:32,993 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T21:08:32.993690+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:33,171 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+{"timestamp": "2025-11-04T21:08:33.171889+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:33,278 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T21:08:33.278741+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:33,456 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+{"timestamp": "2025-11-04T21:08:33.456909+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:33,564 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T21:08:33.564250+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,128 INFO admin_alerts: ✅ Admin alert sent to 5168006768: ERROR - Webhook Health Monitor
+{"timestamp": "2025-11-04T21:08:34.128996+00:00", "level": "INFO", "component": "admin_alerts", "message": "\u2705 Admin alert sent to 5168006768: ERROR - Webhook Health Monitor", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,200 INFO database: 🔍 SQL UPDATE: Executing query with 8 parameters
+{"timestamp": "2025-11-04T21:08:34.200339+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 8 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,309 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T21:08:34.309246+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,309 ERROR admin_alerts: 🚨 ADMIN ALERT (ERROR): [Webhook Health Monitor] DYNOPAY webhook success_rate threshold breached
+{"timestamp": "2025-11-04T21:08:34.309726+00:00", "level": "ERROR", "component": "admin_alerts", "message": "\ud83d\udea8 ADMIN ALERT (ERROR): [Webhook Health Monitor] DYNOPAY webhook success_rate threshold breached", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,380 INFO database: 🔍 SQL UPDATE: Executing query with 10 parameters
+{"timestamp": "2025-11-04T21:08:34.380732+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 10 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,451 ERROR database: 💥 SQL ERROR in execute_update:
+{"timestamp": "2025-11-04T21:08:34.451672+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,451 ERROR database:   Query: 
+                INSERT INTO webhook_health_events (
+                    event_type, severity, provider, event_title, current_health_score,
+                    current_success_rate, threshold_type, threshold_value, actual_value,
+                    event_context
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            
+{"timestamp": "2025-11-04T21:08:34.451808+00:00", "level": "ERROR", "component": "database", "message": "  Query: \n                INSERT INTO webhook_health_events (\n                    event_type, severity, provider, event_title, current_health_score,\n                    current_success_rate, threshold_type, threshold_value, actual_value,\n                    event_context\n                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)\n            ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,451 ERROR database:   Params: ('threshold_breach', 'error', 'dynopay', 'success_rate threshold breached', 100.0, 0.0, 'success_rate', Decimal('0.9500'), 0.0, '{"provider": "dynopay", "window_start": "2025-11-04T20:53:33.565182+00:00", "window_end": "2025-11-04T21:08:33.565191+00:00", "window_duration_minutes": 15, "total_expected": 0, "total_received": 0, "total_successful": 0, "total_failed": 0, "avg_processing_time_ms": 0.0, "avg_delivery_delay_seconds": 0.0, "delivery_success_rate": 0.0, "processing_success_rate": 0.0, "health_score": 100.0, "health_status": "healthy"}')
+{"timestamp": "2025-11-04T21:08:34.451888+00:00", "level": "ERROR", "component": "database", "message": "  Params: ('threshold_breach', 'error', 'dynopay', 'success_rate threshold breached', 100.0, 0.0, 'success_rate', Decimal('0.9500'), 0.0, '{\"provider\": \"dynopay\", \"window_start\": \"2025-11-04T20:53:33.565182+00:00\", \"window_end\": \"2025-11-04T21:08:33.565191+00:00\", \"window_duration_minutes\": 15, \"total_expected\": 0, \"total_received\": 0, \"total_successful\": 0, \"total_failed\": 0, \"avg_processing_time_ms\": 0.0, \"avg_delivery_delay_seconds\": 0.0, \"delivery_success_rate\": 0.0, \"processing_success_rate\": 0.0, \"health_score\": 100.0, \"health_status\": \"healthy\"}')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,451 ERROR database:   Error Type: NumericValueOutOfRange
+{"timestamp": "2025-11-04T21:08:34.451966+00:00", "level": "ERROR", "component": "database", "message": "  Error Type: NumericValueOutOfRange", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,452 ERROR database:   Error Message: numeric field overflow
+DETAIL:  A field with precision 5, scale 3 must round to an absolute value less than 10^2.
+
+{"timestamp": "2025-11-04T21:08:34.452013+00:00", "level": "ERROR", "component": "database", "message": "  Error Message: numeric field overflow\nDETAIL:  A field with precision 5, scale 3 must round to an absolute value less than 10^2.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,487 ERROR database: 💥 NEON HARDENING: Database update operation failed: numeric field overflow
+DETAIL:  A field with precision 5, scale 3 must round to an absolute value less than 10^2.
+
+{"timestamp": "2025-11-04T21:08:34.487247+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: numeric field overflow\nDETAIL:  A field with precision 5, scale 3 must round to an absolute value less than 10^2.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,487 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-11-04T21:08:34.487400+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,487 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-11-04T21:08:34.487489+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 21:08:34,487 INFO database:    └─ Application will continue with degraded functionality

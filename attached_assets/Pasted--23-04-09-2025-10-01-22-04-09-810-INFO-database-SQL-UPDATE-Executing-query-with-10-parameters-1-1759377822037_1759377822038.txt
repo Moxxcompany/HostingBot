@@ -1,0 +1,49 @@
+ 23:04:09
+2025-10-01 22:04:09,810 INFO database: 🔍 SQL UPDATE: Executing query with 10 parameters
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.810165+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 10 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,851 ERROR database: 💥 SQL ERROR in execute_update:
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.851674+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,852 ERROR database: Query:
+10-01 23:04:09
+INSERT INTO orders (uuid_id, user_id, order_type, status, total_amount, currency, domain_name, payment_address, external_order_id, intent_id, created_at)
+10-01 23:04:09
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+10-01 23:04:09
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.852026+00:00", "level": "ERROR", "component": "database", "message": " Query: \n INSERT INTO orders (uuid_id, user_id, order_type, status, total_amount, currency, domain_name, payment_address, external_order_id, intent_id, created_at)\n VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)\n ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,852 ERROR database: Params: ['d46dfca3-1fb3-4a8a-bc72-92901e0aebef', 236, 'domain', 'pending', 39.534, 'USD', 'auth455.com', 'bc1q8fku77z5ukn36fwz8p2w4vp5ncrkq58mvjkz6g', 'domain_auth455.com_5991214713_1759356246', 42]
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.852190+00:00", "level": "ERROR", "component": "database", "message": " Params: ['d46dfca3-1fb3-4a8a-bc72-92901e0aebef', 236, 'domain', 'pending', 39.534, 'USD', 'auth455.com', 'bc1q8fku77z5ukn36fwz8p2w4vp5ncrkq58mvjkz6g', 'domain_auth455.com_5991214713_1759356246', 42]", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,852 ERROR database: Error Type: UndefinedColumn
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.852363+00:00", "level": "ERROR", "component": "database", "message": " Error Type: UndefinedColumn", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,852 ERROR database: Error Message: column "domain_name" of relation "orders" does not exist
+10-01 23:04:09
+LINE 2: ...r_id, order_type, status, total_amount, currency, domain_nam...
+10-01 23:04:09
+^
+10-01 23:04:09
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.852490+00:00", "level": "ERROR", "component": "database", "message": " Error Message: column \"domain_name\" of relation \"orders\" does not exist\nLINE 2: ...r_id, order_type, status, total_amount, currency, domain_nam...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,872 ERROR database: 💥 NEON HARDENING: Database update operation failed: column "domain_name" of relation "orders" does not exist
+10-01 23:04:09
+LINE 2: ...r_id, order_type, status, total_amount, currency, domain_nam...
+10-01 23:04:09
+^
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.872797+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: column \"domain_name\" of relation \"orders\" does not exist\nLINE 2: ...r_id, order_type, status, total_amount, currency, domain_nam...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,873 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+10-01 23:04:09
+{"timestamp": "2025-10-01T22:04:09.873137+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:04:09
+2025-10-01 22:04:09,873 INFO database: └─ Database remains in consistent state
+10-01 23:04:09

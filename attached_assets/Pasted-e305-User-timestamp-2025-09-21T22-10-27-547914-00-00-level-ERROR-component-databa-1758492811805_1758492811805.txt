@@ -1,0 +1,59 @@
+e305
+User
+{"timestamp": "2025-09-21T22:10:27.547914+00:00", "level": "ERROR", "component": "database", "message": "Database query error: relation \"hosting_provision_intents\" does not exist\nLINE 1: SELECT * FROM hosting_provision_intents \n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:27.54
+c227e305
+User
+2025-09-21 22:10:27,548 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-21 23:10:27.54
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:27.548137+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:27.66
+c227e305
+User
+2025-09-21 22:10:27,663 ERROR database: Database query error: relation "hosting_provision_intents" does not exist
+2025-09-21 23:10:27.66
+c227e305
+User
+LINE 1: SELECT id, service_type, domain_name FROM hosting_provision_...
+2025-09-21 23:10:27.66
+c227e305
+User
+^
+2025-09-21 23:10:27.66
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:27.663956+00:00", "level": "ERROR", "component": "database", "message": "Database query error: relation \"hosting_provision_intents\" does not exist\nLINE 1: SELECT id, service_type, domain_name FROM hosting_provision_...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:27.66
+c227e305
+User
+2025-09-21 22:10:27,664 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-21 23:10:27.66
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:27.664171+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:27.72
+c227e305
+User
+2025-09-21 22:10:27,721 ERROR database: Database query error: relation "hosting_provision_intents" does not exist
+2025-09-21 23:10:27.72
+c227e305
+User
+LINE 1: INSERT INTO hosting_provision_intents
+2025-09-21 23:10:27.72
+c227e305
+User
+^
+2025-09-21 23:10:27.72
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:27.721850+00:00", "level": "ERROR", "component": "database", "message": "Database query error: relation \"hosting_provision_intents\" does not exist\nLINE 1: INSERT INTO hosting_provision_intents \n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:27.72
+c227e305
+User
+2025-09-21 22:10:27,722 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-21 23:10:27.72
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:27.722162+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

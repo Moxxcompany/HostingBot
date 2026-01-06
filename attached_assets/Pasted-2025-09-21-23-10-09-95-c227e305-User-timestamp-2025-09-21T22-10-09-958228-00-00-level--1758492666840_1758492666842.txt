@@ -1,0 +1,46 @@
+2025-09-21 23:10:09.95
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:09.958228+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd0d Health check exception debug - Type: , Str: 'SSL connection has been closed unexpectedly\n', Repr: OperationalError('SSL connection has been closed unexpectedly\\n')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:09.95
+c227e305
+User
+2025-09-21 22:10:09,958 WARNING database: 🔄 Pool connection 2/3: Health check failed: SSL connection has been closed unexpectedly
+2025-09-21 23:10:09.95
+c227e305
+User
+2025-09-21 23:10:09.95
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:09.958735+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Pool connection 2/3: Health check failed: SSL connection has been closed unexpectedly\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:10.05
+c227e305
+User
+2025-09-21 22:10:10,059 WARNING database: 🔍 Health check exception debug - Type: , Str: 'SSL connection has been closed unexpectedly
+2025-09-21 23:10:10.05
+c227e305
+User
+', Repr: OperationalError('SSL connection has been closed unexpectedly\n')
+2025-09-21 23:10:10.05
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:10.059620+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd0d Health check exception debug - Type: , Str: 'SSL connection has been closed unexpectedly\n', Repr: OperationalError('SSL connection has been closed unexpectedly\\n')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:10.06
+c227e305
+User
+2025-09-21 22:10:10,060 WARNING database: 🔄 Pool connection 3/3: Health check failed: SSL connection has been closed unexpectedly
+2025-09-21 23:10:10.06
+c227e305
+User
+2025-09-21 23:10:10.06
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:10.060036+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Pool connection 3/3: Health check failed: SSL connection has been closed unexpectedly\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:10:10.06
+c227e305
+User
+2025-09-21 22:10:10,060 WARNING database: ⚠️ NEON HARDENING: Connection pool exhausted after 3 attempts, using direct connection
+2025-09-21 23:10:10.06
+c227e305
+User
+{"timestamp": "2025-09-21T22:10:10.060242+00:00", "level": "WARNING", "component": "database", "message": "\u26a0\ufe0f NEON HARDENING: Connection pool exhausted after 3 attempts, using direct connection

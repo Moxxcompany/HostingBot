@@ -1,0 +1,24 @@
+12-30 22:00:00
+{"timestamp": "2025-12-30T22:00:00.304775+00:00", "level": "INFO", "component": "services.vultr", "message": "\ud83d\udcca Listed 0 instances from Vultr", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 22:00:00
+2025-12-30 22:00:00,304 INFO services.vultr: 📊 Listed 0 instances from Vultr
+12-30 22:00:00
+{"timestamp": "2025-12-30T22:00:00.306296+00:00", "level": "INFO", "component": "services.rdp_reconciliation", "message": "\ud83d\udcca Found 0 instances on Vultr", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 22:00:00
+2025-12-30 22:00:00,306 INFO services.rdp_reconciliation: 📊 Found 0 instances on Vultr
+12-30 22:00:00
+2025-12-30 22:00:00,368 ERROR database: Database query error: column "server_ip" does not exist
+12-30 22:00:00
+{"timestamp": "2025-12-30T22:00:00.368593+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 22:00:00
+2025-12-30 22:00:00,368 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+12-30 22:00:00
+{"timestamp": "2025-12-30T22:00:00.368292+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"server_ip\" does not exist\nLINE 1: SELECT id, vultr_instance_id, status, server_ip, user_id, pl...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 22:00:00
+LINE 1: SELECT id, vultr_instance_id, status, server_ip, user_id, pl...
+12-30 22:00:00
+^
+12-30 22:00:00
+{"timestamp": "2025-12-30T22:00:00.369459+00:00", "level": "INFO", "component": "services.rdp_reconciliation", "message": "\u2139\ufe0f No active RDP servers with Vultr instances", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 22:00:00
+2025-12-30 22:00:00,369 INFO services.rdp_reconciliation: ℹ️ No active RDP servers with Vultr instances

@@ -1,0 +1,19 @@
+2025-10-03 03:00:00,071 INFO services.renewal_processor: 🔄 Processing renewal for subscription 2 (kolapouuu.com)
+10-03 05:00:00
+{"timestamp": "2025-10-03T03:00:00.071445+00:00", "level": "INFO", "component": "services.renewal_processor", "message": "\ud83d\udd04 Processing renewal for subscription 2 (kolapouuu.com)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-03 05:00:00
+2025-10-03 03:00:00,071 ERROR services.renewal_processor: ❌ Error processing renewal for subscription 2: 'datetime.date' object has no attribute 'tzinfo'
+10-03 05:00:00
+{"timestamp": "2025-10-03T03:00:00.071806+00:00", "level": "ERROR", "component": "services.renewal_processor", "message": "\u274c Error processing renewal for subscription 2: 'datetime.date' object has no attribute 'tzinfo'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-03 05:00:00
+2025-10-03 03:00:00,573 INFO services.renewal_processor: 🔄 Processing renewal for subscription 1 (babalock.com)
+10-03 05:00:00
+{"timestamp": "2025-10-03T03:00:00.573021+00:00", "level": "INFO", "component": "services.renewal_processor", "message": "\ud83d\udd04 Processing renewal for subscription 1 (babalock.com)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-03 05:00:00
+2025-10-03 03:00:00,573 ERROR services.renewal_processor: ❌ Error processing renewal for subscription 1: 'datetime.date' object has no attribute 'tzinfo'
+10-03 05:00:00
+{"timestamp": "2025-10-03T03:00:00.573304+00:00", "level": "ERROR", "component": "services.renewal_processor", "message": "\u274c Error processing renewal for subscription 1: 'datetime.date' object has no attribute 'tzinfo'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-03 05:00:01
+2025-10-03 03:00:01,075 INFO services.renewal_processor: ✅ Batch 1 completed: 0/2 successful
+10-03 05:00:01
+{"timestamp": "2025-10-03T03:00:01.075711+00:00", "level": "INFO", "component": "services.renewal_processor", "message": "\u2705 Batch 1 completed: 0/2 successful", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

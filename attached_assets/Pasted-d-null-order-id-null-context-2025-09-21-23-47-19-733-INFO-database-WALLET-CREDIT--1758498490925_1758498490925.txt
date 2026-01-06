@@ -1,0 +1,16 @@
+d": null, "order_id": null, "context": {}}
+2025-09-21 23:47:19,733 INFO database: 🔍 WALLET_CREDIT_USER_VALIDATED: user_id 3 (db_id: 3) exists with current balance $5.70
+{"timestamp": "2025-09-21T23:47:19.733595+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d WALLET_CREDIT_USER_VALIDATED: user_id 3 (db_id: 3) exists with current balance $5.70", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:47:19,768 ERROR database: ❌ WALLET_CREDIT_INSERT_ERROR: Failed to insert transaction | user_id: 3 | Error: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+{"timestamp": "2025-09-21T23:47:19.768255+00:00", "level": "ERROR", "component": "database", "message": "\u274c WALLET_CREDIT_INSERT_ERROR: Failed to insert transaction | user_id: 3 | Error: there is no unique or exclusion constraint matching the ON CONFLICT specification\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:47:19,802 ERROR webhook_handler: ❌ WALLET_DEPOSIT_FAILURE: $5.70 deposit failed for user_id 3 via dynopay | txid: 082dfc2016e32711... | Check structured logs above for specific failure reason
+{"timestamp": "2025-09-21T23:47:19.802813+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c WALLET_DEPOSIT_FAILURE: $5.70 deposit failed for user_id 3 via dynopay | txid: 082dfc2016e32711... | Check structured logs above for specific failure reason", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:47:19,908 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:12:1
+{"timestamp": "2025-09-21T23:47:19.908147+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:12:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:47:19,908 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T23:47:19.908380+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:37972 - "POST /webhook/dynopay?order_id=12&auth_token=UYOpwSZ2bLX-27b39RtDJZemr81Ta2f_uFlUPa0zj60 HTTP/1.1" 200 OK
+2025-09-21 23:47:20,381 INFO webhook_handler: ✅ Message sent to telegram_id 5590563715 (user_id: 3)
+{"timestamp": "2025-09-21T23:47:20.381012+00:00", "level": "INFO", "component": "webhook_handler", "message": "\u2705 Message sent to telegram_id 5590563715 (user_id: 3)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:37972 - "GET / HTTP/1.1" 200 OK

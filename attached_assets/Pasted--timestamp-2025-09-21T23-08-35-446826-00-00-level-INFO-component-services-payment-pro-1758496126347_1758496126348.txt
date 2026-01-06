@@ -1,0 +1,16 @@
+"timestamp": "2025-09-21T23:08:35.446826+00:00", "level": "INFO", "component": "services.payment_provider", "message": "\u2705 ATOMIC: Payment address created successfully with DynoPay for intent 4", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,556 ERROR database: Database query error: null value in column "tld" of relation "domain_registration_intents" violates not-null constraint
+DETAIL:  Failing row contains (1, 3, bejejeje.sbs, null, 1, 75.00, USD, created, a7c3d786-1260-4455-a031-91ab390f9093, null, null, t, null, null, 2025-09-21 23:08:35.53722, 2025-09-21 23:08:35.53722).
+
+{"timestamp": "2025-09-21T23:08:35.556191+00:00", "level": "ERROR", "component": "database", "message": "Database query error: null value in column \"tld\" of relation \"domain_registration_intents\" violates not-null constraint\nDETAIL:  Failing row contains (1, 3, bejejeje.sbs, null, 1, 75.00, USD, created, a7c3d786-1260-4455-a031-91ab390f9093, null, null, t, null, null, 2025-09-21 23:08:35.53722, 2025-09-21 23:08:35.53722).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,556 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T23:08:35.556381+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,556 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4960
+{"timestamp": "2025-09-21T23:08:35.556568+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4960", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,556 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T23:08:35.556662+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,795 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T23:08:35.795891+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:08:35,796 INFO fastapi_server: ✅ Processed Telegram update: 786430886
+{"timestamp": "2025-09-21T23:08:35.796023+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430886", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:50338 - "POST /webhook/telegram HTTP/1.1" 200 OK

@@ -1,0 +1,6 @@
+{
+  "success": false,
+  "error": "Exception during API call: 'OptimizedOpenProviderService' object has no attribute 'get_authenticated_client'",
+  "domain_id": 27581764,
+  "domain_name": "tdonlinegateway.com"
+}

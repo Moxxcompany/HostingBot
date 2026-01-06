@@ -1,0 +1,21 @@
+sage 5590563715_4932
+{"timestamp": "2025-09-21T22:49:34.879118+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4932", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:34,879 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T22:49:34.879287+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,118 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T22:49:35.118956+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,396 ERROR database: Database query error: null value in column "order_type" of relation "orders" violates not-null constraint
+DETAIL:  Failing row contains (1, 3, null, pending, 0.00, USD, 0.00, {"crypto_type": "ltc", "deposit_type": "wallet"}, null, 2025-09-21 22:49:35.224639, 2025-09-21 22:49:35.224639).
+
+{"timestamp": "2025-09-21T22:49:35.396989+00:00", "level": "ERROR", "component": "database", "message": "Database query error: null value in column \"order_type\" of relation \"orders\" violates not-null constraint\nDETAIL:  Failing row contains (1, 3, null, pending, 0.00, USD, 0.00, {\"crypto_type\": \"ltc\", \"deposit_type\": \"wallet\"}, null, 2025-09-21 22:49:35.224639, 2025-09-21 22:49:35.224639).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,397 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T22:49:35.397211+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,397 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4932
+{"timestamp": "2025-09-21T22:49:35.397830+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4932", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,398 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T22:49:35.398585+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,638 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T22:49:35.638230+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:49:35,638 INFO fastapi_server: ✅ Processed Telegram update: 786430837
+{"timestamp": "2025-09-21T22:49:35.638396+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430837", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:32912 - "POST /webhook/telegram HTTP/1.1" 200 OK

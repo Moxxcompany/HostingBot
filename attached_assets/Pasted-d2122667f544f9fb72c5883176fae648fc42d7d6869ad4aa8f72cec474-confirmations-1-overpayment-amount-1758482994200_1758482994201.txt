@@ -1,0 +1,16 @@
+d2122667f544f9fb72c5883176fae648fc42d7d6869ad4aa8f72cec474', 'confirmations': 1, 'overpayment_amount': 0.7900000000000009, 'overpayment_credited': True, 'expected_usd': 11.87}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 19:29:04,896 ERROR webhook_handler: 🔍 Order ID: domain_cryptohostme.sbs_5590563715_1758482580
+{"timestamp": "2025-09-21T19:29:04.896033+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Order ID: domain_cryptohostme.sbs_5590563715_1758482580", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 19:29:04,896 ERROR webhook_handler: 🔍 Full traceback: Traceback (most recent call last):
+  File "/home/runner/workspace/webhook_handler.py", line 841, in _process_domain_payment
+    future.result(timeout=25.0)  # Increased for domain registration processing
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/_base.py", line 458, in result
+    raise TimeoutError()
+TimeoutError
+
+{"timestamp": "2025-09-21T19:29:04.896657+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Full traceback: Traceback (most recent call last):\n  File \"/home/runner/workspace/webhook_handler.py\", line 841, in _process_domain_payment\n    future.result(timeout=25.0)  # Increased for domain registration processing\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/_base.py\", line 458, in result\n    raise TimeoutError()\nTimeoutError\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 19:29:05,184 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_cryptohostme.sbs_5590563715_1758482580:1
+{"timestamp": "2025-09-21T19:29:05.184271+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_cryptohostme.sbs_5590563715_1758482580:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 19:29:05,184 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T19:29:05.184425+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, 

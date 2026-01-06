@@ -1,0 +1,88 @@
+2025-09-23 10:30:10.70
+87d62d56
+User
+^
+2025-09-23 10:30:10.70
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.703970+00:00", "level": "ERROR", "component": "database", "message": "\u274c Error in transaction finalizing hosting provisioning for intent 6: column \"domain_id\" does not exist\nLINE 1: SELECT id FROM hosting_subscriptions WHERE domain_id = 2 AND...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:10.84
+87d62d56
+User
+2025-09-23 09:30:10,846 ERROR database: Database query error: column "estimated_price" does not exist
+2025-09-23 10:30:10.84
+87d62d56
+User
+LINE 1: SELECT domain_name, estimated_price FROM hosting_provision_i...
+2025-09-23 10:30:10.84
+87d62d56
+User
+^
+2025-09-23 10:30:10.84
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.846696+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"estimated_price\" does not exist\nLINE 1: SELECT domain_name, estimated_price FROM hosting_provision_i...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:10.84
+87d62d56
+User
+2025-09-23 09:30:10,847 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-23 10:30:10.84
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.847036+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:10.97
+87d62d56
+User
+2025-09-23 09:30:10,972 INFO services.hosting_orchestrator: 📧 HOSTING ORCHESTRATOR: hosting_bundle_failure notification recorded for order 6
+2025-09-23 10:30:10.97
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.972528+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\ud83d\udce7 HOSTING ORCHESTRATOR: hosting_bundle_failure notification recorded for order 6", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:10.97
+87d62d56
+User
+2025-09-23 09:30:10,972 INFO handlers: Attempting message edit for user 5816388926, message 5816388926_5839
+2025-09-23 10:30:10.97
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.972755+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5816388926, message 5816388926_5839", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:10.97
+87d62d56
+User
+2025-09-23 09:30:10,973 INFO handlers: Executing message edit for user 5816388926
+2025-09-23 10:30:10.97
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:10.973013+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5816388926", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:11.42
+87d62d56
+User
+2025-09-23 09:30:11,424 INFO handlers: Message edit successful for user 5816388926
+2025-09-23 10:30:11.42
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:11.424455+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5816388926", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:11.42
+87d62d56
+User
+2025-09-23 09:30:11,424 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 6
+2025-09-23 10:30:11.42
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:11.424654+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 6", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-23 10:30:11.48
+87d62d56
+User
+2025-09-23 09:30:11,485 ERROR database: 💥 NEON HARDENING: Database update operation failed: column "error_message" of relation "hosting_provision_intents" does not exist
+2025-09-23 10:30:11.48
+87d62d56
+User
+LINE 4: error_message = 'Hosting provisioning fa...
+2025-09-23 10:30:11.48
+87d62d56
+User
+^
+2025-09-23 10:30:11.48
+87d62d56
+User
+{"timestamp": "2025-09-23T09:30:11.485000+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: column \"error_message\" of relation \"ho

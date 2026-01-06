@@ -1,0 +1,74 @@
+hello Moxx Good Day, i need help for this.
+For Addon Post api i have tried my existing domain which gives me this response ,
+{
+  "success": true,
+  "data": {
+    "subscription_id": 20,
+    "primary_domain": "Domain.sbs",
+    "addon_domain": "gobookking.com",
+    "dns_only": true,
+    "cpanel_status": "pending",
+    "dns_nameservers": [
+      "anderson.ns.cloudflare.com",
+      "leanna.ns.cloudflare.com"
+    ],
+    "cloudflare_nameservers": [
+      "anderson.ns.cloudflare.com",
+      "leanna.ns.cloudflare.com"
+    ],
+    "server_ip": "193.143.1.147",
+    "nameserver_status": "manual_update_required",
+    "domain_type": "external",
+    "message": "DNS records configured. Update nameservers at your registrar. System will automatically retry adding to cPanel every 10 minutes.",
+    "dns_instructions": {
+      "message": "DNS records have been configured in Cloudflare. Please update nameservers at your registrar to activate.",
+      "nameservers": [
+        "anderson.ns.cloudflare.com",
+        "leanna.ns.cloudflare.com"
+      ],
+      "instructions": [
+        "1. Log in to your domain registrar where gobookking.com is registered",
+        "2. Navigate to the DNS/Nameserver settings",
+        "3. Update the nameservers to:",
+        "   - anderson.ns.cloudflare.com",
+        "   - leanna.ns.cloudflare.com",
+        "4. Save the changes and wait for DNS propagation (24-48 hours)",
+        "5. Once nameservers are updated, your addon domain will be fully configured"
+      ],
+      "estimated_propagation": "24-48 hours"
+    },
+    "a_record_status": "failed",
+    "a_records": {
+      "root": "already_configured",
+      "www": "create_failed"
+    },
+    "job_id": 6,
+    "auto_retry": true,
+    "retry_interval": "10 minutes",
+    "max_retries": 6
+  },
+  "message": "DNS records configured. Update nameservers at your registrar. System will automatically retry adding to cPanel every 10 minutes."
+}
+
+
+and letter i tried to check Get api for add on, in that i cant find the add on domain may be because of dns propagation is not completed.
+
+{
+  "success": true,
+  "data": {
+    "subscription_id": 20,
+    "primary_domain": "Domain.sbs",
+    "addon_domains": [],
+    "all_domains": [
+      {
+        "domain": "Domain.sbs",
+        "type": "primary"
+      }
+    ],
+    "total_addon": 0,
+    "total_all": 1
+  }
+}
+
+i also updated this nameserver  "anderson.ns.cloudflare.com", and "leanna.ns.cloudflare.com" on my registrar app
+can you please guide?

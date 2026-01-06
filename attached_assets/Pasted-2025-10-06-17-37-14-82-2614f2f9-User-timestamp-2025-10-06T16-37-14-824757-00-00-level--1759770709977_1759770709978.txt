@@ -1,0 +1,97 @@
+2025-10-06 17:37:14.82
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:14.824757+00:00", "level": "INFO", "component": "simple_payment_handler", "message": "\u2705 TYPE-SAFE: Successfully processed payment 2147000013 for user 497", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:14.82
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:14.825212+00:00", "level": "AUDIT", "component": "payment_system", "event_type": "payment_confirmed", "message": "Type-safe payment processing completed successfully for $100.24", "correlation_id": "f8746102-14d4-460c-bf8c-1ae82763faa0", "user_id": 497, "order_id": "2147000013", "payment_context": {"correlation_id": "f8746102-14d4-460c-bf8c-1ae82763faa0", "user_id": 497, "order_id": "2147000013", "payment_intent_id": 2147000013, "provider": "dynopay", "amount_usd": 100.24, "current_status": "completed", "duration_ms": 677, "metadata": {"processing_result": "success", "wallet_credited": true, "type_safe_handler": true, "payment_flow": "complete"}}}
+2025-10-06 17:37:14.82
+2614f2f9
+User
+2025-10-06 16:37:14,825 AUDIT payment_system: Type-safe payment processing completed successfully for $100.24
+2025-10-06 17:37:14.82
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:14.825212+00:00", "level": "AUDIT", "component": "payment_system", "message": "Type-safe payment processing completed successfully for $100.24", "trace_id": null, "user_id": 497, "order_id": "2147000013", "context": {}}
+2025-10-06 17:37:14.82
+2614f2f9
+User
+2025-10-06 16:37:14,825 INFO webhook_health_monitor: ✅ WEBHOOK HEALTH MONITOR: Initialized comprehensive monitoring system
+2025-10-06 17:37:14.82
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:14.825800+00:00", "level": "INFO", "component": "webhook_health_monitor", "message": "\u2705 WEBHOOK HEALTH MONITOR: Initialized comprehensive monitoring system", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,034 ERROR database: 💥 NEON HARDENING: Database update operation failed: null value in column "id" of relation "webhook_provider_health" violates not-null constraint
+2025-10-06 17:37:16.03
+2614f2f9
+User
+DETAIL: Failing row contains (null, dynopay, 2025-10-06 15:37:15.772667, 2025-10-06 16:37:15.772685, 60, 0, 0, 0, 0, 0, 0.000, 0.000, null, null, null, 0.0000, 0.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.034225+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: null value in column \"id\" of relation \"webhook_provider_health\" violates not-null constraint\nDETAIL: Failing row contains (null, dynopay, 2025-10-06 15:37:15.772667, 2025-10-06 16:37:15.772685, 60, 0, 0, 0, 0, 0, 0.000, 0.000, null, null, null, 0.0000, 0.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,034 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.034517+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,034 INFO database: └─ Database remains in consistent state
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.034709+00:00", "level": "INFO", "component": "database", "message": " \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,034 INFO database: └─ Application will continue with degraded functionality
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.034813+00:00", "level": "INFO", "component": "database", "message": " \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.035444+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: process_payment_webhook_typesafe (1888.45ms)", "payment_context": {"operation_start_time": 1759768634.1467812, "duration_ms": 1888.4546756744385, "metadata": {}}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,035 INFO payment_system: Payment operation completed: process_payment_webhook_typesafe (1888.45ms)
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.035444+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook_typesafe (1888.45ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.035923+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook_typesafe (1888.45ms)", "payment_context": {}}
+2025-10-06 17:37:16.03
+2614f2f9
+User
+2025-10-06 16:37:16,035 INFO payment_system: Payment operation completed: process_payment_webhook_typesafe (1888.45ms)
+2025-10-06 17:37:16.03
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.035923+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook_typesafe (1888.45ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1759768634.1467812, "duration_ms": 1888.4546756744385, "metadata": {}}}
+2025-10-06 17:37:16.10
+2614f2f9
+User
+2025-10-06 16:37:16,101 INFO database: 🔍 SQL UPDATE: Executing query with 4 parameters
+2025-10-06 17:37:16.10
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:37:16.101268+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:37:16.19
+2614

@@ -1,0 +1,17 @@
+tabase", "message": "\ud83d\udd0d WALLET_CREDIT_DEBUG: user_result type=<class 'psycopg2.extras.RealDictRow'>, content=RealDictRow([('id', 3), ('wallet_balance', Decimal('0.00'))])", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:39:50,004 INFO database: 🔍 WALLET_CREDIT_USER_VALIDATED: user_id 3 (db_id: 3) exists with current balance $0.00
+{"timestamp": "2025-09-21T23:39:50.004748+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d WALLET_CREDIT_USER_VALIDATED: user_id 3 (db_id: 3) exists with current balance $0.00", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:39:50,039 ERROR database: ❌ WALLET_CREDIT_INSERT_ERROR: Failed to insert transaction | user_id: 3 | Error: column "provider" of relation "wallet_transactions" does not exist
+LINE 2: ...on_type, amount, currency, status, external_txid, provider, ...
+                                                             ^
+
+{"timestamp": "2025-09-21T23:39:50.039710+00:00", "level": "ERROR", "component": "database", "message": "\u274c WALLET_CREDIT_INSERT_ERROR: Failed to insert transaction | user_id: 3 | Error: column \"provider\" of relation \"wallet_transactions\" does not exist\nLINE 2: ...on_type, amount, currency, status, external_txid, provider, ...\n                                                             ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:39:50,074 ERROR webhook_handler: ❌ WALLET_DEPOSIT_FAILURE: $5.70 deposit failed for user_id 3 via dynopay | txid: cc2d10612ab7d3e7... | Check structured logs above for specific failure reason
+{"timestamp": "2025-09-21T23:39:50.074740+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c WALLET_DEPOSIT_FAILURE: $5.70 deposit failed for user_id 3 via dynopay | txid: cc2d10612ab7d3e7... | Check structured logs above for specific failure reason", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:39:50,180 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:11:1
+{"timestamp": "2025-09-21T23:39:50.180932+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:11:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:39:50,181 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T23:39:50.181079+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:58880 - "POST /webhook/dynopay?order_id=11&auth_token=gd_iv-qVsnlBXu54dv7N_aEGVWUmyVURFiRzmydBc0g HTTP/1.1" 200 OK
+2025-09-21 23:39:50,647 INFO webhook_handler: ✅ Message sent to telegram_id 5590563715 (user_id: 3)
+{"timestamp": "2025-09-21T23:39:50.647761+00:00", "level": "INFO", "component": "webhook_handler", "message": "\u2705 Message sent to telegram_id 5590563715 (user_id: 3)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

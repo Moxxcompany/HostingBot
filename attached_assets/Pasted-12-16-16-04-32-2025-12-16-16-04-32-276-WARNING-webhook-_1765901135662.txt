@@ -1,0 +1,25 @@
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Recovery failed for payment 256
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32

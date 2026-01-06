@@ -1,0 +1,62 @@
+12-26 10:07:00
+{"timestamp": "2025-12-26T10:07:00.768029+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83d\udcb3 WALLET FINALIZATION: Processing hold transaction 519 for order 2147001063 (success=True)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:00
+2025-12-26 10:07:00,868 INFO database: ✅ HOLD FINALIZED: Transaction 519 completed as debit for user 497
+12-26 10:07:00
+{"timestamp": "2025-12-26T10:07:00.868316+00:00", "level": "INFO", "component": "database", "message": "\u2705 HOLD FINALIZED: Transaction 519 completed as debit for user 497", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:00
+2025-12-26 10:07:00,889 INFO services.registration_orchestrator: ✅ WALLET FINALIZATION: Hold $519 successfully debited from wallet for domain systemscanportal.com
+12-26 10:07:00
+{"timestamp": "2025-12-26T10:07:00.889793+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 WALLET FINALIZATION: Hold $519 successfully debited from wallet for domain systemscanportal.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:00
+{"timestamp": "2025-12-26T10:07:00.991258+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:00
+2025-12-26 10:07:00,991 INFO database: 🔍 SQL UPDATE: Executing query with 4 parameters
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.052444+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+2025-12-26 10:07:01,052 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+12-26 10:07:01
+2025-12-26 10:07:01,053 INFO services.registration_orchestrator: 📧 ORCHESTRATOR: registration_success notification recorded for order 2147001063
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.053829+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 6395648769", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.053083+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83d\udce7 ORCHESTRATOR: registration_success notification recorded for order 2147001063", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+2025-12-26 10:07:01,053 INFO handlers: Executing message edit for user 6395648769
+12-26 10:07:01
+2025-12-26 10:07:01,053 INFO handlers: Attempting message edit for user 6395648769, message 6395648769_24505
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.053653+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 6395648769, message 6395648769_24505", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+2025-12-26 10:07:01,590 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: registration_success notification sent to user for order 2147001063
+12-26 10:07:01
+2025-12-26 10:07:01,590 INFO handlers: Message edit successful for user 6395648769
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.590343+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 6395648769", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.590663+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: registration_success notification sent to user for order 2147001063", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+{"timestamp": "2025-12-26T10:07:01.851956+00:00", "level": "INFO", "component": "admin_alerts", "message": "\u2705 Admin alert sent to 5168006768: INFO - RegistrationOrchestrator", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:01
+2025-12-26 10:07:01,893 INFO database: 🔍 SQL UPDATE: Executing query with 8 parameters
+12-26 10:07:01
+2025-12-26 10:07:01,955 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+12-26 10:07:02
+2025-12-26 10:07:02,061 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: Registration completed for order 2147001063
+12-26 10:07:22
+2025-12-26 10:07:22,968 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-26 10:07:22
+{"timestamp": "2025-12-26T10:07:22.968511+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:22
+2025-12-26 10:07:22,968 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-26 10:07:22
+{"timestamp": "2025-12-26T10:07:22.968511+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:22
+{"timestamp": "2025-12-26T10:07:22.968511+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-26 10:07:22
+2025-12-26 10:07:22,968 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-26 10:07:53
+2025-12-26 10:07:53,160 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-26 10:07:53
+{"timestamp": "2025-12-26T10:07:53.160690+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

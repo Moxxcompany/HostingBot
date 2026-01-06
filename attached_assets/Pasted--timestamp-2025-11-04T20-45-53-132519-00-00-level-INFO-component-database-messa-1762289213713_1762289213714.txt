@@ -1,0 +1,131 @@
+
+{"timestamp": "2025-11-04T20:45:53.132519+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd12 Constraint: ((wallet_balance >= (0)::numeric))", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,132 INFO database: 🔍 Starting security constraint functionality test...
+{"timestamp": "2025-11-04T20:45:53.132622+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d Starting security constraint functionality test...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,204 INFO database: 🔍 SQL UPDATE: Executing query with 1 parameters
+{"timestamp": "2025-11-04T20:45:53.204345+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 1 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,277 ERROR database: 💥 SQL ERROR in execute_update:
+{"timestamp": "2025-11-04T20:45:53.277072+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,277 ERROR database:   Query: DELETE FROM users WHERE telegram_id = %s
+{"timestamp": "2025-11-04T20:45:53.277395+00:00", "level": "ERROR", "component": "database", "message": "  Query: DELETE FROM users WHERE telegram_id = %s", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,277 ERROR database:   Params: (999999999,)
+{"timestamp": "2025-11-04T20:45:53.277593+00:00", "level": "ERROR", "component": "database", "message": "  Params: (999999999,)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,277 ERROR database:   Error Type: ForeignKeyViolation
+{"timestamp": "2025-11-04T20:45:53.277760+00:00", "level": "ERROR", "component": "database", "message": "  Error Type: ForeignKeyViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,277 ERROR database:   Error Message: update or delete on table "users" violates foreign key constraint "domain_registration_intents_user_id_fkey" on table "domain_registration_intents"
+DETAIL:  Key (id)=(1305) is still referenced from table "domain_registration_intents".
+
+{"timestamp": "2025-11-04T20:45:53.277875+00:00", "level": "ERROR", "component": "database", "message": "  Error Message: update or delete on table \"users\" violates foreign key constraint \"domain_registration_intents_user_id_fkey\" on table \"domain_registration_intents\"\nDETAIL:  Key (id)=(1305) is still referenced from table \"domain_registration_intents\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,313 ERROR database: 💥 NEON HARDENING: Database update operation failed: update or delete on table "users" violates foreign key constraint "domain_registration_intents_user_id_fkey" on table "domain_registration_intents"
+DETAIL:  Key (id)=(1305) is still referenced from table "domain_registration_intents".
+
+{"timestamp": "2025-11-04T20:45:53.313545+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: update or delete on table \"users\" violates foreign key constraint \"domain_registration_intents_user_id_fkey\" on table \"domain_registration_intents\"\nDETAIL:  Key (id)=(1305) is still referenced from table \"domain_registration_intents\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,313 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-11-04T20:45:53.313733+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,313 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-11-04T20:45:53.313829+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,313 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-11-04T20:45:53.313916+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,385 INFO database: 🔍 SQL UPDATE: Executing query with 2 parameters
+{"timestamp": "2025-11-04T20:45:53.385665+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 2 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,457 ERROR database: 💥 SQL ERROR in execute_update:
+{"timestamp": "2025-11-04T20:45:53.457031+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,457 ERROR database:   Query: INSERT INTO users (telegram_id, wallet_balance) VALUES (%s, %s)
+{"timestamp": "2025-11-04T20:45:53.457268+00:00", "level": "ERROR", "component": "database", "message": "  Query: INSERT INTO users (telegram_id, wallet_balance) VALUES (%s, %s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,457 ERROR database:   Params: (999999999, 1.0)
+{"timestamp": "2025-11-04T20:45:53.457356+00:00", "level": "ERROR", "component": "database", "message": "  Params: (999999999, 1.0)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,457 ERROR database:   Error Type: UniqueViolation
+{"timestamp": "2025-11-04T20:45:53.457444+00:00", "level": "ERROR", "component": "database", "message": "  Error Type: UniqueViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,457 ERROR database:   Error Message: duplicate key value violates unique constraint "users_telegram_id_key"
+DETAIL:  Key (telegram_id)=(999999999) already exists.
+
+{"timestamp": "2025-11-04T20:45:53.457539+00:00", "level": "ERROR", "component": "database", "message": "  Error Message: duplicate key value violates unique constraint \"users_telegram_id_key\"\nDETAIL:  Key (telegram_id)=(999999999) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,493 ERROR database: 💥 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint "users_telegram_id_key"
+DETAIL:  Key (telegram_id)=(999999999) already exists.
+
+{"timestamp": "2025-11-04T20:45:53.493386+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint \"users_telegram_id_key\"\nDETAIL:  Key (telegram_id)=(999999999) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,493 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-11-04T20:45:53.493533+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,493 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-11-04T20:45:53.493617+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,493 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-11-04T20:45:53.493695+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,494 ERROR database: 🚫 TEST SETUP FAILED: Could not create test user
+{"timestamp": "2025-11-04T20:45:53.494009+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab TEST SETUP FAILED: Could not create test user", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,566 INFO database: 🔍 SQL UPDATE: Executing query with 1 parameters
+{"timestamp": "2025-11-04T20:45:53.566791+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 1 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,638 ERROR database: 💥 SQL ERROR in execute_update:
+{"timestamp": "2025-11-04T20:45:53.638724+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,638 ERROR database:   Query: DELETE FROM users WHERE telegram_id = %s
+{"timestamp": "2025-11-04T20:45:53.638870+00:00", "level": "ERROR", "component": "database", "message": "  Query: DELETE FROM users WHERE telegram_id = %s", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,638 ERROR database:   Params: (999999999,)
+{"timestamp": "2025-11-04T20:45:53.638925+00:00", "level": "ERROR", "component": "database", "message": "  Params: (999999999,)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,638 ERROR database:   Error Type: ForeignKeyViolation
+{"timestamp": "2025-11-04T20:45:53.638973+00:00", "level": "ERROR", "component": "database", "message": "  Error Type: ForeignKeyViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,639 ERROR database:   Error Message: update or delete on table "users" violates foreign key constraint "domain_registration_intents_user_id_fkey" on table "domain_registration_intents"
+DETAIL:  Key (id)=(1305) is still referenced from table "domain_registration_intents".
+
+{"timestamp": "2025-11-04T20:45:53.639018+00:00", "level": "ERROR", "component": "database", "message": "  Error Message: update or delete on table \"users\" violates foreign key constraint \"domain_registration_intents_user_id_fkey\" on table \"domain_registration_intents\"\nDETAIL:  Key (id)=(1305) is still referenced from table \"domain_registration_intents\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,674 ERROR database: 💥 NEON HARDENING: Database update operation failed: update or delete on table "users" violates foreign key constraint "domain_registration_intents_user_id_fkey" on table "domain_registration_intents"
+DETAIL:  Key (id)=(1305) is still referenced from table "domain_registration_intents".
+
+{"timestamp": "2025-11-04T20:45:53.674417+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: update or delete on table \"users\" violates foreign key constraint \"domain_registration_intents_user_id_fkey\" on table \"domain_registration_intents\"\nDETAIL:  Key (id)=(1305) is still referenced from table \"domain_registration_intents\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,674 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-11-04T20:45:53.674575+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,674 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-11-04T20:45:53.674663+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,674 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-11-04T20:45:53.674738+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,674 ERROR database: 🚫 CRITICAL: Security constraint test failed - constraint may not be working
+{"timestamp": "2025-11-04T20:45:53.674953+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab CRITICAL: Security constraint test failed - constraint may not be working", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 ERROR database: 🚫 SECURITY CONSTRAINT FAILURE: CRITICAL: Security constraint test failed - constraint may not be working
+{"timestamp": "2025-11-04T20:45:53.675037+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab SECURITY CONSTRAINT FAILURE: CRITICAL: Security constraint test failed - constraint may not be working", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 ERROR database: 🚫 Failure Type: constraint_test_failed
+{"timestamp": "2025-11-04T20:45:53.675142+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab Failure Type: constraint_test_failed", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 ERROR database: 🚫 Current Configuration: ALLOW_DEGRADED_STARTUP=True
+{"timestamp": "2025-11-04T20:45:53.675199+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab Current Configuration: ALLOW_DEGRADED_STARTUP=True", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: ⚠️ Safe mode enabled: Security verification failed: constraint_test_failed
+{"timestamp": "2025-11-04T20:45:53.675262+00:00", "level": "WARNING", "component": "database", "message": "\u26a0\ufe0f Safe mode enabled: Security verification failed: constraint_test_failed", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡 GRACEFUL DEGRADATION: System will start in SAFE MODE
+{"timestamp": "2025-11-04T20:45:53.675329+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1 GRACEFUL DEGRADATION: System will start in SAFE MODE", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡 SAFE MODE RESTRICTIONS:
+{"timestamp": "2025-11-04T20:45:53.675396+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1 SAFE MODE RESTRICTIONS:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡   - ALL financial operations disabled
+{"timestamp": "2025-11-04T20:45:53.675469+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1   - ALL financial operations disabled", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡   - Wallet deposits/withdrawals blocked
+{"timestamp": "2025-11-04T20:45:53.675541+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1   - Wallet deposits/withdrawals blocked", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡   - Domain purchases blocked
+{"timestamp": "2025-11-04T20:45:53.675613+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1   - Domain purchases blocked", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡   - Read-only operations only
+{"timestamp": "2025-11-04T20:45:53.675703+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1   - Read-only operations only", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 WARNING database: 🟡 ADMINISTRATOR ACTION REQUIRED: Fix security constraints and restart
+{"timestamp": "2025-11-04T20:45:53.675799+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udfe1 ADMINISTRATOR ACTION REQUIRED: Fix security constraints and restart", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 INFO database: 🔍 FINAL SECURITY STATUS:
+{"timestamp": "2025-11-04T20:45:53.675859+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d FINAL SECURITY STATUS:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 INFO database:    • Security Verified: True
+{"timestamp": "2025-11-04T20:45:53.675918+00:00", "level": "INFO", "component": "database", "message": "   \u2022 Security Verified: True", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,675 INFO database:    • Safe Mode: False
+{"timestamp": "2025-11-04T20:45:53.675995+00:00", "level": "INFO", "component": "database", "message": "   \u2022 Safe Mode: False", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO database:    • Financial Operations: True
+{"timestamp": "2025-11-04T20:45:53.676071+00:00", "level": "INFO", "component": "database", "message": "   \u2022 Financial Operations: True", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO database:    • Degraded Startup Allowed: True
+{"timestamp": "2025-11-04T20:45:53.676183+00:00", "level": "INFO", "component": "database", "message": "   \u2022 Degraded Startup Allowed: True", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO database: ✅ DATABASE INITIALIZATION COMPLETE: Full security mode active
+{"timestamp": "2025-11-04T20:45:53.676245+00:00", "level": "INFO", "component": "database", "message": "\u2705 DATABASE INITIALIZATION COMPLETE: Full security mode active", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO database: ✅ NEON HARDENING: Background health probe started
+{"timestamp": "2025-11-04T20:45:53.676324+00:00", "level": "INFO", "component": "database", "message": "\u2705 NEON HARDENING: Background health probe started", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO database: ✅ NEON HARDENING: Database health monitoring started
+{"timestamp": "2025-11-04T20:45:53.676386+00:00", "level": "INFO", "component": "database", "message": "\u2705 NEON HARDENING: Database health monitoring started", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO fastapi_server: ✅ Database initialization and seeding completed successfully
+{"timestamp": "2025-11-04T20:45:53.676475+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Database initialization and seeding completed successfully", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO fastapi_server: ✅ Database fully pre-warmed in 18742.8ms - Neon database is awake
+{"timestamp": "2025-11-04T20:45:53.676554+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Database fully pre-warmed in 18742.8ms - Neon database is awake", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO fastapi_server: ✅ Database health probe started - keeping connection warm
+{"timestamp": "2025-11-04T20:45:53.676694+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Database health probe started - keeping connection warm", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO fastapi_server: 🔐 Pre-authenticating with OpenProvider...
+{"timestamp": "2025-11-04T20:45:53.676804+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83d\udd10 Pre-authenticating with OpenProvider...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO services.openprovider: 🔐 Authenticating with OpenProvider API...
+{"timestamp": "2025-11-04T20:45:53.676888+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udd10 Authenticating with OpenProvider API...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,676 INFO services.openprovider: 🔍 Detecting public IP address using fallback services...
+{"timestamp": "2025-11-04T20:45:53.676974+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udd0d Detecting public IP address using fallback services...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 20:45:53,685 INFO database: ✅ NEON HARDENING: Starting background database health probe

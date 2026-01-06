@@ -1,0 +1,97 @@
+ account for humansjjsjsj.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:22:58,972 INFO services.cpanel: ✅ cPanel connection successful: WHM unknown connected
+{"timestamp": "2025-09-22T00:22:58.972167+00:00", "level": "INFO", "component": "services.cpanel", "message": "\u2705 cPanel connection successful: WHM unknown connected", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:02,945 ERROR services.cpanel: ❌ Error creating hosting account: 
+{"timestamp": "2025-09-22T00:23:02.945863+00:00", "level": "ERROR", "component": "services.cpanel", "message": "\u274c Error creating hosting account: ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:02,959 ERROR services.cpanel: ❌ Full traceback: Traceback (most recent call last):
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/services/cpanel.py", line 236, in create_hosting_account
+    response = await client.post(
+               ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1859, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+{"timestamp": "2025-09-22T00:23:02.959241+00:00", "level": "ERROR", "component": "services.cpanel", "message": "\u274c Full traceback: Traceback (most recent call last):\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py\", line 101, in map_httpcore_exceptions\n    yield\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py\", line 394, in handle_async_request\n    resp = await self._pool.handle_async_request(req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection_pool.py\", line 256, in handle_async_request\n    raise exc from None\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection_pool.py\", line 236, in handle_async_request\n    response = await connection.handle_async_request(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py\", line 101, in handle_async_request\n    raise exc\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py\", line 78, in handle_async_request\n    stream = await self._connect(request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_async/connection.py\", line 124, in _connect\n    stream = await self._network_backend.connect_tcp(**kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_backends/auto.py\", line 31, in connect_tcp\n    return await self._backend.connect_tcp(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_backends/anyio.py\", line 113, in connect_tcp\n    with map_exceptions(exc_map):\n  File \"/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpcore/_exceptions.py\", line 14, in map_exceptions\n    raise to_exc(exc) from exc\nhttpcore.ConnectTimeout\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/workspace/services/cpanel.py\", line 236, in create_hosting_account\n    response = await client.post(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1859, in post\n    return await self.request(\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1540, in request\n    return await self.send(request, auth=auth, follow_redirects=follow_redirects)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1629, in send\n    response = await self._send_handling_auth(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1657, in _send_handling_auth\n    response = await self._send_handling_redirects(\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1694, in _send_handling_redirects\n    response = await self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_client.py\", line 1730, in _send_single_request\n    response = await transport.handle_async_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py\", line 393, in handle_async_request\n    with map_httpcore_exceptions():\n  File \"/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectTimeout\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:02,959 ERROR services.cpanel: ❌ PRODUCTION MODE: Not falling back to simulation - exception must be resolved
+{"timestamp": "2025-09-22T00:23:02.959423+00:00", "level": "ERROR", "component": "services.cpanel", "message": "\u274c PRODUCTION MODE: Not falling back to simulation - exception must be resolved", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:02,960 ERROR services.hosting_orchestrator: ❌ cPanel account creation failed for humansjjsjsj.com
+{"timestamp": "2025-09-22T00:23:02.960254+00:00", "level": "ERROR", "component": "services.hosting_orchestrator", "message": "\u274c cPanel account creation failed for humansjjsjsj.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,376 INFO services.hosting_orchestrator: 📧 HOSTING ORCHESTRATOR: hosting_bundle_failure notification recorded for order 11
+{"timestamp": "2025-09-22T00:23:03.376683+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\ud83d\udce7 HOSTING ORCHESTRATOR: hosting_bundle_failure notification recorded for order 11", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,376 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5029
+{"timestamp": "2025-09-22T00:23:03.376882+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5029", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,376 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T00:23:03.376997+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,831 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T00:23:03.831850+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,832 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 11
+{"timestamp": "2025-09-22T00:23:03.832022+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 11", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,936 INFO services.hosting_orchestrator: ❌ HOSTING ORCHESTRATOR: Bundle marked as failed - order 11, intent 11: Hosting provisioning failed: cPanel account creation failed - please contact support
+{"timestamp": "2025-09-22T00:23:03.936336+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u274c HOSTING ORCHESTRATOR: Bundle marked as failed - order 11, intent 11: Hosting provisioning failed: cPanel account creation failed - please contact support", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,936 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: Bundle processing completed for order 11
+{"timestamp": "2025-09-22T00:23:03.936481+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: Bundle processing completed for order 11", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,936 WARNING handlers: ⚠️ HANDLERS: Unexpected orchestrator result for intent 11: {'success': False, 'error': 'Hosting provisioning failed: cPanel account creation failed - please contact support', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}
+{"timestamp": "2025-09-22T00:23:03.936559+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f HANDLERS: Unexpected orchestrator result for intent 11: {'success': False, 'error': 'Hosting provisioning failed: cPanel account creation failed - please contact support', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,936 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5029
+{"timestamp": "2025-09-22T00:23:03.936635+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5029", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:03,936 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T00:23:03.936706+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:04,168 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T00:23:04.168952+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:23:04,169 INFO fastapi_server: ✅ Processed Telegram update: 786430975
+{"timestamp": "2025-09-22T00:23:04.169096+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430975", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.108.130:39940 - "POST /webhook/telegram HTTP/1.1" 200 OK

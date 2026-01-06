@@ -1,0 +1,91 @@
+25-10-16 15:43:53.42
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.426153+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 14:43:53,467 ERROR database: 💥 SQL ERROR in execute_update:
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.467174+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 14:43:53,467 ERROR database: Query: INSERT INTO callback_tokens (token, user_id, callback_data, expires_at) VALUES (%s, %s, %s, %s)
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.467454+00:00", "level": "ERROR", "component": "database", "message": " Query: INSERT INTO callback_tokens (token, user_id, callback_data, expires_at) VALUES (%s, %s, %s, %s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 14:43:53,467 ERROR database: Params: ('HXgBOPjeAJHrwrJK', 5991214713, 'dns_edit:auth455.com:A:proxy:8eaf6a2af4ef66c5c49ebd444fe5eaf3', datetime.datetime(2025, 10, 16, 15, 43, 53, 385033))
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.467741+00:00", "level": "ERROR", "component": "database", "message": " Params: ('HXgBOPjeAJHrwrJK', 5991214713, 'dns_edit:auth455.com:A:proxy:8eaf6a2af4ef66c5c49ebd444fe5eaf3', datetime.datetime(2025, 10, 16, 15, 43, 53, 385033))", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 14:43:53,467 ERROR database: Error Type: UndefinedColumn
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.467965+00:00", "level": "ERROR", "component": "database", "message": " Error Type: UndefinedColumn", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 14:43:53,468 ERROR database: Error Message: column "callback_data" of relation "callback_tokens" does not exist
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+LINE 1: INSERT INTO callback_tokens (token, user_id, callback_data, ...
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+^
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+2025-10-16 15:43:53.46
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.468211+00:00", "level": "ERROR", "component": "database", "message": " Error Message: column \"callback_data\" of relation \"callback_tokens\" does not exist\nLINE 1: INSERT INTO callback_tokens (token, user_id, callback_data, ...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+2025-10-16 14:43:53,488 ERROR database: 💥 NEON HARDENING: Database update operation failed: column "callback_data" of relation "callback_tokens" does not exist
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+LINE 1: INSERT INTO callback_tokens (token, user_id, callback_data, ...
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+^
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.488477+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: column \"callback_data\" of relation \"callback_tokens\" does not exist\nLINE 1: INSERT INTO callback_tokens (token, user_id, callback_data, ...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+2025-10-16 14:43:53,488 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.488770+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+2025-10-16 14:43:53,489 INFO database: └─ Database remains in consistent state
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+{"timestamp": "2025-10-16T14:43:53.489002+00:00", "level": "INFO", "component": "database", "message": " \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-16 15:43:53.48
+ce3b5d0d
+User
+2025-10-16

@@ -1,0 +1,64 @@
+12-30 21:20:22
+2025-12-30 21:20:22,821 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-30 21:20:25
+{"timestamp": "2025-12-30T21:20:25.018394+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Emergency dashboard fallback failed for user 5168006768: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:25
+2025-12-30 21:20:25,018 ERROR handlers: ❌ CRITICAL: Emergency dashboard fallback failed for user 5168006768: Timed out
+12-30 21:20:30
+INFO: 35.191.123.232:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO fastapi_server: ✅ Processed Telegram update: 786446342
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.021818+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Final emergency message failed for user 5168006768: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,021 ERROR handlers: ❌ CRITICAL: Final emergency message failed for user 5168006768: Timed out
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022237+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786446342", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO handlers: ✅ DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022072+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022072+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO handlers: ✅ DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022237+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786446342", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,021 ERROR handlers: ❌ CRITICAL: Final emergency message failed for user 5168006768: Timed out
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.021818+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Final emergency message failed for user 5168006768: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO fastapi_server: ✅ Processed Telegram update: 786446342
+12-30 21:20:30
+INFO: 35.191.123.232:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022072+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO handlers: ✅ DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022237+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786446342", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,021 ERROR handlers: ❌ CRITICAL: Final emergency message failed for user 5168006768: Timed out
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.021818+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Final emergency message failed for user 5168006768: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO fastapi_server: ✅ Processed Telegram update: 786446342
+12-30 21:20:30
+INFO: 35.191.123.232:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022072+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO handlers: ✅ DASHBOARD: User 5168006768 started bot - showing dashboard (terms already accepted)
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.022237+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786446342", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,021 ERROR handlers: ❌ CRITICAL: Final emergency message failed for user 5168006768: Timed out
+12-30 21:20:30
+{"timestamp": "2025-12-30T21:20:30.021818+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Final emergency message failed for user 5168006768: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-30 21:20:30
+2025-12-30 21:20:30,022 INFO fastapi_server: ✅ Processed Telegram update: 786446342
+12-30 21:20:30
+INFO: 35.191.123.232:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+Wrap
+Colors

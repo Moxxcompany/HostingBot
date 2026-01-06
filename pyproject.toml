@@ -1,0 +1,33 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp>=3.12.15",
+    "aioresponses>=0.7.8",
+    "asyncio-mqtt>=0.16.2",
+    "django-health-monitor>=0.2.9",
+    "dnspython>=2.8.0",
+    "factory-boy>=3.3.3",
+    "freezegun>=1.5.5",
+    "httpx>=0.28.1",
+    "psutil>=7.0.0",
+    "psycopg2-binary>=2.9.10",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-mock>=3.15.1",
+    "pytest-xdist>=3.8.0",
+    "python-telegram-bot[job-queue]==21.3",
+    "qrcode>=8.2",
+    "telegram>=0.0.1",
+    "types-requests>=2.32.4.20250913",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.uv]
+cache-dir = "/tmp/uv-cache"
+
+

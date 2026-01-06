@@ -1,0 +1,57 @@
+25-12-31T10:30:28.407065+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\udd0d TERMS CHECK: User 5590563715 (onarrival1) terms_accepted = True", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:28.40
+7794eff2
+User
+2025-12-31 10:30:28,407 INFO handlers: 🔍 TERMS CHECK: User 5590563715 (onarrival1) terms_accepted = True
+2025-12-31 10:30:33.47
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:33.473493+00:00", "level": "ERROR", "component": "handlers", "message": "\u26a0\ufe0f PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:33.47
+7794eff2
+User
+2025-12-31 10:30:33,473 ERROR handlers: ⚠️ PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback
+2025-12-31 10:30:33.47
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:33.473493+00:00", "level": "ERROR", "component": "handlers", "message": "\u26a0\ufe0f PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:33.47
+7794eff2
+User
+2025-12-31 10:30:33,473 ERROR handlers: ⚠️ PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback
+2025-12-31 10:30:33.47
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:33.473493+00:00", "level": "ERROR", "component": "handlers", "message": "\u26a0\ufe0f PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:33.47
+7794eff2
+User
+2025-12-31 10:30:33,473 ERROR handlers: ⚠️ PRODUCTION: Dashboard error for user 5590563715: Timed out - using emergency fallback
+2025-12-31 10:30:35.78
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:35.787027+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:35.78
+7794eff2
+User
+2025-12-31 10:30:35,787 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+2025-12-31 10:30:38.47
+7794eff2
+User
+2025-12-31 10:30:38,476 ERROR handlers: ❌ CRITICAL: Emergency dashboard fallback failed for user 5590563715: Timed out
+2025-12-31 10:30:38.47
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:38.476287+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Emergency dashboard fallback failed for user 5590563715: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:38.47
+7794eff2
+User
+2025-12-31 10:30:38,476 ERROR handlers: ❌ CRITICAL: Emergency dashboard fallback failed for user 5590563715: Timed out
+2025-12-31 10:30:38.47
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:38.476287+00:00", "level": "ERROR", "component": "handlers", "message": "\u274c CRITICAL: Emergency dashboard fallback failed for user 5590563715: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:30:38.97
+7794eff2
+User
+{"timestamp": "2025-12-31T10:30:38.979547+00:00", "level": "INFO", "component": "fastapi_server", "message

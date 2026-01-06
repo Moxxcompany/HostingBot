@@ -1,0 +1,80 @@
+2025-10-06 17:29:08.30
+2614f2f9
+User
+File "/home/runner/workspace/services/dynopay.py", line 68, in create_payment_address
+2025-10-06 17:29:08.30
+2614f2f9
+User
+payment_logger.log_payment_event(
+2025-10-06 17:29:08.30
+2614f2f9
+User
+File "/home/runner/workspace/utils/payment_logging.py", line 270, in log_payment_event
+2025-10-06 17:29:08.30
+2614f2f9
+User
+prod_logger.log_structured(
+2025-10-06 17:29:08.30
+2614f2f9
+User
+File "/home/runner/workspace/monitoring/production_logging.py", line 295, in log_structured
+2025-10-06 17:29:08.30
+2614f2f9
+User
+logger.log(log_level, message, extra=extra)
+2025-10-06 17:29:08.30
+2614f2f9
+User
+Message: 'Starting DynoPay payment address creation for BTC: $0'
+2025-10-06 17:29:08.30
+2614f2f9
+User
+Arguments: ()
+2025-10-06 17:29:08.30
+2614f2f9
+User
+2025-10-06 16:29:08,303 INFO utils.environment: 🌍 Reserved VM production environment detected - using domain: hostbay.replit.app
+2025-10-06 17:29:08.30
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:29:08.303138+00:00", "level": "INFO", "component": "utils.environment", "message": "\ud83c\udf0d Reserved VM production environment detected - using domain: hostbay.replit.app", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:29:08.30
+2614f2f9
+User
+2025-10-06 16:29:08,303 INFO utils.environment: 🔍 Detection reason: PRODUCTION_DOMAIN=hostbay.replit.app
+2025-10-06 17:29:08.30
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:29:08.303366+00:00", "level": "INFO", "component": "utils.environment", "message": "\ud83d\udd0d Detection reason: PRODUCTION_DOMAIN=hostbay.replit.app", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:29:08.30
+2614f2f9
+User
+2025-10-06 16:29:08,303 INFO services.dynopay: 💰 DynoPay: Adjusted amount to $1.0 USD (minimum required)
+2025-10-06 17:29:08.30
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:29:08.303633+00:00", "level": "INFO", "component": "services.dynopay", "message": "\ud83d\udcb0 DynoPay: Adjusted amount to $1.0 USD (minimum required)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:29:08.30
+2614f2f9
+User
+2025-10-06 16:29:08,303 INFO services.dynopay: 💰 DynoPay: Using amount $1.0 USD for BTC
+2025-10-06 17:29:08.30
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:29:08.303767+00:00", "level": "INFO", "component": "services.dynopay", "message": "\ud83d\udcb0 DynoPay: Using amount $1.0 USD for BTC", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:29:10.52
+2614f2f9
+User
+2025-10-06 16:29:10,521 INFO services.dynopay: 🔒 SECURITY FIX: Successfully stored auth_token for order 2147000013 (intent_id: 63)
+2025-10-06 17:29:10.52
+2614f2f9
+User
+{"timestamp": "2025-10-06T16:29:10.521867+00:00", "level": "INFO", "component": "services.dynopay", "message": "\ud83d\udd12 SECURITY FIX: Successfully stored auth_token for order 2147000013 (intent_id: 63)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-06 17:29:10.52
+2614f2f9
+User
+2025-10-06 16:29:10,522 INFO services.dynopay: ✅ Auth token length: 43 chars
+2025-10-06 17:29:10.52
+2614f2f9
+User
+{"timestamp": "2025-1

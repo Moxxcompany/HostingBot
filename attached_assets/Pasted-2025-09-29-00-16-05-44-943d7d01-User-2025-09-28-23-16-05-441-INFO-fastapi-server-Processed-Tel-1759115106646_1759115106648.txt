@@ -1,0 +1,74 @@
+2025-09-29 00:16:05.44
+943d7d01
+User
+2025-09-28 23:16:05,441 INFO fastapi_server: ✅ Processed Telegram update: 786433269
+2025-09-29 00:16:05.44
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:05.441036+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786433269", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:05.44
+943d7d01
+User
+INFO: 35.191.80.106:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+2025-09-29 00:16:07.93
+943d7d01
+User
+2025-09-28 23:16:07,930 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 5829962078 (@uberskald) - action: deposit_usdt_trc20
+2025-09-29 00:16:07.93
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:07.930818+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 5829962078 (@uberskald) - action: deposit_usdt_trc20", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.16
+943d7d01
+User
+2025-09-28 23:16:08,165 INFO handlers: Attempting message edit for user 5829962078, message 5829962078_7107
+2025-09-29 00:16:08.16
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.165630+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5829962078, message 5829962078_7107", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.16
+943d7d01
+User
+2025-09-28 23:16:08,165 INFO handlers: Executing message edit for user 5829962078
+2025-09-29 00:16:08.16
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.165855+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5829962078", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.40
+943d7d01
+User
+2025-09-28 23:16:08,408 INFO handlers: Message edit successful for user 5829962078
+2025-09-29 00:16:08.40
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.408697+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5829962078", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.53
+943d7d01
+User
+2025-09-28 23:16:08,532 ERROR database: Database query error: duplicate key value violates unique constraint "orders_pkey"
+2025-09-29 00:16:08.53
+943d7d01
+User
+DETAIL: Key (id)=(7) already exists.
+2025-09-29 00:16:08.53
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.532049+00:00", "level": "ERROR", "component": "database", "message": "Database query error: duplicate key value violates unique constraint \"orders_pkey\"\nDETAIL: Key (id)=(7) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.53
+943d7d01
+User
+2025-09-28 23:16:08,532 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-29 00:16:08.53
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.532346+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.53
+943d7d01
+User
+2025-09-28 23:16:08,532 INFO handlers: Attempting message edit for user 5829962078, message 5829962078_7107
+2025-09-29 00:16:08.53
+943d7d01
+User
+{"timestamp": "2025-09-28T23:16:08.532857+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5829962078, message 5829962078_7107", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 00:16:08.53
+943d

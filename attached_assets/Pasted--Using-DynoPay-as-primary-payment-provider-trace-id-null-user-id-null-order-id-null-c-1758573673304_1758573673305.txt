@@ -1,0 +1,17 @@
+ Using DynoPay as primary payment provider", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,404 ERROR database: Database query error: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+{"timestamp": "2025-09-22T20:41:01.404101+00:00", "level": "ERROR", "component": "database", "message": "Database query error: there is no unique or exclusion constraint matching the ON CONFLICT specification\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,404 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-22T20:41:01.404309+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,509 ERROR services.payment_provider: ❌ Failed to create payment intent for order domain_handshake899z.sbs_5590563715_1758573661
+{"timestamp": "2025-09-22T20:41:01.509006+00:00", "level": "ERROR", "component": "services.payment_provider", "message": "\u274c Failed to create payment intent for order domain_handshake899z.sbs_5590563715_1758573661", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,509 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5526
+{"timestamp": "2025-09-22T20:41:01.509178+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5526", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,509 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T20:41:01.509269+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,751 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T20:41:01.751237+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:41:01,751 INFO fastapi_server: ✅ Processed Telegram update: 786431633
+{"timestamp": "2025-09-22T20:41:01.751388+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431633", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:37378 - "POST /webhook/telegram HTTP/1.1" 200 OK

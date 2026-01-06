@@ -1,0 +1,52 @@
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276745+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Found 6 missing confirmations", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+{"timestamp": "2025-12-16T16:04:32.276410+00:00", "level": "WARNING", "component": "webhook_health_monitor", "message": "\u26a0\ufe0f WEBHOOK MONITOR: Recovery failed for payment 256", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 16:04:32
+2025-12-16 16:04:32,276 WARNING webhook_health_monitor: ⚠️ WEBHOOK MONITOR: Found 6 missing confirmations
+12-16 16:04:40
+starting up user application
+12-16 16:04:40
+metasidecar: loaded enterprise status from environment is_enterprise=false
+12-16 16:04:40
+forwarding local port 5000 to external port 80 (mapped as 1104)
+12-16 16:04:53
+2025-12-16 16:04:53,971 INFO financial_precision: • Precision: 28 digits
+12-16 16:04:53
+2025-12-16 16:04:53,971 INFO financial_precision: • Rounding: ROUND_HALF_UP
+12-16 16:04:53
+2025-12-16 16:04:53,971 INFO financial_precision: ✅ Financial precision module loaded - Decimal context configured for monetary calculations
+12-16 16:04:54
+2025-12-16 16:04:54,014 INFO utils.payment_logging: ✅ Payment logging system initialized
+12-16 16:04:54
+2025-12-16 16:04:54,103 INFO pricing_utils: ✅ Pricing configuration validated: markup=230% (×3.3), minimum=$30.00, enabled=True
+12-16 16:04:54
+2025-12-16 16:04:54,106 INFO performance_cache: ✅ Performance cache initialized with TTL configurations
+12-16 16:04:54
+2025-12-16 16:04:54,106 INFO performance_cache: ✅ Performance cache module loaded - ready for 20+ ops/sec caching
+12-16 16:04:54
+2025-12-16 16:04:54,112 INFO performance_monitor: ✅ Performance monitor initialized for throughput tracking
+12-16 16:04:54
+2025-12-16 16:04:54,112 INFO performance_monitor: ✅ Performance monitoring module loaded - ready for 20+ ops/sec tracking
+12-16 16:04:54
+2025-12-16 16:04:54,442 INFO services.tld_requirements: ✅ TLD Requirements Validator initialized with 5 TLD validators
+12-16 16:04:54
+2025-12-16 16:04:54,44

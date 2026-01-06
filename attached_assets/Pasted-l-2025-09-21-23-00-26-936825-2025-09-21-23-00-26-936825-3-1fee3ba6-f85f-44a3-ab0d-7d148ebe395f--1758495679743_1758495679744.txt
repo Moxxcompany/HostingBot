@@ -1,0 +1,14 @@
+l, 2025-09-21 23:00:26.936825, 2025-09-21 23:00:26.936825, 3, 1fee3ba6-f85f-44a3-ab0d-7d148ebe395f, dynopay).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:26,954 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T23:00:26.954881+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:27,057 ERROR services.payment_provider: ❌ Failed to create payment intent for order 6
+{"timestamp": "2025-09-21T23:00:27.057983+00:00", "level": "ERROR", "component": "services.payment_provider", "message": "\u274c Failed to create payment intent for order 6", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:27,058 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4946
+{"timestamp": "2025-09-21T23:00:27.058153+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4946", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:27,058 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T23:00:27.058240+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:27,292 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T23:00:27.292675+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:00:27,292 INFO fastapi_server: ✅ Processed Telegram update: 786430864
+{"timestamp": "2025-09-21T23:00:27.292834+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430864", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:41692 - "POST /webhook/telegram HTTP/1.1" 200 OK

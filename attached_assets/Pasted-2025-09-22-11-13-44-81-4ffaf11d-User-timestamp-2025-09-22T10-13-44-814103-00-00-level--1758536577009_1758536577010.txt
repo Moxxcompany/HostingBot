@@ -1,0 +1,32 @@
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.814103+00:00", "level": "INFO", "component": "simple_payment_handler", "message": "\ud83d\udcb0 SIMPLE: Processing payment - order_id=domain_mrelay-exped.com_924873522_1758535910, amount=$0.0, status=successful", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+2025-09-22 10:13:44,814 WARNING simple_payment_handler: ⚠️ SIMPLE: Invalid amount $0.0 - must be greater than $0.00
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.814288+00:00", "level": "WARNING", "component": "simple_payment_handler", "message": "\u26a0\ufe0f SIMPLE: Invalid amount $0.0 - must be greater than $0.00", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+2025-09-22 10:13:44,814 WARNING simple_payment_handler: ⚠️ SIMPLE: Webhook data fields: base_amount=None, amount_usd=None, amount=0
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.814447+00:00", "level": "WARNING", "component": "simple_payment_handler", "message": "\u26a0\ufe0f SIMPLE: Webhook data fields: base_amount=None, amount_usd=None, amount=0", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+2025-09-22 10:13:44,814 WARNING fastapi_server: ⚠️ PRIMARY FAILED: Simple processing failed for order_id=domain_mrelay-exped.com_924873522_1758535910, trying complex fallback
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.814877+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u26a0\ufe0f PRIMARY FAILED: Simple processing failed for order_id=domain_mrelay-exped.com_924873522_1758535910, trying complex fallback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.81
+4ffaf11d
+User
+2025-09-22 10:13:44,815 INFO fastapi_server: 🔄 FALLBACK: Using complex payment processing

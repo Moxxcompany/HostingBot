@@ -1,0 +1,34 @@
+10-02 21:22:18
+2025-10-02 20:22:18,933 ERROR database: 💥 SQL ERROR in execute_update:
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.933997+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,934 ERROR database: Query: INSERT INTO cloudflare_zones (domain_name, cf_zone_id, nameservers, status) VALUES (%s, %s, %s, %s)
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.934266+00:00", "level": "ERROR", "component": "database", "message": " Query: INSERT INTO cloudflare_zones (domain_name, cf_zone_id, nameservers, status) VALUES (%s, %s, %s, %s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,934 ERROR database: Params: ('auth455.com', 'bca7a5f48731437d7ef20ee2edd85209', ['anderson.ns.cloudflare.com', 'leanna.ns.cloudflare.com'], 'active')
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.934520+00:00", "level": "ERROR", "component": "database", "message": " Params: ('auth455.com', 'bca7a5f48731437d7ef20ee2edd85209', ['anderson.ns.cloudflare.com', 'leanna.ns.cloudflare.com'], 'active')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,934 ERROR database: Error Type: UniqueViolation
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.934878+00:00", "level": "ERROR", "component": "database", "message": " Error Type: UniqueViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,935 ERROR database: Error Message: duplicate key value violates unique constraint "cloudflare_zones_cf_zone_id_key"
+10-02 21:22:18
+DETAIL: Key (cf_zone_id)=(bca7a5f48731437d7ef20ee2edd85209) already exists.
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.935357+00:00", "level": "ERROR", "component": "database", "message": " Error Message: duplicate key value violates unique constraint \"cloudflare_zones_cf_zone_id_key\"\nDETAIL: Key (cf_zone_id)=(bca7a5f48731437d7ef20ee2edd85209) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,957 ERROR database: 💥 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint "cloudflare_zones_cf_zone_id_key"
+10-02 21:22:18
+DETAIL: Key (cf_zone_id)=(bca7a5f48731437d7ef20ee2edd85209) already exists.
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.957177+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint \"cloudflare_zones_cf_zone_id_key\"\nDETAIL: Key (cf_zone_id)=(bca7a5f48731437d7ef20ee2edd85209) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,957 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+10-02 21:22:18
+{"timestamp": "2025-10-02T20:22:18.957527+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 21:22:18
+2025-10-02 20:22:18,957 INFO database: └─ Database remains in consistent state

@@ -1,0 +1,688 @@
+[
+  {
+    "core_number": 2,
+    "memory_amount": 8192,
+    "name": "HIMEM-2xCPU-8GB",
+    "public_traffic_out": 2048,
+    "storage_size": 100,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 8192,
+    "name": "CLOUDNATIVE-2xCPU-8GB",
+    "public_traffic_out": 2048,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 4096,
+    "name": "2xCPU-4GB",
+    "public_traffic_out": 4096,
+    "storage_size": 80,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 16384,
+    "name": "HIMEM-2xCPU-16GB",
+    "public_traffic_out": 2048,
+    "storage_size": 100,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 16384,
+    "name": "DEV-2xCPU-16GB",
+    "public_traffic_out": 4096,
+    "storage_size": 100,
+    "storage_tier": "standard"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 8192,
+    "name": "DEV-2xCPU-8GB",
+    "public_traffic_out": 3072,
+    "storage_size": 80,
+    "storage_tier": "standard"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 16384,
+    "name": "CLOUDNATIVE-2xCPU-16GB",
+    "public_traffic_out": 3072,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 4096,
+    "name": "DEV-2xCPU-4GB",
+    "public_traffic_out": 2560,
+    "storage_size": 60,
+    "storage_tier": "standard"
+  },
+  {
+    "core_number": 2,
+    "memory_amount": 4096,
+    "name": "CLOUDNATIVE-2xCPU-4GB",
+    "public_traffic_out": 2048,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 24576,
+    "name": "CLOUDNATIVE-4xCPU-24GB",
+    "public_traffic_out": 6144,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 16384,
+    "name": "CLOUDNATIVE-4xCPU-16GB",
+    "public_traffic_out": 5120,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 49152,
+    "name": "CLOUDNATIVE-4xCPU-48GB",
+    "public_traffic_out": 14336,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 32768,
+    "name": "CLOUDNATIVE-4xCPU-32GB",
+    "public_traffic_out": 7168,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 8192,
+    "name": "CLOUDNATIVE-4xCPU-8GB",
+    "public_traffic_out": 2048,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 32768,
+    "name": "HIMEM-4xCPU-32GB",
+    "public_traffic_out": 4096,
+    "storage_size": 100,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 65536,
+    "name": "HIMEM-4xCPU-64GB",
+    "public_traffic_out": 4096,
+    "storage_size": 200,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 4,
+    "memory_amount": 8192,
+    "name": "4xCPU-8GB",
+    "public_traffic_out": 5120,
+    "storage_size": 160,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 6,
+    "memory_amount": 16384,
+    "name": "6xCPU-16GB",
+    "public_traffic_out": 6144,
+    "storage_size": 320,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 6,
+    "memory_amount": 24576,
+    "name": "CLOUDNATIVE-6xCPU-24GB",
+    "public_traffic_out": 6144,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 6,
+    "memory_amount": 16384,
+    "name": "CLOUDNATIVE-6xCPU-16GB",
+    "public_traffic_out": 5120,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 6,
+    "memory_amount": 131072,
+    "name": "HIMEM-6xCPU-128GB",
+    "public_traffic_out": 6144,
+    "storage_size": 300,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 32768,
+    "name": "CLOUDNATIVE-8xCPU-32GB",
+    "public_traffic_out": 9216,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 98304,
+    "name": "CLOUDNATIVE-8xCPU-96GB",
+    "public_traffic_out": 26624,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 131072,
+    "name": "CLOUDNATIVE-8xCPU-128GB",
+    "public_traffic_out": 30720,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 32768,
+    "name": "8xCPU-32GB",
+    "public_traffic_out": 7168,
+    "storage_size": 640,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 12288,
+    "name": "HICPU-8xCPU-12GB",
+    "public_traffic_out": 4096,
+    "storage_size": 100,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 24576,
+    "name": "CLOUDNATIVE-8xCPU-24GB",
+    "public_traffic_out": 7168,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "gpu_amount": 1,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 65536,
+    "name": "GPU-8xCPU-64GB-1xL40S",
+    "public_traffic_out": 12288,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 49152,
+    "name": "CLOUDNATIVE-8xCPU-48GB",
+    "public_traffic_out": 14336,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 65536,
+    "name": "CLOUDNATIVE-8xCPU-64GB",
+    "public_traffic_out": 16384,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 16384,
+    "name": "HICPU-8xCPU-16GB",
+    "public_traffic_out": 4096,
+    "storage_size": 200,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 16384,
+    "name": "CLOUDNATIVE-8xCPU-16GB",
+    "public_traffic_out": 6144,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 8,
+    "memory_amount": 196608,
+    "name": "HIMEM-8xCPU-192GB",
+    "public_traffic_out": 8192,
+    "storage_size": 400,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 12,
+    "memory_amount": 262144,
+    "name": "HIMEM-12xCPU-256GB",
+    "public_traffic_out": 10240,
+    "storage_size": 500,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 12,
+    "memory_amount": 32768,
+    "name": "CLOUDNATIVE-12xCPU-32GB",
+    "public_traffic_out": 9216,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 12,
+    "memory_amount": 24576,
+    "name": "CLOUDNATIVE-12xCPU-24GB",
+    "public_traffic_out": 8192,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 12,
+    "gpu_amount": 1,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 131072,
+    "name": "GPU-12xCPU-128GB-1xL40S",
+    "public_traffic_out": 16384,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 12,
+    "gpu_amount": 2,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 131072,
+    "name": "GPU-12xCPU-128GB-2xL40S",
+    "public_traffic_out": 24576,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 12,
+    "memory_amount": 49152,
+    "name": "12xCPU-48GB",
+    "public_traffic_out": 9216,
+    "storage_size": 960,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 32768,
+    "name": "HICPU-16xCPU-32GB",
+    "public_traffic_out": 5120,
+    "storage_size": 200,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 49152,
+    "name": "CLOUDNATIVE-16xCPU-48GB",
+    "public_traffic_out": 15360,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 393216,
+    "name": "HIMEM-16xCPU-384GB",
+    "public_traffic_out": 12288,
+    "storage_size": 600,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 196608,
+    "name": "CLOUDNATIVE-16xCPU-192GB",
+    "public_traffic_out": 46080,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 131072,
+    "name": "CLOUDNATIVE-16xCPU-128GB",
+    "public_traffic_out": 35840,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 65536,
+    "name": "CLOUDNATIVE-16xCPU-64GB",
+    "public_traffic_out": 20480,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "gpu_amount": 2,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 196608,
+    "name": "GPU-16xCPU-192GB-2xL40S",
+    "public_traffic_out": 28672,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 98304,
+    "name": "CLOUDNATIVE-16xCPU-96GB",
+    "public_traffic_out": 26624,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "gpu_amount": 3,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 196608,
+    "name": "GPU-16xCPU-192GB-3xL40S",
+    "public_traffic_out": 32768,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 65536,
+    "name": "16xCPU-64GB",
+    "public_traffic_out": 10240,
+    "storage_size": 1280,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 24576,
+    "name": "HICPU-16xCPU-24GB",
+    "public_traffic_out": 5120,
+    "storage_size": 100,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 16,
+    "memory_amount": 32768,
+    "name": "CLOUDNATIVE-16xCPU-32GB",
+    "public_traffic_out": 13312,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 16,
+    "gpu_amount": 1,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 196608,
+    "name": "GPU-16xCPU-192GB-1xL40S",
+    "public_traffic_out": 24576,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 20,
+    "gpu_amount": 3,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 262144,
+    "name": "GPU-20xCPU-256GB-3xL40S",
+    "public_traffic_out": 40960,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 20,
+    "gpu_amount": 2,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 262144,
+    "name": "GPU-20xCPU-256GB-2xL40S",
+    "public_traffic_out": 36864,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 20,
+    "memory_amount": 98304,
+    "name": "CLOUDNATIVE-20xCPU-96GB",
+    "public_traffic_out": 28672,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 20,
+    "gpu_amount": 1,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 262144,
+    "name": "GPU-20xCPU-256GB-1xL40S",
+    "public_traffic_out": 32768,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 20,
+    "memory_amount": 65536,
+    "name": "CLOUDNATIVE-20xCPU-64GB",
+    "public_traffic_out": 22528,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 24,
+    "memory_amount": 262144,
+    "name": "CLOUDNATIVE-24xCPU-256GB",
+    "public_traffic_out": 61440,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 24,
+    "memory_amount": 524288,
+    "name": "HIMEM-24xCPU-512GB",
+    "public_traffic_out": 12288,
+    "storage_size": 700,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 24,
+    "memory_amount": 98304,
+    "name": "24xCPU-96GB",
+    "public_traffic_out": 12288,
+    "storage_size": 1920,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 32,
+    "gpu_amount": 2,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 393216,
+    "name": "GPU-32xCPU-384GB-2xL40S",
+    "public_traffic_out": 45056,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 131072,
+    "name": "32xCPU-128GB",
+    "public_traffic_out": 24576,
+    "storage_size": 2048,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 32,
+    "gpu_amount": 3,
+    "gpu_model": "NVIDIA L40S",
+    "memory_amount": 393216,
+    "name": "GPU-32xCPU-384GB-3xL40S",
+    "public_traffic_out": 49152,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 393216,
+    "name": "CLOUDNATIVE-32xCPU-384GB",
+    "public_traffic_out": 76800,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 196608,
+    "name": "CLOUDNATIVE-32xCPU-192GB",
+    "public_traffic_out": 51200,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 49152,
+    "name": "HICPU-32xCPU-48GB",
+    "public_traffic_out": 6144,
+    "storage_size": 200,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 65536,
+    "name": "HICPU-32xCPU-64GB",
+    "public_traffic_out": 6144,
+    "storage_size": 300,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 262144,
+    "name": "CLOUDNATIVE-32xCPU-256GB",
+    "public_traffic_out": 66560,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 65536,
+    "name": "CLOUDNATIVE-32xCPU-64GB",
+    "public_traffic_out": 25600,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 32,
+    "memory_amount": 131072,
+    "name": "CLOUDNATIVE-32xCPU-128GB",
+    "public_traffic_out": 40960,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 38,
+    "memory_amount": 196608,
+    "name": "38xCPU-192GB",
+    "public_traffic_out": 24576,
+    "storage_size": 2048,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 48,
+    "memory_amount": 262144,
+    "name": "48xCPU-256GB",
+    "public_traffic_out": 24576,
+    "storage_size": 2048,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 48,
+    "memory_amount": 393216,
+    "name": "CLOUDNATIVE-48xCPU-384GB",
+    "public_traffic_out": 81920,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 48,
+    "memory_amount": 524288,
+    "name": "CLOUDNATIVE-48xCPU-512GB",
+    "public_traffic_out": 92160,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 131072,
+    "name": "HICPU-64xCPU-128GB",
+    "public_traffic_out": 7168,
+    "storage_size": 300,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 98304,
+    "name": "HICPU-64xCPU-96GB",
+    "public_traffic_out": 7168,
+    "storage_size": 200,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 393216,
+    "name": "64xCPU-384GB",
+    "public_traffic_out": 24576,
+    "storage_size": 2048,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 524288,
+    "name": "CLOUDNATIVE-64xCPU-512GB",
+    "public_traffic_out": 97280,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 393216,
+    "name": "CLOUDNATIVE-64xCPU-384GB",
+    "public_traffic_out": 87040,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 196608,
+    "name": "CLOUDNATIVE-64xCPU-192GB",
+    "public_traffic_out": 56320,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 64,
+    "memory_amount": 262144,
+    "name": "CLOUDNATIVE-64xCPU-256GB",
+    "public_traffic_out": 71680,
+    "storage_size": 0,
+    "storage_tier": null
+  },
+  {
+    "core_number": 80,
+    "memory_amount": 524288,
+    "name": "80xCPU-512GB",
+    "public_traffic_out": 24576,
+    "storage_size": 2048,
+    "storage_tier": "maxiops"
+  },
+  {
+    "core_number": 80,
+    "memory_amount": 524288,
+    "name": "CLOUDNATIVE-80xCPU-512GB",
+    "public_traffic_out": 102400,
+    "storage_size": 0,
+    "storage_tier": null
+  }
+]

@@ -1,0 +1,90 @@
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+2025-10-04 21:53:11,506 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.506168+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+2025-10-04 21:53:11,506 INFO database: └─ Database remains in consistent state
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.506350+00:00", "level": "INFO", "component": "database", "message": " \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+2025-10-04 21:53:11,506 INFO database: └─ Application will continue with degraded functionality
+2025-10-04 22:53:11.50
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.506465+00:00", "level": "INFO", "component": "database", "message": " \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.61
+3bb2a86c
+User
+2025-10-04 21:53:11,611 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+2025-10-04 22:53:11.61
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.611216+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 21:53:11,652 ERROR database: 💥 SQL ERROR in execute_update:
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+{"timestamp": "2025-10-04T21:53:11.652436+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+2025-10-04 21:53:11,652 ERROR database: Query:
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+INSERT INTO webhook_provider_health (
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+provider, metric_window_start, metric_window_end, window_duration_minutes,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_expected_webhooks, total_received_webhooks, total_successful_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_failed_webhooks, avg_delivery_delay_seconds, avg_processing_time_ms,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+delivery_success_rate, processing_success_rate, health_score, health_status
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+ON CONFLICT (provider, metric_window_start, window_duration_minutes)
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+DO UPDATE SET
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_received_webhooks = EXCLUDED.total_received_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_successful_webhooks = EXCLUDED.total_successful_webhooks,
+2025-10-04 22:53:11.65
+3bb2a86c
+User
+total_failed_webhooks = EXCLUDED.total_failed_webhooks,
+2025-10-04 22:53:11.65
+3bb

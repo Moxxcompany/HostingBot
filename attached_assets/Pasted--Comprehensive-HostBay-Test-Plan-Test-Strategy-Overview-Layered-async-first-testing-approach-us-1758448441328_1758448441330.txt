@@ -1,0 +1,120 @@
+🧪 Comprehensive HostBay Test Plan
+Test Strategy Overview
+Layered, async-first testing approach using pytest + pytest-asyncio covering the complete domain & hosting lifecycle:
+
+🎯 Testing Scope
+Domain registration: Search → availability → registration intent → payment → registration → database saving
+DNS management: Zone creation, record management, nameserver configuration
+Hosting plan purchase: Account creation, delivery workflow
+Payment processing: Full crypto payment lifecycle (DynoPay/BlockBee)
+Hosting renewals: Renewal intents, payment processing, service extension
+📋 Test Architecture
+1. Unit Tests (Fast, Isolated)
+Components:
+
+pricing_utils - Price calculations, markup validation
+payment_validation - Amount validation, tolerance checks
+services.cpanel.generate_username() - Deterministic username generation
+TLD validation system - Country-specific requirements
+Message formatting utilities
+Acceptance Criteria:
+✅ Deterministic outputs for same inputs
+✅ Edge-case handling (negative amounts, invalid domains)
+✅ No timezone-naive datetime usage
+
+2. Contract/Integration Tests (Mocked External APIs)
+Components:
+
+services.openprovider - Domain availability, registration calls
+services.cloudflare - DNS zone management
+services.cpanel - Hosting account creation
+services.payment_provider - DynoPay/BlockBee API calls
+Database operations with idempotency
+Mock Strategy: respx for HTTPX requests, aioresponses for aiohttp
+
+Acceptance Criteria:
+✅ Correct API request shapes and parameters
+✅ Error handling and retry logic
+✅ Fallback provider switching (DynoPay → BlockBee)
+✅ Idempotent payment address creation
+
+3. End-to-End API Tests (Full Workflow)
+Test Scenarios:
+
+Domain Purchase Flow: Search → Register → DNS Setup → Database Save → User Notification
+Hosting Bundle Flow: Domain + Hosting purchase → cPanel account → DNS templates → Delivery message
+Payment Webhook Flow: Payment intent → Address generation → Webhook processing → Confirmation → Service delivery
+Environment: FastAPI test client with real database (transactional rollback)
+
+Acceptance Criteria:
+✅ Final database state reflects completed transactions
+✅ Exactly-once processing under webhook replays
+✅ Telegram messages queued correctly
+✅ DNS/hosting side-effects triggered with correct parameters
+
+4. Concurrency Tests (Race Conditions)
+Scenarios:
+
+Simultaneous webhook deliveries for same order
+Concurrent domain registration attempts
+Parallel payment address generation
+Testing: pytest-xdist for concurrent execution
+
+Acceptance Criteria:
+✅ Unique payment addresses per order
+✅ No double-charging or duplicate processing
+✅ Atomic database operations under load
+
+5. Renewal Lifecycle Tests
+Scenarios:
+
+Hosting plan expiration detection
+Renewal payment processing
+Service extension and notification
+Acceptance Criteria:
+✅ Expiry dates extended correctly
+✅ Payment ledger entries created
+✅ Idempotent renewal processing
+
+🛠 Required Test Infrastructure
+Dependencies to Add:
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+respx>=0.20.0  # HTTP mocking
+aioresponses>=0.7.0  # aiohttp mocking  
+httpx>=0.24.0
+asgi-lifespan>=2.0.0  # FastAPI test lifecycle
+freezegun>=1.2.0  # Time manipulation
+pytest-xdist>=3.0.0  # Parallel testing
+pytest-cov>=4.0.0  # Coverage reporting
+Core Test Fixtures:
+Async FastAPI client - Real application instance
+Database fixture - Transactional rollback per test
+Mocked payment providers - DynoPay/BlockBee responses
+Telegram bot stub - Fake message sending
+HMAC signature helper - Webhook authentication
+Environment fixture - TEST_MODE=1 to prevent live API calls
+🚀 Test Execution Plan
+Phase 1: Foundation (Week 1)
+Set up async test infrastructure and fixtures
+Implement unit tests for core utilities
+Create mocked payment provider tests
+Phase 2: Integration (Week 2)
+Domain registration E2E flow
+DNS management integration tests
+Payment webhook processing with idempotency
+Phase 3: Advanced (Week 3)
+Hosting bundle purchase flows
+Concurrency and race condition tests
+Renewal lifecycle testing
+Phase 4: Production Readiness (Week 4)
+Performance benchmarking (20+ ops/sec target)
+Error recovery and resilience testing
+Security validation (HMAC, replay protection)
+✅ Success Metrics
+Coverage: >90% line coverage across all services
+Performance: All tests complete in <60 seconds
+Reliability: 0% flaky test rate over 100 runs
+Production Confidence: All critical user journeys validated
+
+okay next step according to the plan

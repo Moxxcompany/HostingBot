@@ -1,0 +1,104 @@
+2025-09-30 22:48:39.47
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.475306+00:00", "level": "INFO", "component": "database", "message": "\u2705 NEON HARDENING: Connection pool recreated (#1) - recovering from dead connections", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.47
+2a29688d
+User
+2025-09-30 21:48:39,475 INFO database: ✅ SCHEMA_SYNC_FIX: Pool recreated - retry needed with fresh connection
+2025-09-30 22:48:39.47
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.475545+00:00", "level": "INFO", "component": "database", "message": "\u2705 SCHEMA_SYNC_FIX: Pool recreated - retry needed with fresh connection", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.47
+2a29688d
+User
+2025-09-30 21:48:39,475 INFO database: 🔄 SCHEMA_SYNC_RETRY: Retrying wallet credit with fresh connection pool
+2025-09-30 22:48:39.47
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.475674+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd04 SCHEMA_SYNC_RETRY: Retrying wallet credit with fresh connection pool", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.55
+2a29688d
+User
+2025-09-30 21:48:39,555 INFO database: 🔍 WALLET_CREDIT_DEBUG: user_result type=, content=RealDictRow([('id', 739), ('wallet_balance', Decimal('0.00'))])
+2025-09-30 22:48:39.55
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.555138+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d WALLET_CREDIT_DEBUG: user_result type=, content=RealDictRow([('id', 739), ('wallet_balance', Decimal('0.00'))])", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.55
+2a29688d
+User
+2025-09-30 21:48:39,555 INFO database: 🔍 WALLET_CREDIT_USER_VALIDATED: user_id 739 (db_id: 739) exists with current balance $0.00
+2025-09-30 22:48:39.55
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.555557+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d WALLET_CREDIT_USER_VALIDATED: user_id 739 (db_id: 739) exists with current balance $0.00", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.57
+2a29688d
+User
+2025-09-30 21:48:39,575 WARNING database: 🔄 SCHEMA_SYNC_ERROR: Connection sees old schema, triggering pool refresh | Error: column "external_transaction_id" of relation "wallet_transactions" does not exist
+2025-09-30 22:48:39.57
+2a29688d
+User
+LINE 2: ... (user_id, transaction_type, amount, currency, external_t...
+2025-09-30 22:48:39.57
+2a29688d
+User
+^
+2025-09-30 22:48:39.57
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.575447+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 SCHEMA_SYNC_ERROR: Connection sees old schema, triggering pool refresh | Error: column \"external_transaction_id\" of relation \"wallet_transactions\" does not exist\nLINE 2: ... (user_id, transaction_type, amount, currency, external_t...\n ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+2025-09-30 21:48:39,595 ERROR database: ❌ SCHEMA_SYNC_FAILED: Pool recreation failed, giving up
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.595154+00:00", "level": "ERROR", "component": "database", "message": "\u274c SCHEMA_SYNC_FAILED: Pool recreation failed, giving up", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.596459+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: credit_user_wallet (1003.56ms)", "payment_context": {"operation_start_time": 1759268918.592752, "duration_ms": 1003.556489944458, "metadata": {}}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+2025-09-30 21:48:39,596 INFO payment_system: Payment operation completed: credit_user_wallet (1003.56ms)
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.596459+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (1003.56ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.596879+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (1003.56ms)", "payment_context": {}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+2025-09-30 21:48:39,596 INFO payment_system: Payment operation completed: credit_user_wallet (1003.56ms)
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.596879+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (1003.56ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1759268918.592752, "duration_ms": 1003.556489944458, "metadata": {}}}
+2025-09-30 22:48:39.59
+2a29688d
+User
+2025-09-30 21:48:39,597 WARNING localization: ⚠️ No translation found for key 'admin.credit.transaction_failed' in any language
+2025-09-30 22:48:39.59
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.597316+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.credit.transaction_failed' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.84
+2a29688d
+User
+2025-09-30 21:48:39,841 INFO admin_handlers: 🔍 CREDIT HANDLER: Amount processing completed successfully
+2025-09-30 22:48:39.84
+2a29688d
+User
+{"timestamp": "2025-09-30T21:48:39.841711+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Amount processing completed successfully", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:48:39.84
+2a29688d
+User
+2025-09-30 21:48:39,841 INFO fastapi_server: ✅ Processed Telegram update: 786433649

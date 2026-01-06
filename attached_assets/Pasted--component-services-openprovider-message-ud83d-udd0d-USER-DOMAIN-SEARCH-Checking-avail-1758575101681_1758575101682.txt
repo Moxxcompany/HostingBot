@@ -1,0 +1,14 @@
+", "component": "services.openprovider", "message": "\ud83d\udd0d USER_DOMAIN_SEARCH: Checking availability for 'hdjsjsjsjsj.sms' - potential user search activity", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:44,158 INFO services.openprovider: 📝 OpenProvider API: Checking domain availability for: hdjsjsjsjsj.sms
+{"timestamp": "2025-09-22T21:04:44.158199+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udcdd OpenProvider API: Checking domain availability for: hdjsjsjsjsj.sms", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:45,322 INFO services.openprovider: 📥 OpenProvider response status: 500 (took 1.16s)
+{"timestamp": "2025-09-22T21:04:45.322045+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udce5 OpenProvider response status: 500 (took 1.16s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:45,322 ERROR services.openprovider: ❌ HTTP error 500 from OpenProvider API
+{"timestamp": "2025-09-22T21:04:45.322264+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c HTTP error 500 from OpenProvider API", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:45,322 ERROR services.openprovider: ❌ Error details: {'desc': 'Your domain request contains an invalid extension!', 'code': 307}
+{"timestamp": "2025-09-22T21:04:45.322414+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c Error details: {'desc': 'Your domain request contains an invalid extension!', 'code': 307}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:45,322 WARNING performance_monitor: ⚠️ SLOW OPERATION: domain_availability_check took 7.09s
+{"timestamp": "2025-09-22T21:04:45.322627+00:00", "level": "WARNING", "component": "performance_monitor", "message": "\u26a0\ufe0f SLOW OPERATION: domain_availability_check took 7.09s", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:04:45,771 INFO fastapi_server: ✅ Processed Telegram update: 786431695
+{"timestamp": "2025-09-22T21:04:45.771488+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431695", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:42084 - "POST /webhook/telegram HTTP/1.1" 200 OK

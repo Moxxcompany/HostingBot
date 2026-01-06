@@ -1,0 +1,88 @@
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.063184+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: credit_user_wallet (171.41ms)", "payment_context": {"operation_start_time": 1759269375.8915703, "duration_ms": 171.41246795654297, "metadata": {}}}
+2025-09-30 22:56:16.06
+8c0e6747
+User
+2025-09-30 21:56:16,063 INFO payment_system: Payment operation completed: credit_user_wallet (171.41ms)
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.063184+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (171.41ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.063880+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (171.41ms)", "payment_context": {}}
+2025-09-30 22:56:16.06
+8c0e6747
+User
+2025-09-30 21:56:16,063 INFO payment_system: Payment operation completed: credit_user_wallet (171.41ms)
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.063880+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (171.41ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1759269375.8915703, "duration_ms": 171.41246795654297, "metadata": {}}}
+2025-09-30 22:56:16.06
+8c0e6747
+User
+2025-09-30 21:56:16,064 WARNING localization: ⚠️ No translation found for key 'admin.credit.transaction_failed' in any language
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.064359+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.credit.transaction_failed' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:16.31
+8c0e6747
+User
+2025-09-30 21:56:16,312 INFO admin_handlers: 🔍 CREDIT HANDLER: Amount processing completed successfully
+2025-09-30 22:56:16.31
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.312014+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Amount processing completed successfully", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:16.31
+8c0e6747
+User
+2025-09-30 21:56:16,312 INFO fastapi_server: ✅ Processed Telegram update: 786433653
+2025-09-30 22:56:16.31
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.312238+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786433653", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:16.31
+8c0e6747
+User
+INFO: 35.191.4.10:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+2025-09-30 22:56:56.10
+8c0e6747
+User
+2025-09-30 21:56:56,107 INFO payment_cleanup_service: 🧹 CLEANUP SERVICE: Starting cleanup cycle
+2025-09-30 22:56:56.10
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:56.107091+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": "\ud83e\uddf9 CLEANUP SERVICE: Starting cleanup cycle", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:56.10
+8c0e6747
+User
+2025-09-30 21:56:56,107 INFO payment_cleanup_service: • Cycle #1
+2025-09-30 22:56:56.10
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:56.107529+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Cycle #1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:56.10
+8c0e6747
+User
+2025-09-30 21:56:56,107 INFO payment_cleanup_service: • Time: 2025-09-30 21:56:56.107052
+2025-09-30 22:56:56.10
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:56.107865+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Time: 2025-09-30 21:56:56.107052", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:56.11
+8c0e6747
+User
+2025-09-30 21:56:56,117 INFO payment_timeout_config: ✅ TIMEOUT CONFIG: Validation passed
+2025-09-30 22:56:56.11
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:56.117262+00:00", "level": "INFO", "component": "payment_timeout_config", "message": "\u2705 TIMEOUT CONFIG: Validation passed", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:56.11
+8c0e6747
+User
+2025-09-

@@ -1,0 +1,62 @@
+10-02 20:56:27
+2025-10-02 19:56:27,742 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.742721+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:27
+2025-10-02 19:56:27,743 INFO services.registration_orchestrator: 📧 ORCHESTRATOR: registration_failure notification recorded for order 2147000008
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.743382+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83d\udce7 ORCHESTRATOR: registration_failure notification recorded for order 2147000008", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:27
+2025-10-02 19:56:27,743 INFO handlers: Attempting message edit for user 5991214713, message 5991214713_7701
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.743609+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5991214713, message 5991214713_7701", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:27
+2025-10-02 19:56:27,743 INFO handlers: Executing message edit for user 5991214713
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.743756+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5991214713", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:27
+2025-10-02 19:56:27,987 INFO handlers: Message edit successful for user 5991214713
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.987041+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5991214713", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:27
+2025-10-02 19:56:27,987 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: registration_failure notification sent to user for order 2147000008
+10-02 20:56:27
+{"timestamp": "2025-10-02T19:56:27.987250+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: registration_failure notification sent to user for order 2147000008", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,032 INFO database: 🔍 SQL UPDATE: Executing query with 2 parameters
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.032374+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 2 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,099 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.099502+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,100 INFO services.registration_orchestrator: ❌ ORCHESTRATOR: Order 2147000008 marked as failed: Domain registration failed: HTTP 500
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.100155+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u274c ORCHESTRATOR: Order 2147000008 marked as failed: Domain registration failed: HTTP 500", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,100 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: Registration completed for order 2147000008
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.100370+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: Registration completed for order 2147000008", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,100 WARNING handlers: ⚠️ HANDLERS: Unexpected orchestrator result for safety4regions.com: {'success': False, 'error': 'Domain registration failed: HTTP 500', 'phase': 'domain_registration', 'cloudflare_zone': {'id': 'a0b4ad7c0851583458cfb84bebf90030', 'name_servers': ['anderson.ns.cloudflare.com', 'leanna.ns.cloudflare.com'], 'status': 'pending'}, 'order_id': 2147000008}
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.100524+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f HANDLERS: Unexpected orchestrator result for safety4regions.com: {'success': False, 'error': 'Domain registration failed: HTTP 500', 'phase': 'domain_registration', 'cloudflare_zone': {'id': 'a0b4ad7c0851583458cfb84bebf90030', 'name_servers': ['anderson.ns.cloudflare.com', 'leanna.ns.cloudflare.com'], 'status': 'pending'}, 'order_id': 2147000008}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,100 INFO handlers: Attempting message edit for user 5991214713, message 5991214713_7701
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.100654+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5991214713, message 5991214713_7701", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,100 INFO handlers: Executing message edit for user 5991214713
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.100775+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5991214713", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,339 INFO handlers: Message edit successful for user 5991214713
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.339705+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5991214713", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+2025-10-02 19:56:28,339 INFO fastapi_server: ✅ Processed Telegram update: 786433950
+10-02 20:56:28
+{"timestamp": "2025-10-02T19:56:28.339942+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786433950", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-02 20:56:28
+INFO: 35.191.79.

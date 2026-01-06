@@ -1,0 +1,72 @@
+2025-09-30 22:56:16.06
+8c0e6747
+User
+self.run()
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 982, in run
+2025-09-30 22:56:16.06
+8c0e6747
+User
+self._target(*self._args, **self._kwargs)
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/thread.py", line 83, in _worker
+2025-09-30 22:56:16.06
+8c0e6747
+User
+work_item.run()
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+2025-09-30 22:56:16.06
+8c0e6747
+User
+result = self.fn(*self.args, **self.kwargs)
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/home/runner/workspace/database.py", line 6140, in _credit_wallet_with_retry
+2025-09-30 22:56:16.06
+8c0e6747
+User
+payment_logger.log_payment_event(
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/home/runner/workspace/utils/payment_logging.py", line 270, in log_payment_event
+2025-09-30 22:56:16.06
+8c0e6747
+User
+prod_logger.log_structured(
+2025-09-30 22:56:16.06
+8c0e6747
+User
+File "/home/runner/workspace/monitoring/production_logging.py", line 290, in log_structured
+2025-09-30 22:56:16.06
+8c0e6747
+User
+logger.log(log_level, message, extra=extra)
+2025-09-30 22:56:16.06
+8c0e6747
+User
+Message: 'Wallet credit successful: $115.00 credited to user 739'
+2025-09-30 22:56:16.06
+8c0e6747
+User
+Arguments: ()
+2025-09-30 22:56:16.06
+8c0e6747
+User
+2025-09-30 21:56:16,062 ERROR database: ❌ WALLET_CREDIT_COMMIT_ERROR: Failed to commit transaction | Error: module 'logging' has no attribute 'AUDIT'
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.062196+00:00", "level": "ERROR", "component": "database", "message": "\u274c WALLET_CREDIT_COMMIT_ERROR: Failed to commit transaction | Error: module 'logging' has no attribute 'AUDIT'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 22:56:16.06
+8c0e6747
+User
+{"timestamp": "2025-09-30T21:56:16.063184+00:00", "level": "INFO", "com

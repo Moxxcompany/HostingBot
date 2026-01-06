@@ -1,0 +1,48 @@
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.178536+00:00", "level": "INFO", "component": "localization", "message": "\u26a1 LANG DB QUERY: 1095454075 in 58.0ms (cached 30min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:09
+2025-09-24 20:22:09,178 WARNING localization: ⚠️ No translation found for key 'admin.broadcast.broadcast_message_header' in any language
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.178795+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.broadcast.broadcast_message_header' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:09
+2025-09-24 20:22:09,496 INFO localization: ⚡ LANG DB QUERY: 466590684 in 57.4ms (cached 30min)
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.496706+00:00", "level": "INFO", "component": "localization", "message": "\u26a1 LANG DB QUERY: 466590684 in 57.4ms (cached 30min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:09
+2025-09-24 20:22:09,496 WARNING localization: ⚠️ No translation found for key 'admin.broadcast.broadcast_message_header' in any language
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.496979+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.broadcast.broadcast_message_header' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:09
+2025-09-24 20:22:09,753 WARNING localization: ⚠️ No translation found for key 'admin.broadcast.progress' in any language
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.753826+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.broadcast.progress' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:09
+2025-09-24 20:22:09,996 WARNING localization: ⚠️ No translation found for key 'admin.broadcast.complete' in any language
+09-24 21:22:09
+{"timestamp": "2025-09-24T20:22:09.996199+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.broadcast.complete' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:10
+2025-09-24 20:22:10,233 INFO admin_handlers: 📢 ADMIN BROADCAST: Hostbay_support sent to 24/24 users
+09-24 21:22:10
+{"timestamp": "2025-09-24T20:22:10.233955+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udce2 ADMIN BROADCAST: Hostbay_support sent to 24/24 users", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:10
+2025-09-24 20:22:10,234 INFO admin_handlers: 📢 ADMIN TEXT: User 5168006768 sent broadcast via text input: 'Bot is active ✅'
+09-24 21:22:10
+{"timestamp": "2025-09-24T20:22:10.234181+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udce2 ADMIN TEXT: User 5168006768 sent broadcast via text input: 'Bot is active \u2705'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:10
+2025-09-24 20:22:10,490 INFO fastapi_server: ✅ Processed Telegram update: 786432579
+09-24 21:22:10
+{"timestamp": "2025-09-24T20:22:10.490255+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786432579", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:10
+INFO: 35.191.87.168:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+09-24 21:22:33
+2025-09-24 20:22:33,653 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 6166775631 (@evilg3y) - action: my_domains
+09-24 21:22:33
+{"timestamp": "2025-09-24T20:22:33.653634+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 6166775631 (@evilg3y) - action: my_domains", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:34
+2025-09-24 20:22:34,137 INFO handlers: Routing to: show_user_domains_complete
+09-24 21:22:34
+{"timestamp": "2025-09-24T20:22:34.137022+00:00", "level": "INFO", "component": "handlers", "message": "Routing to: show_user_domains_complete", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-24 21:22:34
+2025-09-24 20:22:34,252 INFO handlers: Attempting message edit for user 6166775631, message 6166775631_6167
+09-24 21:22:34
+{"timestamp": "2025-

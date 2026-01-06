@@ -1,0 +1,45 @@
+2025-11-04 19:38:01,083 INFO webhook_handler: ✅ Updated order 2147000119 status from pending to 'paid'
+{"timestamp": "2025-11-04T19:38:01.083898+00:00", "level": "INFO", "component": "webhook_handler", "message": "\u2705 Updated order 2147000119 status from pending to 'paid'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,334 WARNING database: 🚫 WEBHOOK IDEMPOTENCY: Callback already processing - domain_order:domain_host55.sbs_5590563715_1762284876:0
+{"timestamp": "2025-11-04T19:38:01.334206+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udeab WEBHOOK IDEMPOTENCY: Callback already processing - domain_order:domain_host55.sbs_5590563715_1762284876:0", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,334 WARNING database: 🚫 WEBHOOK IDEMPOTENCY: Callback already processing - domain_order:domain_host55.sbs_5590563715_1762284876:0
+{"timestamp": "2025-11-04T19:38:01.334493+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udeab WEBHOOK IDEMPOTENCY: Callback already processing - domain_order:domain_host55.sbs_5590563715_1762284876:0", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,369 ERROR database: ❌ Error registering webhook callback: set_session cannot be used inside a transaction
+{"timestamp": "2025-11-04T19:38:01.369702+00:00", "level": "ERROR", "component": "database", "message": "\u274c Error registering webhook callback: set_session cannot be used inside a transaction", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,369 ERROR database: ❌ Error registering webhook callback: set_session cannot be used inside a transaction
+{"timestamp": "2025-11-04T19:38:01.369806+00:00", "level": "ERROR", "component": "database", "message": "\u274c Error registering webhook callback: set_session cannot be used inside a transaction", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,370 INFO fastapi_server: 🔄 TYPE-SAFE: Duplicate DynoPay callback ignored - dynopay_safe_unknown_0_domain_host55.sbs_5590563715_1762284876
+{"timestamp": "2025-11-04T19:38:01.370077+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83d\udd04 TYPE-SAFE: Duplicate DynoPay callback ignored - dynopay_safe_unknown_0_domain_host55.sbs_5590563715_1762284876", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,370 INFO fastapi_server: 🔄 TYPE-SAFE: Duplicate DynoPay callback ignored - dynopay_safe_unknown_0_domain_host55.sbs_5590563715_1762284876
+{"timestamp": "2025-11-04T19:38:01.370463+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83d\udd04 TYPE-SAFE: Duplicate DynoPay callback ignored - dynopay_safe_unknown_0_domain_host55.sbs_5590563715_1762284876", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,382 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+{"timestamp": "2025-11-04T19:38:01.382972+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,492 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T19:38:01.492419+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:38:01,529 INFO webhook_handler: 📄 DOMAIN ONLY: Routing host55.sbs to domain orchestrator
+{"timestamp": "2025-11-04T19:38:01.529225+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83d\udcc4 DOMAIN ONLY: Routing host55.sbs to domain orchestrator", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,529 ERROR webhook_handler: ⏰ DOMAIN TIMEOUT: Domain-only registration timed out after 75s for order 2147000119
+{"timestamp": "2025-11-04T19:39:16.529528+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u23f0 DOMAIN TIMEOUT: Domain-only registration timed out after 75s for order 2147000119", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,530 INFO services.registration_orchestrator: 🎯 ORCHESTRATOR: Starting registration for order 2147000119, domain host55.sbs
+{"timestamp": "2025-11-04T19:39:16.530762+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83c\udfaf ORCHESTRATOR: Starting registration for order 2147000119, domain host55.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,531 INFO utils.environment_manager: 📊 Using default DATABASE_URL for development environment
+{"timestamp": "2025-11-04T19:39:16.531868+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for development environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,602 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+{"timestamp": "2025-11-04T19:39:16.602393+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,710 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-11-04T19:39:16.710802+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,845 INFO database: ⚡ USER DB QUERY: 3 in 315.0ms (cached for 5min)
+{"timestamp": "2025-11-04T19:39:16.845871+00:00", "level": "INFO", "component": "database", "message": "\u26a1 USER DB QUERY: 3 in 315.0ms (cached for 5min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,960 ERROR webhook_handler: ❌ PaymentWebhookHandler: Exception processing webhook: 
+{"timestamp": "2025-11-04T19:39:16.960444+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c PaymentWebhookHandler: Exception processing webhook: ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-04 19:39:16,961 ERROR webhook_handler: 🔍 Full traceback: Traceback (most recent call last):
+  File "/home/runner/workspace/webhook_handler.py", line 327, in process_payment_webhook
+    await _process_domain_payment(order_id, enhanced_payment_details)
+  File "/home/runner/workspace/webhook_handler.py", line 1500, in _process_domain_payment
+    future.result(timeout=120.0)  # Increased to accommodate 90s hosting bundle + 45s domain timeouts + buffer
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/_base.py", line 458, in result
+    raise TimeoutError()
+TimeoutError
+
+{"timestamp": "2025-11-04T19:39:16.961516+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Full traceback: Traceback (most recent call last):\n  File \"/home/runner/workspace/webhook_handler.py\", line 327, in process_payment_w

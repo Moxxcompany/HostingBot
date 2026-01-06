@@ -1,0 +1,22 @@
+t": "fastapi_server", "message": "\u2705 Processed Telegram update: 786432907", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.72.130:50876 - "POST /webhook/telegram HTTP/1.1" 200 OK
+2025-09-25 18:14:35,574 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: pay_wallet_roadhoppie.sbs_25.0_USD
+{"timestamp": "2025-09-25T18:14:35.574987+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: pay_wallet_roadhoppie.sbs_25.0_USD", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:35,794 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_6640
+{"timestamp": "2025-09-25T18:14:35.794654+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_6640", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:35,794 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-25T18:14:35.794814+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,030 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-25T18:14:36.030998+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,443 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_6640
+{"timestamp": "2025-09-25T18:14:36.443939+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_6640", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,444 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-25T18:14:36.444088+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,698 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-25T18:14:36.698021+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,901 ERROR database: Database integrity error in wallet reservation: duplicate key value violates unique constraint "wallet_transactions_pkey"
+DETAIL:  Key (id)=(1) already exists.
+
+{"timestamp": "2025-09-25T18:14:36.901588+00:00", "level": "ERROR", "component": "database", "message": "Database integrity error in wallet reservation: duplicate key value violates unique constraint \"wallet_transactions_pkey\"\nDETAIL:  Key (id)=(1) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-25 18:14:36,901 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_6640
+{"timestamp": "2025-09-25T18:14:36.901924+00:00", "level": "INFO", "component": "handlers", "mess

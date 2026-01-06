@@ -1,0 +1,29 @@
+09-29 16:13:41
+2025-09-29 15:13:41,172 ERROR database: 💥 SQL ERROR in execute_update:
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.172050+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41
+2025-09-29 15:13:41,172 ERROR database: Query: INSERT INTO wallet_deposits (user_id, crypto_currency, usd_amount, payment_address, blockbee_order_id, status) VALUES (%s, %s, %s, %s, %s, %s)
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.172277+00:00", "level": "ERROR", "component": "database", "message": " Query: INSERT INTO wallet_deposits (user_id, crypto_currency, usd_amount, payment_address, blockbee_order_id, status) VALUES (%s, %s, %s, %s, %s, %s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41
+2025-09-29 15:13:41,172 ERROR database: Params: (3, 'LTC', 0, 'LYcezSveD5ptQ8NC4ui2w5w3F4XKibYP3D', '47', 'pending_payment')
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.172408+00:00", "level": "ERROR", "component": "database", "message": " Params: (3, 'LTC', 0, 'LYcezSveD5ptQ8NC4ui2w5w3F4XKibYP3D', '47', 'pending_payment')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41
+2025-09-29 15:13:41,172 ERROR database: Error Type: UniqueViolation
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.172487+00:00", "level": "ERROR", "component": "database", "message": " Error Type: UniqueViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41
+2025-09-29 15:13:41,172 ERROR database: Error Message: duplicate key value violates unique constraint "wallet_deposits_pkey"
+09-29 16:13:41
+DETAIL: Key (id)=(5) already exists.
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.172565+00:00", "level": "ERROR", "component": "database", "message": " Error Message: duplicate key value violates unique constraint \"wallet_deposits_pkey\"\nDETAIL: Key (id)=(5) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41
+2025-09-29 15:13:41,192 ERROR database: 💥 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint "wallet_deposits_pkey"
+09-29 16:13:41
+DETAIL: Key (id)=(5) already exists.
+09-29 16:13:41
+{"timestamp": "2025-09-29T15:13:41.192092+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint \"wallet_deposits_pkey\"\nDETAIL: Key (id)=(5) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 16:13:41

@@ -1,0 +1,21 @@
+"timestamp": "2025-09-21T16:46:38.762651+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 21", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,864 ERROR database: 💥 NEON HARDENING: Database update operation failed: column "error_message" of relation "hosting_provision_intents" does not exist
+LINE 4:                     error_message = 'Hosting provisioning fa...
+                            ^
+
+{"timestamp": "2025-09-21T16:46:38.864622+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: column \"error_message\" of relation \"hosting_provision_intents\" does not exist\nLINE 4:                     error_message = 'Hosting provisioning fa...\n                            ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,864 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-09-21T16:46:38.864838+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,864 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-09-21T16:46:38.864972+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-09-21T16:46:38.865075+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 INFO services.hosting_orchestrator: ❌ HOSTING ORCHESTRATOR: Bundle marked as failed - order 21, intent 21: Hosting provisioning failed: cPanel account creation failed - please contact support
+{"timestamp": "2025-09-21T16:46:38.865374+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u274c HOSTING ORCHESTRATOR: Bundle marked as failed - order 21, intent 21: Hosting provisioning failed: cPanel account creation failed - please contact support", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: Bundle processing completed for order 21
+{"timestamp": "2025-09-21T16:46:38.865482+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: Bundle processing completed for order 21", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 WARNING handlers: ⚠️ HANDLERS: Unexpected orchestrator result for intent 21: {'success': False, 'error': 'Hosting provisioning failed: cPanel account creation failed - please contact support', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}
+{"timestamp": "2025-09-21T16:46:38.865580+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f HANDLERS: Unexpected orchestrator result for intent 21: {'success': False, 'error': 'Hosting provisioning failed: cPanel account creation failed - please contact support', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4583
+{"timestamp": "2025-09-21T16:46:38.865661+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4583", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 16:46:38,865 INFO hand

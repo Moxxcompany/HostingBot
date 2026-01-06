@@ -1,0 +1,21 @@
+O", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5543", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:16,867 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T20:48:16.867721+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,117 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T20:48:17.117999+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,330 ERROR database: Database query error: column "order_type" of relation "orders" does not exist
+LINE 1: INSERT INTO orders (user_id, order_type, status, total_amoun...
+                                     ^
+
+{"timestamp": "2025-09-22T20:48:17.330420+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"order_type\" of relation \"orders\" does not exist\nLINE 1: INSERT INTO orders (user_id, order_type, status, total_amoun...\n                                     ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,330 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-22T20:48:17.330614+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,330 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5543
+{"timestamp": "2025-09-22T20:48:17.330905+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5543", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,331 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T20:48:17.331034+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,564 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T20:48:17.564813+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:48:17,564 INFO fastapi_server: ✅ Processed Telegram update: 786431655
+{"timestamp": "2025-09-22T20:48:17.564976+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431655", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:47806 - "POST /webhook/telegram HTTP/1.1" 200 OK

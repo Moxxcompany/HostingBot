@@ -1,0 +1,43 @@
+12-16 15:34:24
+) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+12-16 15:34:24
+12-16 15:34:24
+2025-12-16 15:34:24,374 ERROR database: Error Message: there is no unique or exclusion constraint matching the ON CONFLICT specification
+12-16 15:34:24
+payment_intent_id, provider, detection_type, detected_at,
+12-16 15:34:24
+expected_confirmation_by, time_overdue_minutes, payment_status,
+12-16 15:34:24
+INSERT INTO missing_confirmation_alerts (
+12-16 15:34:24
+{"timestamp": "2025-12-16T15:34:24.374761+00:00", "level": "ERROR", "component": "database", "message": " Error Message: there is no unique or exclusion constraint matching the ON CONFLICT specification\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 15:34:24
+alert_level = EXCLUDED.alert_level,
+12-16 15:34:24
+{"timestamp": "2025-12-16T15:34:24.374534+00:00", "level": "ERROR", "component": "database", "message": " Params: (251, '', 'timeout', datetime.datetime(2025, 12, 16, 15, 34, 24, 285654, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 16, 9, 55, 48, 802235, tzinfo=datetime.timezone.utc), 368, 'pending', 10.0, 'USD', 'test_intent_1765877148_1977', 'error')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 15:34:24
+DO UPDATE SET
+12-16 15:34:24
+2025-12-16 15:34:24,374 ERROR database: Query:
+12-16 15:34:24
+2025-12-16 15:34:24,374 ERROR database: Params: (251, '', 'timeout', datetime.datetime(2025, 12, 16, 15, 34, 24, 285654, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 12, 16, 9, 55, 48, 802235, tzinfo=datetime.timezone.utc), 368, 'pending', 10.0, 'USD', 'test_intent_1765877148_1977', 'error')
+12-16 15:34:24
+time_overdue_minutes = EXCLUDED.time_overdue_minutes,
+12-16 15:34:24
+{"timestamp": "2025-12-16T15:34:24.374650+00:00", "level": "ERROR", "component": "database", "message": " Error Type: InvalidColumnReference", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 15:34:24
+ON CONFLICT (payment_intent_id, provider, detection_type)
+12-16 15:34:24
+{"timestamp": "2025-12-16T15:34:24.374357+00:00", "level": "ERROR", "component": "database", "message": " Query: \n INSERT INTO missing_confirmation_alerts (\n payment_intent_id, provider, detection_type, detected_at,\n expected_confirmation_by, time_overdue_minutes, payment_status,\n payment_amount, payment_currency, order_id, alert_level\n ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)\n ON CONFLICT (payment_intent_id, provider, detection_type) \n DO UPDATE SET \n time_overdue_minutes = EXCLUDED.time_overdue_minutes,\n alert_level = EXCLUDED.alert_level,\n updated_at = CURRENT_TIMESTAMP\n ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 15:34:24
+{"timestamp": "2025-12-16T15:34:24.374010+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 15:34:24
+2025-12-16 15:34:24,374 ERROR database: 💥 SQL ERROR in execute_update:
+12-16 15:34:24
+2025-12-16 15:34:24,374 ERROR database: Error Type: InvalidColumnReference
+12-16 15:34:24
+updated_at = CURRENT_TIMESTAMP
+12-16 15:34:24
+payment_amount, payment_currency, order_id, alert_level
+12-16 15:34:24
+2025-12-16 15:34:24,396 ERROR database: 💥 NEON HARDENING: Database update operation failed: there is no unique or exclusion constraint matching the ON CONFLICT specification

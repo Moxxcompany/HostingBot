@@ -1,0 +1,111 @@
+2025-10-05 22:07:03.56
+c879d2dd
+User
+2025-10-05 21:07:03,564 INFO services.registration_orchestrator: ✅ WALLET FINALIZATION: Hold $58 successfully refunded to wallet for domain nbtonlinegateway.com
+2025-10-05 22:07:03.56
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.564140+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 WALLET FINALIZATION: Hold $58 successfully refunded to wallet for domain nbtonlinegateway.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.68
+c879d2dd
+User
+2025-10-05 21:07:03,682 INFO localization: ⚡ LANG DB QUERY: 497 in 58.9ms (cached 30min)
+2025-10-05 22:07:03.68
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.682698+00:00", "level": "INFO", "component": "localization", "message": "\u26a1 LANG DB QUERY: 497 in 58.9ms (cached 30min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.68
+c879d2dd
+User
+2025-10-05 21:07:03,682 WARNING localization: ⚠️ Translation formatting failed for key 'services.registration_orchestrator.error_messages.registration_failed': 'error'
+2025-10-05 22:07:03.68
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.682967+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f Translation formatting failed for key 'services.registration_orchestrator.error_messages.registration_failed': 'error'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.72
+c879d2dd
+User
+2025-10-05 21:07:03,722 INFO database: 🔍 SQL UPDATE: Executing query with 4 parameters
+2025-10-05 22:07:03.72
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.722220+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 21:07:03,761 ERROR database: 💥 SQL ERROR in execute_update:
+2025-10-05 22:07:03.76
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.761376+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 21:07:03,761 ERROR database: Query:
+2025-10-05 22:07:03.76
+c879d2dd
+User
+INSERT INTO domain_notifications (order_id, message_type, user_id, message_content, sent_at)
+2025-10-05 22:07:03.76
+c879d2dd
+User
+VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 22:07:03.76
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.761788+00:00", "level": "ERROR", "component": "database", "message": " Query: \n INSERT INTO domain_notifications (order_id, message_type, user_id, message_content, sent_at)\n VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)\n ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 21:07:03,762 ERROR database: Params: ('2147000012', 'registration_failure', 497, '⚠️ Registration Failed\n\n🌐 {domain}\n💰 ${amount} ✅ received\n❌ {error}\n\n• 🔄 Try different domain\n• 💰 Payment will be refunded\n• 📧 Contact @{support_contact}\n\n💳 /wallet')
+2025-10-05 22:07:03.76
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.762004+00:00", "level": "ERROR", "component": "database", "message": " Params: ('2147000012', 'registration_failure', 497, '\u26a0\ufe0f Registration Failed\\n\\n\ud83c\udf10 {domain}\\n\ud83d\udcb0 ${amount} \u2705 received\\n\u274c {error}\\n\\n\u2022 \ud83d\udd04 Try different domain\\n\u2022 \ud83d\udcb0 Payment will be refunded\\n\u2022 \ud83d\udce7 Contact @{support_contact}\\n\\n\ud83d\udcb3 /wallet')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 21:07:03,762 ERROR database: Error Type: UniqueViolation
+2025-10-05 22:07:03.76
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.762144+00:00", "level": "ERROR", "component": "database", "message": " Error Type: UniqueViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.76
+c879d2dd
+User
+2025-10-05 21:07:03,762 ERROR database: Error Message: duplicate key value violates unique constraint "domain_notifications_pkey"
+2025-10-05 22:07:03.76
+c879d2dd
+User
+DETAIL: Key (id)=(2) already exists.
+2025-10-05 22:07:03.76
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.762468+00:00", "level": "ERROR", "component": "database", "message": " Error Message: duplicate key value violates unique constraint \"domain_notifications_pkey\"\nDETAIL: Key (id)=(2) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.78
+c879d2dd
+User
+2025-10-05 21:07:03,781 ERROR database: 💥 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint "domain_notifications_pkey"
+2025-10-05 22:07:03.78
+c879d2dd
+User
+DETAIL: Key (id)=(2) already exists.
+2025-10-05 22:07:03.78
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.781932+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint \"domain_notifications_pkey\"\nDETAIL: Key (id)=(2) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.78
+c879d2dd
+User
+2025-10-05 21:07:03,782 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+2025-10-05 22:07:03.78
+c879d2dd
+User
+{"timestamp": "2025-10-05T21:07:03.782153+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-05 22:07:03.78
+c879d2dd
+User
+2025-10-05 21:07:03,782 INFO database:

@@ -1,0 +1,18 @@
+2025-10-31 14:23:00,325 INFO admin_handlers: 🔍 ADMIN BROADCAST HANDLER: Called for user 5590563715
+{"timestamp": "2025-10-31T14:23:00.325402+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d ADMIN BROADCAST HANDLER: Called for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:00,325 INFO admin_handlers: 🔍 ADMIN BROADCAST HANDLER: Not admin - user 5590563715
+{"timestamp": "2025-10-31T14:23:00.325475+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d ADMIN BROADCAST HANDLER: Not admin - user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:00,431 INFO handlers: 🔄 TEXT ROUTING: Handling API key name input for user 5590563715
+{"timestamp": "2025-10-31T14:23:00.431981+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\udd04 TEXT ROUTING: Handling API key name input for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:08,591 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: api_env_production
+{"timestamp": "2025-10-31T14:23:08.591589+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 5590563715 (@onarrival1) - action: api_env_production", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:09,149 INFO handlers: Routing to: toggle_environment
+{"timestamp": "2025-10-31T14:23:09.149826+00:00", "level": "INFO", "component": "handlers", "message": "Routing to: toggle_environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:09,695 INFO handlers: Callback ignored for user 5590563715 with data 'api_env_production': Message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message
+{"timestamp": "2025-10-31T14:23:09.695154+00:00", "level": "INFO", "component": "handlers", "message": "Callback ignored for user 5590563715 with data 'api_env_production': Message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:09,695 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_13443
+{"timestamp": "2025-10-31T14:23:09.695344+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_13443", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:09,696 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-10-31T14:23:09.696167+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-31 14:23:09,941 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-10-31T14:23:09.941055+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

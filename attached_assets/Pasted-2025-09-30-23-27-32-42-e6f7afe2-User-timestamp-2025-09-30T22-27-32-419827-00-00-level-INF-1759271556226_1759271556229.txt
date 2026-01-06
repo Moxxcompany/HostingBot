@@ -1,0 +1,38 @@
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+{"timestamp": "2025-09-30T22:27:32.419827+00:00", "level": "INFO", "component": "database", "message": "\u2705 Created registration intent 41 for bharriss3cure.com by user 739", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+2025-09-30 22:27:32,420 ERROR database: ❌ CONSTRAINT PROTECTION: Cannot set status='completed' via update_intent_status
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+{"timestamp": "2025-09-30T22:27:32.420042+00:00", "level": "ERROR", "component": "database", "message": "\u274c CONSTRAINT PROTECTION: Cannot set status='completed' via update_intent_status", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+2025-09-30 22:27:32,420 ERROR database: Use finalize_domain_registration() instead to set both status AND provider_domain_id atomically
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+{"timestamp": "2025-09-30T22:27:32.420294+00:00", "level": "ERROR", "component": "database", "message": " Use finalize_domain_registration() instead to set both status AND provider_domain_id atomically", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+2025-09-30 22:27:32,420 ERROR database: Intent ID: 41, Provider Data: {'success': True, 'domain_id': 28220717, 'status': 'ACT', 'nameservers': ['anderson.ns.cloudflare.com', 'leanna.ns.cloudflare.com'], 'tld': 'com', 'tld_validation_passed': True, 'tld_additional_data_used': False, 'message': 'Domain bharriss3cure.com registered successfully with TLD validation'}
+2025-09-30 23:27:32.42
+e6f7afe2
+User
+{"timestamp": "2025-09-30T22:27:32.420548+00:00", "level": "ERROR", "component": "database", "message": " Intent ID: 41, Provider Data: {'success': True, 'domain_id': 28220717, 'status': 'ACT', 'nameservers': ['anderson.ns.cloudflare.com', 'lean
+
+T22:27:38.915137+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udf10 Domain bundle detected - will register domain: bharriss3cure.com after subscription creation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 23:27:39.94
+e6f7afe2
+User
+{"timestamp": "2025-09-30T22:27:39.943952+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'services.hosting_orchestrator.success_notifications.bundle_success' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-30 23:27:39.98
+e6f7afe2
+User
+2025-09-30 22:27:39,984 INF

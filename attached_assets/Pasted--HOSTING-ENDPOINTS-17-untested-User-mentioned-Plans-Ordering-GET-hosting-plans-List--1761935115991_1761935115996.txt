@@ -1,0 +1,40 @@
+🏢 HOSTING ENDPOINTS (17 untested) ⭐ User mentioned
+Plans & Ordering:
+❌ GET /hosting/plans - List available hosting plans
+❌ GET /hosting/calculate-price - Calculate hosting price
+❌ POST /hosting/order - Order new hosting (new domain)
+❌ POST /hosting/order-existing - Order hosting for existing domain ⭐
+❌ POST /hosting/order-external - Order hosting for external domain ⭐
+Subscription Management:
+❌ GET /hosting - List all hosting subscriptions
+❌ GET /hosting/{subscription_id} - Get hosting subscription details
+❌ POST /hosting/{subscription_id}/renew - Renew hosting subscription
+❌ GET /hosting/{subscription_id}/renewal-price - Get renewal price
+❌ POST /hosting/{subscription_id}/suspend - Suspend hosting
+❌ POST /hosting/{subscription_id}/unsuspend - Unsuspend hosting
+❌ DELETE /hosting/{subscription_id} - Cancel hosting subscription
+cPanel Features:
+❌ GET /hosting/{subscription_id}/credentials - Get cPanel login credentials
+❌ POST /hosting/{subscription_id}/reset-password - Reset cPanel password
+❌ GET /hosting/{subscription_id}/usage - Get hosting resource usage
+❌ GET /hosting/{subscription_id}/emails - List email accounts
+❌ POST /hosting/{subscription_id}/emails - Create email account
+❌ GET /hosting/{subscription_id}/databases - List databases
+❌ POST /hosting/{subscription_id}/databases - Create database
+❌ GET /hosting/{subscription_id}/ssl - Get SSL certificate status
+❌ POST /hosting/{subscription_id}/ssl/install - Install SSL certificate
+📦 BUNDLE ENDPOINTS (3 untested) ⭐ User mentioned
+❌ POST /bundles/domain-hosting - Create domain+hosting bundle
+❌ GET /bundles/{bundle_id} - Get bundle details
+❌ GET /bundles - List all bundles
+🔗 EXTERNAL DOMAIN LINKING ENDPOINTS (8 untested) ⭐ User mentioned
+❌ POST /domains/{domain_name}/link - Link external domain to HostBay
+❌ GET /domains/{domain_name}/link/status - Check linking status
+❌ GET /domains/{domain_name}/link/instructions - Get linking instructions
+❌ POST /domains/{domain_name}/link/verify - Verify domain linking
+❌ DELETE /domains/{domain_name}/link - Unlink external domain
+❌ GET /domains/{domain_name}/link/history - Get linking history
+❌ POST /domains/{domain_name}/link/retry - Retry failed linking
+❌ GET /linking/modes - Get available linking modes
+
+

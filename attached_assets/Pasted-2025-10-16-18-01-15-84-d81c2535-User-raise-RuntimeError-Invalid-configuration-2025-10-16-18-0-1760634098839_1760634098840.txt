@@ -1,0 +1,98 @@
+2025-10-16 18:01:15.84
+d81c2535
+User
+raise RuntimeError("Invalid configuration")
+2025-10-16 18:01:15.84
+d81c2535
+User
+RuntimeError: Invalid configuration
+2025-10-16 18:01:15.84
+d81c2535
+User
+ERROR: Application startup failed. Exiting.
+2025-10-16 18:01:15.96
+d81c2535
+System
+command finished with error [python -m uvicorn fastapi_server:app --host 0.0.0.0 --port 5000]: exit status 3
+2025-10-16 18:01:17.59
+d81c2535
+User
+INFO: Started server process [33]
+2025-10-16 18:01:17.59
+d81c2535
+User
+INFO: Waiting for application startup.
+2025-10-16 18:01:17.59
+d81c2535
+User
+2025-10-16 17:01:17,594 ERROR config: ❌ Configuration validation failed:
+2025-10-16 18:01:17.59
+d81c2535
+User
+2025-10-16 17:01:17,594 ERROR config: • TELEGRAM_BOT_TOKEN is required and must be valid
+2025-10-16 18:01:17.59
+d81c2535
+User
+2025-10-16 17:01:17,594 ERROR fastapi_server: ❌ Configuration validation failed:
+2025-10-16 18:01:17.59
+d81c2535
+User
+2025-10-16 17:01:17,594 ERROR fastapi_server: • TELEGRAM_BOT_TOKEN is required and must be valid
+2025-10-16 18:01:17.59
+d81c2535
+User
+ERROR: Traceback (most recent call last):
+2025-10-16 18:01:17.59
+d81c2535
+User
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/starlette/routing.py", line 694, in lifespan
+2025-10-16 18:01:17.59
+d81c2535
+User
+async with self.lifespan_context(app) as maybe_state:
+2025-10-16 18:01:17.59
+d81c2535
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/contextlib.py", line 210, in __aenter__
+2025-10-16 18:01:17.59
+d81c2535
+User
+return await anext(self.gen)
+2025-10-16 18:01:17.59
+d81c2535
+User
+^^^^^^^^^^^^^^^^^^^^^
+2025-10-16 18:01:17.59
+d81c2535
+User
+File "/home/runner/workspace/fastapi_server.py", line 406, in lifespan
+2025-10-16 18:01:17.59
+d81c2535
+User
+raise RuntimeError("Invalid configuration")
+2025-10-16 18:01:17.59
+d81c2535
+User
+RuntimeError: Invalid configuration
+2025-10-16 18:01:17.59
+d81c2535
+User
+ERROR: Application startup failed. Exiting.
+2025-10-16 18:01:17.71
+d81c2535
+System
+command finished with error [python -m uvicorn fastapi_server:app --host 0.0.0.0 --port 5000]: exit status 3
+2025-10-16 18:01:20.34
+d81c2535
+User
+INFO: Started server process [37]
+2025-10-16 18:01:20.34
+d81c2535
+User
+INFO: Waiting for application startup.
+2025-10-16 18:01:20.34
+d81c2535
+User
+2025-10-16 17:01:20,346 ERROR config: ❌ Configuration validation failed:
+2025-10-16 18:01:20.34
+d81c2535

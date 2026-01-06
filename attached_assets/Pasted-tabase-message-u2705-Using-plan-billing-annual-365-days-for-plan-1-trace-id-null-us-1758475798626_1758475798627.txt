@@ -1,0 +1,11 @@
+tabase", "message": "\u2705 Using plan billing: annual (365 days) for plan 1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 17:29:41,523 WARNING database: ⚠️ Skipping cPanel account record creation - provisioning failed for user1_32
+{"timestamp": "2025-09-21T17:29:41.523244+00:00", "level": "WARNING", "component": "database", "message": "\u26a0\ufe0f Skipping cPanel account record creation - provisioning failed for user1_32", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 17:29:41,557 ERROR database: ❌ Hosting provisioning failed for no domain - intent 32, subscription 1
+{"timestamp": "2025-09-21T17:29:41.557721+00:00", "level": "ERROR", "component": "database", "message": "\u274c Hosting provisioning failed for no domain - intent 32, subscription 1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 17:29:41,902 WARNING services.hosting_orchestrator: 🚫 HOSTING ORCHESTRATOR: hosting_bundle_failure notification already sent for order 32
+{"timestamp": "2025-09-21T17:29:41.902996+00:00", "level": "WARNING", "component": "services.hosting_orchestrator", "message": "\ud83d\udeab HOSTING ORCHESTRATOR: hosting_bundle_failure notification already sent for order 32", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 17:29:42,010 INFO services.hosting_orchestrator: ❌ HOSTING ORCHESTRATOR: Bundle marked as failed - order 32, intent 32: Hosting provisioning failed: Hosting provisioning returned false
+{"timestamp": "2025-09-21T17:29:42.010141+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u274c HOSTING ORCHESTRATOR: Bundle marked as failed - order 32, intent 32: Hosting provisioning failed: Hosting provisioning returned false", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 17:29:42,010 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: Bundle processing completed for order 32
+{"timestamp": "2025-09-21T17:29:42.010343+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: Bundle processing completed for order 32", "trace_id": null, "user_id": nul

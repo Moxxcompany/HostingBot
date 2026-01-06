@@ -1,0 +1,44 @@
+-12 22:51:32
+2025-10-12 21:51:32,306 INFO payment_cleanup_service: ⏰ CLEANUP SERVICE: Next cleanup in 30 minutes
+10-12 22:51:32
+{"timestamp": "2025-10-12T21:51:32.306655+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": "\u23f0 CLEANUP SERVICE: Next cleanup in 30 minutes", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:43
+2025-10-12 21:51:43,805 ERROR services.openprovider: ❌ HTTP timeout in domain availability check for champlan-epc.ca: ReadTimeout
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805252+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c HTTP timeout in domain availability check for champlan-epc.ca: ReadTimeout", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:43
+2025-10-12 21:51:43,805 ERROR services.openprovider: ❌ Timeout details: connect=, read timeout likely exceeded
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805501+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c Timeout details: connect=, read timeout likely exceeded", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:43
+2025-10-12 21:51:43,805 WARNING performance_monitor: ⚠️ SLOW OPERATION: domain_availability_check took 16.53s
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805908+00:00", "level": "WARNING", "component": "performance_monitor", "message": "\u26a0\ufe0f SLOW OPERATION: domain_availability_check took 16.53s", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:44
+2025-10-12 21:51:44,706 INFO fastapi_server: ✅ Processed Telegram update: 786435644
+10-12 22:51:44
+{"timestamp": "2025-10-12T21:51:44.706238+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786435644", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:44
+INFO: 35.191.79.218:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+10-12 22:51:43
+2025-10-12 21:51:43,805 ERROR services.openprovider: ❌ HTTP timeout in domain availability check for champlan-epc.ca: ReadTimeout
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805252+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c HTTP timeout in domain availability check for champlan-epc.ca: ReadTimeout", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:43
+2025-10-12 21:51:43,805 ERROR services.openprovider: ❌ Timeout details: connect=, read timeout likely exceeded
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805501+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c Timeout details: connect=, read timeout likely exceeded", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:43
+2025-10-12 21:51:43,805 WARNING performance_monitor: ⚠️ SLOW OPERATION: domain_availability_check took 16.53s
+10-12 22:51:43
+{"timestamp": "2025-10-12T21:51:43.805908+00:00", "level": "WARNING", "component": "performance_monitor", "message": "\u26a0\ufe0f SLOW OPERATION: domain_availability_check took 16.53s", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:44
+2025-10-12 21:51:44,706 INFO fastapi_server: ✅ Processed Telegram update: 786435644
+10-12 22:51:44
+{"timestamp": "2025-10-12T21:51:44.706238+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786435644", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-12 22:51:44
+INFO: 35.191.79.218:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+
+Wrap
+
+Colors

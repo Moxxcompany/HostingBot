@@ -1,0 +1,31 @@
+2025-10-26 12:05:37,787 INFO handlers: Attempting message edit for user 7520972603, message 7520972603_11751
+10-26 12:05:37
+{"timestamp": "2025-10-26T12:05:37.787494+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 7520972603, message 7520972603_11751", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:37
+2025-10-26 12:05:37,787 INFO handlers: Executing message edit for user 7520972603
+10-26 12:05:37
+{"timestamp": "2025-10-26T12:05:37.787731+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 7520972603", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,034 INFO handlers: Message edit successful for user 7520972603
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.034194+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 7520972603", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,588 ERROR services.cloudflare: ❌ DNS API request failed with status 400
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.588193+00:00", "level": "ERROR", "component": "services.cloudflare", "message": "\u274c DNS API request failed with status 400", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,588 ERROR services.cloudflare: Cloudflare API Error Details: {'code': 81058, 'message': 'An identical record already exists.'}
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.588451+00:00", "level": "ERROR", "component": "services.cloudflare", "message": "Cloudflare API Error Details: {'code': 81058, 'message': 'An identical record already exists.'}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,588 INFO handlers: Attempting message edit for user 7520972603, message 7520972603_11751
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.588691+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 7520972603, message 7520972603_11751", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,589 INFO handlers: Executing message edit for user 7520972603
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.589006+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 7520972603", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-26 12:05:38
+2025-10-26 12:05:38,829 INFO handlers: Message edit successful for user 7520972603
+10-26 12:05:38
+{"timestamp": "2025-10-26T12:05:38.829508+

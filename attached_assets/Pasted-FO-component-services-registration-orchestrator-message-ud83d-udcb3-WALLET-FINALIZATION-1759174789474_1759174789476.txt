@@ -1,0 +1,57 @@
+FO", "component": "services.registration_orchestrator", "message": "\ud83d\udcb3 WALLET FINALIZATION: Processing hold transaction 34 for order 2147000001 (success=True)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,539 INFO database: ✅ HOLD FINALIZED: Transaction 34 completed as debit for user 3
+{"timestamp": "2025-09-29T19:38:50.539224+00:00", "level": "INFO", "component": "database", "message": "\u2705 HOLD FINALIZED: Transaction 34 completed as debit for user 3", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,575 INFO services.registration_orchestrator: ✅ WALLET FINALIZATION: Hold $34 successfully debited from wallet for domain hollowayy.sbs
+{"timestamp": "2025-09-29T19:38:50.575624+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 WALLET FINALIZATION: Hold $34 successfully debited from wallet for domain hollowayy.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,790 INFO localization: ⚡ LANG DB QUERY: 3 in 107.7ms (cached 30min)
+{"timestamp": "2025-09-29T19:38:50.790842+00:00", "level": "INFO", "component": "localization", "message": "\u26a1 LANG DB QUERY: 3 in 107.7ms (cached 30min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,862 INFO database: 🔍 SQL UPDATE: Executing query with 4 parameters
+{"timestamp": "2025-09-29T19:38:50.862233+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,933 ERROR database: 💥 SQL ERROR in execute_update:
+{"timestamp": "2025-09-29T19:38:50.933591+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,933 ERROR database:   Query: 
+                    INSERT INTO domain_notifications (order_id, message_type, user_id, message_content, sent_at)
+                    VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)
+                
+{"timestamp": "2025-09-29T19:38:50.933744+00:00", "level": "ERROR", "component": "database", "message": "  Query: \n                    INSERT INTO domain_notifications (order_id, message_type, user_id, message_content, sent_at)\n                    VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)\n                ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,933 ERROR database:   Params: ('2147000001', 'registration_success', 3, "🎉 <b>Domain Registration Complete!</b>\n\n<b>hollowayy.sbs</b> is now yours!\n\n💰 Payment: $25.00\n🌐 DNS: anderson.ns.cloudflare.com, leanna.ns.cloudflare.com\n\n✅ <b>What's ready:</b>\n• Domain is registered and active\n• DNS zone configured automatically\n• Ready for website hosting\n\n🚀 <b>Next steps:</b>\n• Use /dns to manage DNS records\n• Use /hosting to add web hosting\n• Configure your website\n\n<i>Welcome to the internet!</i>")
+{"timestamp": "2025-09-29T19:38:50.933833+00:00", "level": "ERROR", "component": "database", "message": "  Params: ('2147000001', 'registration_success', 3, \"\ud83c\udf89 <b>Domain Registration Complete!</b>\\n\\n<b>hollowayy.sbs</b> is now yours!\\n\\n\ud83d\udcb0 Payment: $25.00\\n\ud83c\udf10 DNS: anderson.ns.cloudflare.com, leanna.ns.cloudflare.com\\n\\n\u2705 <b>What's ready:</b>\\n\u2022 Domain is registered and active\\n\u2022 DNS zone configured automatically\\n\u2022 Ready for website hosting\\n\\n\ud83d\ude80 <b>Next steps:</b>\\n\u2022 Use /dns to manage DNS records\\n\u2022 Use /hosting to add web hosting\\n\u2022 Configure your website\\n\\n<i>Welcome to the internet!</i>\")", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,933 ERROR database:   Error Type: UniqueViolation
+{"timestamp": "2025-09-29T19:38:50.933896+00:00", "level": "ERROR", "component": "database", "message": "  Error Type: UniqueViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,933 ERROR database:   Error Message: duplicate key value violates unique constraint "domain_notifications_pkey"
+DETAIL:  Key (id)=(3) already exists.
+
+{"timestamp": "2025-09-29T19:38:50.933940+00:00", "level": "ERROR", "component": "database", "message": "  Error Message: duplicate key value violates unique constraint \"domain_notifications_pkey\"\nDETAIL:  Key (id)=(3) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 ERROR database: 💥 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint "domain_notifications_pkey"
+DETAIL:  Key (id)=(3) already exists.
+
+{"timestamp": "2025-09-29T19:38:50.969167+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: duplicate key value violates unique constraint \"domain_notifications_pkey\"\nDETAIL:  Key (id)=(3) already exists.\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+{"timestamp": "2025-09-29T19:38:50.969306+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-09-29T19:38:50.969374+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-09-29T19:38:50.969431+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO services.registration_orchestrator: 📧 ORCHESTRATOR: registration_success notification recorded for order 2147000001
+{"timestamp": "2025-09-29T19:38:50.969619+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\ud83d\udce7 ORCHESTRATOR: registration_success notification recorded for order 2147000001", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_7335
+{"timestamp": "2025-09-29T19:38:50.969714+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_7335", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:50,969 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-29T19:38:50.969804+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,412 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-29T19:38:51.412284+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,412 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: registration_success notification sent to user for order 2147000001
+{"timestamp": "2025-09-29T19:38:51.412409+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: registration_success notification sent to user for order 2147000001", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,491 INFO database: 🔍 SQL UPDATE: Executing query with 1 parameters
+{"timestamp": "2025-09-29T19:38:51.491647+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 1 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,599 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+{"timestamp": "2025-09-29T19:38:51.599467+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,599 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: Order 2147000001 marked as completed
+{"timestamp": "2025-09-29T19:38:51.599849+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: Order 2147000001 marked as completed", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,599 INFO services.registration_orchestrator: ✅ ORCHESTRATOR: Registration completed for order 2147000001
+{"timestamp": "2025-09-29T19:38:51.599995+00:00", "level": "INFO", "component": "services.registration_orchestrator", "message": "\u2705 ORCHESTRATOR: Registration completed for order 2147000001", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,600 INFO handlers: ✅ HANDLERS: Domain registration completed via orchestrator: hollowayy.sbs
+{"timestamp": "2025-09-29T19:38:51.600083+00:00", "level": "INFO", "component": "handlers", "message": "\u2705 HANDLERS: Domain registration completed via orchestrator: hollowayy.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-29 19:38:51,600 INFO fastapi_server: ✅ Processed Telegram update: 786433510
+{"timestamp": "2025-09-29T19:38:51.600183+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786433510", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.68.34:54042 - "POST /webhook/telegram HTTP/1.1" 200 OK

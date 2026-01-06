@@ -1,0 +1,76 @@
+2025-12-16 09:40:14,806 INFO financial_precision:    • Rounding: ROUND_HALF_UP
+2025-12-16 09:40:14,811 INFO utils.payment_logging: ✅ Payment logging system initialized
+2025-12-16 09:40:14,821 INFO pricing_utils: ✅ Pricing configuration validated: markup=230% (×3.3), minimum=$30.00, enabled=True
+2025-12-16 09:40:14,821 INFO performance_cache: ✅ Performance cache initialized with TTL configurations
+2025-12-16 09:40:14,821 INFO performance_cache: ✅ Performance cache module loaded - ready for 20+ ops/sec caching
+2025-12-16 09:40:14,821 INFO performance_monitor: ✅ Performance monitor initialized for throughput tracking
+2025-12-16 09:40:14,821 INFO performance_monitor: ✅ Performance monitoring module loaded - ready for 20+ ops/sec tracking
+2025-12-16 09:40:14,847 INFO services.tld_requirements: ✅ TLD Requirements Validator initialized with 5 TLD validators
+2025-12-16 09:40:14,847 INFO services.openprovider: ✅ TLD requirements validation system loaded
+2025-12-16 09:40:14,865 INFO services.openprovider: 🚀 Initialized HTTP client with OPTIMIZED timeouts: 15s read, 3s connect for faster domain operations
+2025-12-16 09:40:14,972 INFO services.openprovider_manager: 🏢 OpenProvider Account Manager initialized
+2025-12-16 09:40:15,000 INFO brand_config: ✅ Brand configuration validated: platform='Hostbay', tagline='Domain & Hosting Services', support='@hostbay_support'
+2025-12-16 09:40:15,000 INFO brand_config: ✅ Brand configuration initialized with multi-language support
+2025-12-16 09:40:15,072 INFO utils.timezone_utils: 🌍 Timezone Manager Initialized:
+2025-12-16 09:40:15,072 INFO utils.timezone_utils:    • System Timezone: UTC
+2025-12-16 09:40:15,072 INFO utils.timezone_utils:    • Current UTC Time: 2025-12-16T09:40:15.072737+00:00
+2025-12-16 09:40:15,073 INFO utils.timezone_utils:    • Environment TZ: UTC
+2025-12-16 09:40:15,073 INFO utils.timezone_utils: ✅ Timezone consistency validated - all systems using UTC
+2025-12-16 09:40:15,073 INFO utils.timezone_utils: ✅ Timezone utilities initialized successfully
+2025-12-16 09:40:15,084 INFO performance_monitor: ✅ Performance monitor initialized for throughput tracking
+{"timestamp": "2025-12-16T09:40:15.084676+00:00", "level": "INFO", "component": "performance_monitor", "message": "\u2705 Performance monitor initialized for throughput tracking", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,084 INFO health_monitor: ✅ Health monitor initialized
+{"timestamp": "2025-12-16T09:40:15.084837+00:00", "level": "INFO", "component": "health_monitor", "message": "\u2705 Health monitor initialized", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel: 🌐 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.106036+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83c\udf10 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel: 🔧 cPanel Service initialized:
+{"timestamp": "2025-12-16T09:40:15.106264+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83d\udd27 cPanel Service initialized:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel:    • WHM Host: 193-143-1-147.cprapid.com
+{"timestamp": "2025-12-16T09:40:15.106353+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Host: 193-143-1-147.cprapid.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel:    • WHM Username: root
+{"timestamp": "2025-12-16T09:40:15.106425+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Username: root", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel:    • API Token: ✅ SET
+{"timestamp": "2025-12-16T09:40:15.106473+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 API Token: \u2705 SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel:    • Password: ❌ NOT SET
+{"timestamp": "2025-12-16T09:40:15.106536+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Password: \u274c NOT SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel:    • Server IP: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.106607+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Server IP: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,106 INFO services.cpanel: ✅ cPanel credentials are configured - real account creation enabled
+{"timestamp": "2025-12-16T09:40:15.106671+00:00", "level": "INFO", "component": "services.cpanel", "message": "\u2705 cPanel credentials are configured - real account creation enabled", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel: 🌐 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.130444+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83c\udf10 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel: 🔧 cPanel Service initialized:
+{"timestamp": "2025-12-16T09:40:15.130640+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83d\udd27 cPanel Service initialized:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel:    • WHM Host: 193-143-1-147.cprapid.com
+{"timestamp": "2025-12-16T09:40:15.130690+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Host: 193-143-1-147.cprapid.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel:    • WHM Username: root
+{"timestamp": "2025-12-16T09:40:15.130725+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Username: root", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel:    • API Token: ✅ SET
+{"timestamp": "2025-12-16T09:40:15.130757+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 API Token: \u2705 SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel:    • Password: ❌ NOT SET
+{"timestamp": "2025-12-16T09:40:15.130786+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Password: \u274c NOT SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel:    • Server IP: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.130861+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Server IP: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,130 INFO services.cpanel: ✅ cPanel credentials are configured - real account creation enabled
+{"timestamp": "2025-12-16T09:40:15.130892+00:00", "level": "INFO", "component": "services.cpanel", "message": "\u2705 cPanel credentials are configured - real account creation enabled", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,187 INFO services.cpanel: 🌐 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.187781+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83c\udf10 Auto-detected server IP from 193-143-1-147.cprapid.com: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel: 🔧 cPanel Service initialized:
+{"timestamp": "2025-12-16T09:40:15.188001+00:00", "level": "INFO", "component": "services.cpanel", "message": "\ud83d\udd27 cPanel Service initialized:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel:    • WHM Host: 193-143-1-147.cprapid.com
+{"timestamp": "2025-12-16T09:40:15.188076+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Host: 193-143-1-147.cprapid.com", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel:    • WHM Username: root
+{"timestamp": "2025-12-16T09:40:15.188144+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 WHM Username: root", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel:    • API Token: ✅ SET
+{"timestamp": "2025-12-16T09:40:15.188195+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 API Token: \u2705 SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel:    • Password: ❌ NOT SET
+{"timestamp": "2025-12-16T09:40:15.188237+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Password: \u274c NOT SET", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel:    • Server IP: 193.***.***.147
+{"timestamp": "2025-12-16T09:40:15.188281+00:00", "level": "INFO", "component": "services.cpanel", "message": "   \u2022 Server IP: 193.***.***.147", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,188 INFO services.cpanel: ✅ cPanel credentials are configured - real account creation enabled
+{"timestamp": "2025-12-16T09:40:15.188323+00:00", "level": "INFO", "component": "services.cpanel", "message": "\u2705 cPanel credentials are configured - real account creation enabled", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-16 09:40:15,371 INFO fastapi_server: ✅ REST API routes mounted at /api/v1 (110+ endpoints)
+{"timestamp": "2025-12-16T09:40:15.371429+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 REST API routes mounted at /api/v1 (110+ endpoints)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     Started server process [5407]
+INFO:     Waiting for application startup.
+2025-12-16 09:40:15,371 INFO fastapi_server: ================================================================================

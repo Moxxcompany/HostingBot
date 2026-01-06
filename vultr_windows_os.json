@@ -1,0 +1,86 @@
+[
+  {
+    "id": 240,
+    "name": "Windows 2016 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 371,
+    "name": "Windows 2019 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 501,
+    "name": "Windows 2022 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 521,
+    "name": "Windows Core 2022 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 522,
+    "name": "Windows Core 2016 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 523,
+    "name": "Windows Core 2019 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 1761,
+    "name": "Windows Core 2019 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 1762,
+    "name": "Windows Core 2022 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 1764,
+    "name": "Windows 2019 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 1765,
+    "name": "Windows 2022 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 2514,
+    "name": "Windows 2025 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 2515,
+    "name": "Windows 2025 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 2516,
+    "name": "Windows Core 2025 Standard x64",
+    "arch": "x64",
+    "family": "windows"
+  },
+  {
+    "id": 2517,
+    "name": "Windows Core 2025 Datacenter x64",
+    "arch": "x64",
+    "family": "windows"
+  }
+]

@@ -1,0 +1,19 @@
+ider", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,234 ERROR database: Database query error: column "user_id" of relation "payment_intents" does not exist
+LINE 2:                (order_id, user_id, amount, currency, crypto_...
+                                  ^
+
+{"timestamp": "2025-09-21T22:54:33.234723+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"user_id\" of relation \"payment_intents\" does not exist\nLINE 2:                (order_id, user_id, amount, currency, crypto_...\n                                  ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,234 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T22:54:33.234885+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,360 ERROR services.payment_provider: ❌ Failed to create payment intent for order 3
+{"timestamp": "2025-09-21T22:54:33.360547+00:00", "level": "ERROR", "component": "services.payment_provider", "message": "\u274c Failed to create payment intent for order 3", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,360 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4940
+{"timestamp": "2025-09-21T22:54:33.360723+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4940", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,360 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T22:54:33.360816+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,593 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T22:54:33.593646+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 22:54:33,593 INFO fastapi_server: ✅ Processed Telegram update: 786430852
+{"timestamp": "2025-09-21T22:54:33.593789+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430852", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:59834 - "POST /webhook/telegram HTTP/1.1" 200 OK

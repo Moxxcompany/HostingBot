@@ -1,0 +1,21 @@
+: null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,073 INFO database: ✅ WEBHOOK IDEMPOTENCY: New callback registered - domain_order:domain_hope1010.sbs_5590563715_1758464908:1
+{"timestamp": "2025-09-21T14:32:40.073031+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: New callback registered - domain_order:domain_hope1010.sbs_5590563715_1758464908:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,073 INFO webhook_handler: 💰 Payment domain_hope1010.sbs_5590563715_1758464908 - Status: successful, Amount: $10.9
+{"timestamp": "2025-09-21T14:32:40.073506+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83d\udcb0 Payment domain_hope1010.sbs_5590563715_1758464908 - Status: successful, Amount: $10.9", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,073 INFO webhook_handler: 🎯 Processing domain payment: hope1010.sbs for telegram_id 5590563715
+{"timestamp": "2025-09-21T14:32:40.073615+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83c\udfaf Processing domain payment: hope1010.sbs for telegram_id 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,282 ERROR database: Database query error: column "expected_usd" does not exist
+LINE 1: SELECT expected_usd, id FROM domain_orders 
+               ^
+
+{"timestamp": "2025-09-21T14:32:40.282391+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"expected_usd\" does not exist\nLINE 1: SELECT expected_usd, id FROM domain_orders \n               ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,282 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T14:32:40.282567+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,282 ERROR webhook_handler: ❌ No domain order found for domain_hope1010.sbs_5590563715_1758464908, user 1, domain hope1010.sbs
+{"timestamp": "2025-09-21T14:32:40.282793+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c No domain order found for domain_hope1010.sbs_5590563715_1758464908, user 1, domain hope1010.sbs", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,388 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_hope1010.sbs_5590563715_1758464908:1
+{"timestamp": "2025-09-21T14:32:40.388420+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_hope1010.sbs_5590563715_1758464908:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 14:32:40,388 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T14:32:40.388961+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.120.66:45764 - "POST /webhook/dynopay?order_id=domain_hope1010.sbs_5590563715_1758464908&auth_token=dgNt9Ca9z6k7tnz-1HxqEplhAoDV8km1ewrANtU0-b0 HTTP/1.1" 200 OK

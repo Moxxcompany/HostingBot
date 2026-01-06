@@ -1,0 +1,162 @@
+Add canvas
+
+Files
+
+Pins
+
+CanvasListFolder
+Loading history…
+
+
+Moxx
+  8:17 AM
+:lock: LockBay • Amount Validated
+
+:white_check_mark: Cashout validated successfully!
+
+:moneybag: Amount: $2.00
+:memo: Fee: $1.00 (2.0%)
+:dollar: You'll receive: $1.00
+:globe_with_meridians: Network: USDT
+
+Proceeding to currency selection...
+
+Protected by LockBay • Support: \@LockBaySupport
+
+
+Moxx
+  9:26 AM
+:x: *Email Sending Failed
+
+OTP sending should use async method in async context
+
+Please try again.*
+
+
+Moxx
+  11:02 AM
+Run unit and e2e tests using pytest with asyci support enables. this includes the entire system from onboarding, user initiated cashout, auto-cashout, exchange, escrow, every functionality on the bot end to end and share with me for approval
+
+
+Moxx
+  12:12 PM
+:x: Domain hahahaha.sbs already registered. Try a different name.
+
+
+Moxx
+  3:56 PM
+:credit_card: Litecoin Deposit Deposit
+:mailbox_with_mail: LbVxq4Su3vynvKX6uGnQNXSHP6vbSXxQQj
+:bulb: Tap to copy • :alarm_clock: 15m • Credits wallet
+
+
+Moxx
+  4:52 PM
+Done bro
+
+193.143.1.147
+
+root
+
+vXR5AxcTKEHu6zE2
+
+Congratulations! Your installation of cPanel & WHM 11.130 is now complete. The next step is to configure your server.
+
+Before you configure your server, ensure that your firewall allows access on port 2087.
+
+After ensuring that your firewall allows access on port 2087, you can configure your server.
+
+Open your preferred browser
+Navigate to the following url using the address bar and enter this one-time autologin url:
+ 
+https://193-143-1-147.cprapid.com:2087/cpsess6870119417/login/?session=root%3azFzOHwC2w0PYlY8R%3acreate_user_session%2c8e267ec5cbad319f0b0b97368fccbc74
+
+
+After the login url expires you generate a new one using the 'whmlogin' command or manually login at:
+
+https://193.143.1.147:2087
+
+Visit https://go.cpanel.net/whminit for more information about first-time configuration of your server.
+
+Visit http://support.cpanel.net or https://go.cpanel.net/allfaq for additional support
+
+Thank you for installing cPanel & WHM 11.130!
+
+cPanel &amp; WHM DocumentationcPanel & WHM Documentation
+WHM | cPanel & WHM Documentation
+It's important to perform some basic tasks after you install cPanel & WHM.
+
+
+Moxx
+  6:50 PM
+:house: Hosting Management
+
+Domain: None
+Plan: Basic Hosting
+Status: :large_green_circle: Active
+cPanel Username: user1_36
+Created: September 21, 2025
+
+:white_check_mark: Your hosting account is active and fully operational. All services are running normally.
+
+
+Moxx
+  7:10 PM
+:tada: Hosting Bundle Ready!
+
+:globe_with_meridians: playhousehhh.sbs
+:moneybag: $2.00 :white_check_mark:
+:lock: Domain registered
+:house: Hosting active
+
+:e-mail: cPanel Login Details:
+• Username: [Check hosting management]
+• Password: [Check hosting management]
+• Server IP: [Check hosting management]
+• cPanel URL: [Check hosting management]
+
+• :wrench: Manage DNS: /domains
+• :credit_card: View wallet: /wallet
+• :house: Manage hosting: /hosting
+
+Your website is ready! :rocket:
+
+
+Moxx
+  7:25 PM
+:tada: Hosting Bundle Ready!
+
+:globe_with_meridians: localbaytes.sbs
+:moneybag: $2.00 :white_check_mark:
+:lock: Domain registered
+:house: Hosting active
+
+:e-mail: cPanel Login Details:
+• Username: loaadbb8
+• Password: QEXTxk0OXguS
+• Server IP: 193.143.1.147
+• cPanel URL: https://193.143.1.147:2083
+
+• :wrench: Manage DNS: /domains
+• :credit_card: View wallet: /wallet
+• :house: Manage hosting: /hosting
+
+Your website is ready! :rocket:
+
+
+Moxx
+  7:32 PM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:credit_card: LTC Payment
+:moneybag: 11.87 USD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:mailbox_with_mail: Send to Address:
+Lco1ZYCD55X1nsg4a6VJRMffi4aGn43ZQH
+
+:bulb: Tap address to copy
+:alarm_clock: Expires in 15 minutes
+:zap: Auto-processed on confirmation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+:package: Hosting + Domain Bundle: hostedbabyj.sbs
+
+Once payment is received, your hosting and domain will be automatically

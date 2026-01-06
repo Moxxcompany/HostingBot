@@ -1,0 +1,37 @@
+{"timestamp": "2025-09-21T20:17:06.644770+00:00", "level": "WARNING", "component": "services.openprovider", "message": "\u26a0\ufe0f TLD validation warnings: ['No specific validation implemented for .com domains']", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+
+523151e
+User
+{"timestamp": "2025-09-21T20:18:05.937307+00:00", "level": "INFO", "component": "database", "message": "\u26a1 USER DB QUERY: 5816388926 in 65.4ms (cached for 5min)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 21:18:06.25
+1523151e
+User
+2025-09-21 20:18:06,258 ERROR database: Database query error: insert or update on table "hosting_provision_intents" violates foreign key constraint "hosting_provision_intents_hosting_plan_id_fkey"
+2025-09-21 21:18:06.25
+1523151e
+User
+DETAIL: Key (hosting_plan_id)=(2) is not present in table "hosting_plans".
+2025-09-21 21:18:06.25
+1523151e
+User
+{"timestamp": "2025-09-21T20:18:06.258482+00:00", "level": "ERROR", "component": "database", "message": "Database query error: insert or update on table \"hosting_provision_intents\" violates foreign key constraint \"hosting_provision_intents_hosting_plan_id_fkey\"\nDETAIL: Key (hosting_plan_id)=(2) is not present in table \"hosting_plans\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 21:18:06.25
+1523151e
+User
+2025-09-21 20:18:06,259 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+2025-09-21 21:18:06.25
+1523151e
+User
+{"timestamp": "2025-09-21T20:18:06.259064+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 21:18:06.26
+1523151e
+User
+2025-09-21 20:18:06,259 INFO handlers: 🏠 Created existing dom
+1523151e
+User
+2025-09-21 20:18:06,806 WARNING handlers: ⚠️ ROUTING ANOMALY: handle_existing_domain_hosting called for billing-update-netflix-info.com without hosting bundle context
+2025-09-21 21:18:06.80
+1523151e
+User
+{"timestamp": "2025-09-21T20:18:06.806934+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f ROUTING ANOMALY: handle_existing_domain_hosting called for billing-update-netflix-info.com without hosting bundle context", "trace_id"
+

@@ -1,0 +1,104 @@
+2025-10-24 15:04:21.81
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:21.817413+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:21.87
+30c4d053
+User
+2025-10-24 14:04:21,878 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+2025-10-24 15:04:21.87
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:21.878780+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:21.97
+30c4d053
+User
+2025-10-24 14:04:21,977 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+2025-10-24 15:04:21.97
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:21.977481+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.03
+30c4d053
+User
+2025-10-24 14:04:22,036 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+2025-10-24 15:04:22.03
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.036133+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.13
+30c4d053
+User
+2025-10-24 14:04:22,135 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+2025-10-24 15:04:22.13
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.135123+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.19
+30c4d053
+User
+2025-10-24 14:04:22,193 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+2025-10-24 15:04:22.19
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.193506+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.19
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.194318+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: process_payment_webhook (1518.81ms)", "payment_context": {"operation_start_time": 1761314660.675309, "duration_ms": 1518.8093185424805, "metadata": {}}}
+2025-10-24 15:04:22.19
+30c4d053
+User
+2025-10-24 14:04:22,194 INFO payment_system: Payment operation completed: process_payment_webhook (1518.81ms)
+2025-10-24 15:04:22.19
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.194318+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook (1518.81ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.19
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.194740+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook (1518.81ms)", "payment_context": {}}
+2025-10-24 15:04:22.19
+30c4d053
+User
+2025-10-24 14:04:22,194 INFO payment_system: Payment operation completed: process_payment_webhook (1518.81ms)
+2025-10-24 15:04:22.19
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.194740+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: process_payment_webhook (1518.81ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1761314660.675309, "duration_ms": 1518.8093185424805, "metadata": {}}}
+2025-10-24 15:04:22.23
+30c4d053
+User
+2025-10-24 14:04:22,233 INFO database: 🔍 SQL UPDATE: Executing query with 4 parameters
+2025-10-24 15:04:22.23
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.233713+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 4 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.29
+30c4d053
+User
+2025-10-24 14:04:22,292 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+2025-10-24 15:04:22.29
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.292599+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.29
+30c4d053
+User
+2025-10-24 14:04:22,293 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_bfka.email_318245440_1761314547:0
+2025-10-24 15:04:22.29
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.293295+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_bfka.email_318245440_1761314547:0", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.29
+30c4d053
+User
+2025-10-24 14:04:22,293 INFO fastapi_server: ✅ TYPE-SAFE DYNOPAY: Successfully processed payment domain_bfka.email_318245440_1761314547
+2025-10-24 15:04:22.29
+30c4d053
+User
+{"timestamp": "2025-10-24T14:04:22.293542+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 TYPE-SAFE DYNOPAY: Successfully processed payment domain_bfka.email_318245440_1761314547", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 15:04:22.29
+30c4d053
+User
+INFO: 35.191.87.194:0 - "POST /webhook/dynopay?order_id=domain_bfka.email_318245440_1761314547&auth_token=ajJA2cRTuFp697tyPA88npxrpawANLZ_Xtz8teFmYxk HTTP/1.1" 200 OK

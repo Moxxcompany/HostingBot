@@ -1,0 +1,25 @@
+:42,233 ERROR services.dynopay: ❌ SECURITY FIX: Failed to verify auth_token storage for order 46
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.233373+00:00", "level": "ERROR", "component": "services.dynopay", "message": "\u274c SECURITY FIX: Failed to verify auth_token storage for order 46", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.233883+00:00", "level": "ERROR", "component": "payment_system", "event_type": "error_occurred", "message": "Payment error (database_update_error): Auth token storage verification failed", "correlation_id": "257d1eba-ecab-44f8-b0a0-288adfe30f61", "user_id": 3, "order_id": "46", "payment_context": {"correlation_id": "257d1eba-ecab-44f8-b0a0-288adfe30f61", "user_id": 3, "order_id": "46", "provider": "dynopay", "payment_address": "LSmEBbgzRhAHkhnKoTJHuxLV64Zx1Mb6RG", "error_code": "Exception", "error_category": "database_update_error", "metadata": {"database_update": "verification_failed", "error_message": "Auth token storage verification failed", "error_type": "Exception", "category": "database_update_error", "actionable_steps": "Check payment_intents table constraints, Verify business_order_id uniqueness, Review database transaction completion"}}}
+09-29 14:25:42
+2025-09-29 13:25:42,233 ERROR payment_system: Payment error (database_update_error): Auth token storage verification failed
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.233883+00:00", "level": "ERROR", "component": "payment_system", "message": "Payment error (database_update_error): Auth token storage verification failed", "trace_id": null, "user_id": 3, "order_id": "46", "context": {}}
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.234452+00:00", "level": "ERROR", "component": "payment_system", "message": "Payment error (database_update_error): Auth token storage verification failed", "user_id": 3, "order_id": "46", "payment_context": {}}
+09-29 14:25:42
+2025-09-29 13:25:42,234 ERROR payment_system: Payment error (database_update_error): Auth token storage verification failed
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.234452+00:00", "level": "ERROR", "component": "payment_system", "message": "Payment error (database_update_error): Auth token storage verification failed", "trace_id": null, "user_id": 3, "order_id": "46", "context": {"correlation_id": "257d1eba-ecab-44f8-b0a0-288adfe30f61", "user_id": 3, "order_id": "46", "provider": "dynopay", "payment_address": "LSmEBbgzRhAHkhnKoTJHuxLV64Zx1Mb6RG", "error_code": "Exception", "error_category": "database_update_error", "metadata": {"database_update": "verification_failed", "error_message": "Auth token storage verification failed", "error_type": "Exception", "category": "database_update_error", "actionable_steps": "Check payment_intents table constraints, Verify business_order_id uniqueness, Review database transaction completion"}}}
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.234807+00:00", "level": "ERROR", "component": "payment_system", "message": "Error occurred: Auth token storage verification failed", "user_id": 3, "order_id": "46", "payment_context": {}}
+09-29 14:25:42
+2025-09-29 13:25:42,234 ERROR payment_system: Error occurred: Auth token storage verification failed
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.234807+00:00", "level": "ERROR", "component": "payment_system", "message": "Error occurred: Auth token storage verification failed", "trace_id": null, "user_id": 3, "order_id": "46", "context": {"error_type": "Exception", "error_message": "Auth token storage verification failed", "category": "database_update_error", "actionable_steps": "Check payment_intents table constraints, Verify business_order_id uniqueness, Review database transaction completion"}}
+09-29 14:25:42
+2025-09-29 13:25:42,382 INFO services.fastforex: 📈 FastForex rate for LTC: 1 USD = 0.0094468 LTC
+09-29 14:25:42
+{"timestamp": "2025-09-29T13:25:42.382005+00:00", "level

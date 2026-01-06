@@ -1,0 +1,88 @@
+10-01 23:17:38
+{"timestamp": "2025-10-01T22:17:38.755146+00:00", "level": "ERROR", "component": "schemas.webhook_schemas", "message": "\u274c Webhook validation failed for provider dynopay: 2 validation errors for DynoPayWebhookSchema\nbase_amount\n Value error, Domain name not allowed in amount field: 39.63 [type=value_error, input_value='39.63', input_type=str]\n For further information visit https://errors.pydantic.dev/2.11/v/value_error\npaid_amount\n Value error, Domain name not allowed in amount field: 0.000336 [type=value_error, input_value='0.000336', input_type=str]\n For further information visit https://errors.pydantic.dev/2.11/v/value_error", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:17:38
+2025-10-01 22:17:38,755 ERROR schemas.webhook_schemas: Data: {'id': '2faffc98-3dea-44ce-83e9-90e76921aa1f', 'payment_mode': 'CRYPTO', 'base_amount': '39.63', 'base_currency': 'USD', 'paid_amount': '0.000336', 'paid_currency': 'BTC', 'transaction_reference': 'c4bf7e8c1faa66f3a82198afec74352c716573002e0ef843ed3042a06caae737', 'transaction_type': 'PAYMENT', 'transaction_details': 'Made payment for crypto_payment on Nomadly1', 'status': 'successful', 'meta_data': {'product_name': 'crypto_payment', 'refId': 'domain_auth455.com_5991214713_1759356246', 'user_id': '236', 'order_id': 'domain_auth455.com_5991214713_1759356246', 'original_amount': 39.534, 'wallet_deposit': False}}
+10-01 23:17:38
+{"timestamp": "2025-10-01T22:17:38.755333+00:00", "level": "ERROR", "component": "schemas.webhook_schemas", "message": " Data: {'id': '2faffc98-3dea-44ce-83e9-90e76921aa1f', 'payment_mode': 'CRYPTO', 'base_amount': '39.63', 'base_currency': 'USD', 'paid_amount': '0.000336', 'paid_currency': 'BTC', 'transaction_reference': 'c4bf7e8c1faa66f3a82198afec74352c716573002e0ef843ed3042a06caae737', 'transaction_type': 'PAYMENT', 'transaction_details': 'Made payment for crypto_payment on Nomadly1', 'status': 'successful', 'meta_data': {'product_name': 'crypto_payment', 'refId': 'domain_auth455.com_5991214713_1759356246', 'user_id': '236', 'order_id': 'domain_auth455.com_5991214713_1759356246', 'original_amount': 39.534, 'wallet_deposit': False}}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:17:38
+2025-10-01 22:17:38,755 ERROR fastapi_server: ❌ TYPE-SAFE: Failed to convert DynoPay webhook: Invalid webhook data: 2 validation errors for DynoPayWebhookSchema
+10-01 23:17:38
+base_amount
+10-01 23:17:38
+Value error, Domain name not allowed in amount field: 39.63 [type=value_error, input_value='39.63', input_type=str]
+10-01 23:17:38
+For further information visit https://errors.pydantic.dev/2.11/v/value_error
+10-01 23:17:38
+paid_amount
+10-01 23:17:38
+Value error, Domain name not allowed in amount field: 0.000336 [type=value_error, input_value='0.000336', input_type=str]
+10-01 23:17:38
+For further information visit https://errors.pydantic.dev/2.11/v/value_error
+10-01 23:17:38
+{"timestamp": "2025-10-01T22:17:38.755490+00:00", "level": "ERROR", "component": "fastapi_server", "message": "\u274c TYPE-SAFE: Failed to convert DynoPay webhook: Invalid webhook data: 2 validation errors for DynoPayWebhookSchema\nbase_amount\n Value error, Domain name not allowed in amount field: 39.63 [type=value_error, input_value='39.63', input_type=str]\n For further information visit https://errors.pydantic.dev/2.11/v/value_error\npaid_amount\n Value error, Domain name not allowed in amount field: 0.000336 [type=value_error, input_value='0.000336', input_type=str]\n For further information visit https://errors.pydantic.dev/2.11/v/value_error", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:17:38
+2025-10-01 22:17:38,755 ERROR fastapi_server: Raw webhook data: {'id': '2faffc98-3dea-44ce-83e9-90e76921aa1f', 'payment_mode': 'CRYPTO', 'base_amount': '39.63', 'base_currency': 'USD', 'paid_amount': '0.000336', 'paid_currency': 'BTC', 'transaction_reference': 'c4bf7e8c1faa66f3a82198afec74352c716573002e0ef843ed3042a06caae737', 'transaction_type': 'PAYMENT', 'transaction_details': 'Made payment for crypto_payment on Nomadly1', 'status': 'successful', 'meta_data': {'product_name': 'crypto_payment', 'refId': 'domain_auth455.com_5991214713_1759356246', 'user_id': '236', 'order_id': 'domain_auth455.com_5991214713_1759356246', 'original_amount': 39.534, 'wallet_deposit': False}}
+10-01 23:17:38
+{"timestamp": "2025-10-01T22:17:38.755621+00:00", "level": "ERROR", "component": "fastapi_server", "message": " Raw webhook data: {'id': '2faffc98-3dea-44ce-83e9-90e76921aa1f', 'payment_mode': 'CRYPTO', 'base_amount': '39.63', 'base_currency': 'USD', 'paid_amount': '0.000336', 'paid_currency': 'BTC', 'transaction_reference': 'c4bf7e8c1faa66f3a82198afec74352c716573002e0ef843ed3042a06caae737', 'transaction_type': 'PAYMENT', 'transaction_details': 'Made payment for crypto_payment on Nomadly1', 'status': 'successful', 'meta_data': {'product_name': 'crypto_payment', 'refId': 'domain_auth455.com_5991214713_1759356246', 'user_id': '236', 'order_id': 'domain_auth455.com_5991214713_1759356246', 'original_amount': 39.534, 'wallet_deposit': False}}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:17:38
+2025-10-01 22:17:38,755 ERROR fastapi_server: This prevents 'could not convert string to float: domain.com' errors
+10-01 23:17:38
+{"timestamp": "2025-10-01T22:17:38.755732+00:00", "level": "ERROR", "component": "fastapi_server", "message": " This prevents 'could not convert string to float: domain.com' errors", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:17:38
+INFO: 35.191.75.216:0 - "POST /webhook/dynopay?order_id=domain_auth455.com_5991214713_1759356246&auth_token=dtN9xHblPvTzBmj0cvINs02OxAdAXYOG4-hmrMSABfg HTTP/1.1" 400 Bad Request
+10-01 23:42:22
+2025-10-01 22:42:22,354 INFO payment_cleanup_service: 🧹 CLEANUP SERVICE: Starting cleanup cycle
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.354433+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": "\ud83e\uddf9 CLEANUP SERVICE: Starting cleanup cycle", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,358 INFO payment_cleanup_service: • Cycle #37
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.358753+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Cycle #37", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,359 INFO payment_cleanup_service: • Time: 2025-10-01 22:42:22.353644
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.359179+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": " \u2022 Time: 2025-10-01 22:42:22.353644", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,359 INFO database: 🧹 ENHANCED PAYMENT CLEANUP: Starting cryptocurrency-aware payment cleanup process
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.359728+00:00", "level": "INFO", "component": "database", "message": "\ud83e\uddf9 ENHANCED PAYMENT CLEANUP: Starting cryptocurrency-aware payment cleanup process", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,360 INFO database: 📋 Using timeout configuration: {'bitcoin': 60, 'ethereum': 45, 'stablecoin': 30, 'fast_crypto': 30, 'default': 30, 'minimum': 10, 'grace_period': 5}
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.360235+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udccb Using timeout configuration: {'bitcoin': 60, 'ethereum': 45, 'stablecoin': 30, 'fast_crypto': 30, 'default': 30, 'minimum': 10, 'grace_period': 5}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,429 INFO database: 🔍 ENHANCED CLEANUP: Identifying truly expired payments with grace period handling
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.429493+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d ENHANCED CLEANUP: Identifying truly expired payments with grace period handling", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,493 INFO database: ✨ ENHANCED CLEANUP: No expired payments found (after grace period)
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.493469+00:00", "level": "INFO", "component": "database", "message": "\u2728 ENHANCED CLEANUP: No expired payments found (after grace period)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,493 INFO database: 🔍 PAYMENT CLEANUP: Identifying expired payments (past expires_at)
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.493732+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d PAYMENT CLEANUP: Identifying expired payments (past expires_at)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,557 INFO database: ✨ PAYMENT CLEANUP: No expired payments (past expires_at) found
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.557223+00:00", "level": "INFO", "component": "database", "message": "\u2728 PAYMENT CLEANUP: No expired payments (past expires_at) found", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,557 INFO database: 🔍 PAYMENT CLEANUP: Identifying long-pending payments (>24h without expires_at)
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.557498+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d PAYMENT CLEANUP: Identifying long-pending payments (>24h without expires_at)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,620 INFO database: ✨ PAYMENT CLEANUP: No long-pending payments (>24h) found
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.620101+00:00", "level": "INFO", "component": "database", "message": "\u2728 PAYMENT CLEANUP: No long-pending payments (>24h) found", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,620 INFO database: ✨ PAYMENT CLEANUP COMPLETE: No payments needed cleanup (checked in 0.26s)
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.620765+00:00", "level": "INFO", "component": "database", "message": "\u2728 PAYMENT CLEANUP COMPLETE: No payments needed cleanup (checked in 0.26s)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+10-01 23:42:22
+2025-10-01 22:42:22,621 INFO payment_cleanup_service: ✅ CLEANUP SERVICE: Cycle completed successfully
+10-01 23:42:22
+{"timestamp": "2025-10-01T22:42:22.621049+00:00", "level": "INFO", "component": "payment_cleanup_service", "message": "\u2705 CLEANUP SERVICE: Cycle completed successfully", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+
+Wrap
+
+Colors

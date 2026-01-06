@@ -1,0 +1,19 @@
+, "context": {}}
+2025-09-22 20:53:40,739 INFO services.payment_provider: ✅ ATOMIC: Payment address created successfully with DynoPay for intent 3
+{"timestamp": "2025-09-22T20:53:40.739146+00:00", "level": "INFO", "component": "services.payment_provider", "message": "\u2705 ATOMIC: Payment address created successfully with DynoPay for intent 3", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:40,844 ERROR database: Database query error: column "tld" of relation "domain_registration_intents" does not exist
+LINE 2:                (user_id, domain_name, tld, quote_price, curr...
+                                              ^
+
+{"timestamp": "2025-09-22T20:53:40.844446+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"tld\" of relation \"domain_registration_intents\" does not exist\nLINE 2:                (user_id, domain_name, tld, quote_price, curr...\n                                              ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:40,844 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-22T20:53:40.844655+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:40,844 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5549
+{"timestamp": "2025-09-22T20:53:40.844908+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5549", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:40,845 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T20:53:40.845012+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:41,126 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T20:53:41.126841+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:53:41,126 INFO fastapi_server: ✅ Processed Telegram update: 786431668
+{"timestamp": "2025-09-22T20:53:41.126973+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431668", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:39094 - "POST /webhook/telegram HTTP/1.1" 200 OK

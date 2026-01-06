@@ -1,0 +1,15 @@
+"timestamp": "2025-11-06T17:09:06.531318+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,637 WARNING handlers: Message edit failed for user 5590563715: Message to edit not found
+{"timestamp": "2025-11-06T17:09:06.637408+00:00", "level": "WARNING", "component": "handlers", "message": "Message edit failed for user 5590563715: Message to edit not found", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,637 ERROR handlers: Error starting domain registration for domain: Message to edit not found
+{"timestamp": "2025-11-06T17:09:06.637555+00:00", "level": "ERROR", "component": "handlers", "message": "Error starting domain registration for domain: Message to edit not found", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,637 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_14788
+{"timestamp": "2025-11-06T17:09:06.637612+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_14788", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,637 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-11-06T17:09:06.637682+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,746 WARNING handlers: Message edit failed for user 5590563715: Message to edit not found
+{"timestamp": "2025-11-06T17:09:06.746168+00:00", "level": "WARNING", "component": "handlers", "message": "Message edit failed for user 5590563715: Message to edit not found", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-11-06 17:09:06,747 INFO fastapi_server: ✅ Processed Telegram update: 786440118
+{"timestamp": "2025-11-06T17:09:06.747416+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786440118", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.67.162:51384 - "POST /webhook/telegram HTTP/1.1" 200 OK
+2025-11-06 17:09:34,901 INFO utils.environment_manager: 📊 Using default DATABASE_URL for devel

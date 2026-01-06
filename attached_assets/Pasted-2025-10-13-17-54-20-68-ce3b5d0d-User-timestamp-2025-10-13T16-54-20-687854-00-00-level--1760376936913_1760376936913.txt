@@ -1,0 +1,49 @@
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:20.687854+00:00", "level": "ERROR", "component": "database", "message": " Query: \n INSERT INTO webhook_provider_health (\n id, provider, metric_window_start, metric_window_end, window_duration_minutes,\n total_expected_webhooks, total_received_webhooks, total_successful_webhooks,\n total_failed_webhooks, avg_delivery_delay_seconds, avg_processing_time_ms,\n delivery_success_rate, processing_success_rate, health_score, health_status\n ) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)\n ON CONFLICT (provider, metric_window_start, window_duration_minutes)\n DO UPDATE SET\n total_received_webhooks = EXCLUDED.total_received_webhooks,\n total_successful_webhooks = EXCLUDED.total_successful_webhooks,\n total_failed_webhooks = EXCLUDED.total_failed_webhooks,\n avg_delivery_delay_seconds = EXCLUDED.avg_delivery_delay_seconds,\n avg_processing_time_ms = EXCLUDED.avg_processing_time_ms,\n delivery_success_rate = EXCLUDED.delivery_success_rate,\n processing_success_rate = EXCLUDED.processing_success_rate,\n health_score = EXCLUDED.health_score,\n health_status = EXCLUDED.health_status\n ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+2025-10-13 16:54:20,688 ERROR database: Params: ('dynopay', datetime.datetime(2025, 10, 13, 16, 49, 20, 484295, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 10, 13, 16, 54, 20, 484310, tzinfo=datetime.timezone.utc), 5, 0, 1, 1, 0, 0.0, 452, 1.0, 1.0, 100.0, 'healthy')
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:20.688168+00:00", "level": "ERROR", "component": "database", "message": " Params: ('dynopay', datetime.datetime(2025, 10, 13, 16, 49, 20, 484295, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 10, 13, 16, 54, 20, 484310, tzinfo=datetime.timezone.utc), 5, 0, 1, 1, 0, 0.0, 452, 1.0, 1.0, 100.0, 'healthy')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+2025-10-13 16:54:20,688 ERROR database: Error Type: NotNullViolation
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:20.688404+00:00", "level": "ERROR", "component": "database", "message": " Error Type: NotNullViolation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+2025-10-13 16:54:20,688 ERROR database: Error Message: null value in column "id" of relation "webhook_provider_health" violates not-null constraint
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+DETAIL: Failing row contains (null, dynopay, 2025-10-13 16:49:20.484295, 2025-10-13 16:54:20.48431, 5, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+2025-10-13 17:54:20.68
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:20.688583+00:00", "level": "ERROR", "component": "database", "message": " Error Message: null value in column \"id\" of relation \"webhook_provider_health\" violates not-null constraint\nDETAIL: Failing row contains (null, dynopay, 2025-10-13 16:49:20.484295, 2025-10-13 16:54:20.48431, 5, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:20.71
+ce3b5d0d
+User
+2025-10-13 16:54:20,710 ERROR database: 💥 NEON HARDENING: Database update operation failed: null value in column "id" of relation "webhook_provider_health" violates not-null constraint
+2025-10-13 17:54:20.71
+ce3b5d0d
+User
+DETAIL: Failing row contains (null, dynopay, 2025-10-13 16:49:20.484295, 2025-10-13 16:54:20.48431, 5, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).
+2025-10-13 17:54:20.71
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:20.710430+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 NEON HARDENING: Database update operation failed: null value in column \"id\" of relation \"webhook_provider_health\" violates not-null constraint\nDETAIL: Failing row contains (null, dynopay, 2025-10-13 16:49:20.484295, 2025-10-13 16:54:20.48431, 5, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:20.71
+ce3b5d0

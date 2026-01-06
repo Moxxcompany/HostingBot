@@ -1,0 +1,58 @@
+12-16 09:14:52
+2025-12-16 09:14:52,413 WARNING services.dynopay: ⚠️ CRITICAL FIX: No exact match found for order_id='hosting_81_5168006768_1765876489', searching for recent dynopay intents with addresses but missing auth_tokens
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.413434+00:00", "level": "WARNING", "component": "services.dynopay", "message": "\u26a0\ufe0f CRITICAL FIX: No exact match found for order_id='hosting_81_5168006768_1765876489', searching for recent dynopay intents with addresses but missing auth_tokens", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+2025-12-16 09:14:52,412 INFO services.dynopay: 🔍 CRITICAL FIX: Found 0 payment intent(s) for order_id 'hosting_81_5168006768_1765876489' and provider 'dynopay'
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.412902+00:00", "level": "INFO", "component": "services.dynopay", "message": "\ud83d\udd0d CRITICAL FIX: Found 0 payment intent(s) for order_id 'hosting_81_5168006768_1765876489' and provider 'dynopay'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.480047+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: dynopay_create_payment_address (3162.28ms)", "payment_context": {}}
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.480047+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: dynopay_create_payment_address (3162.28ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1765876489.3171246, "duration_ms": 3162.282705307007, "metadata": {}}}
+12-16 09:14:52
+2025-12-16 09:14:52,480 INFO payment_system: Payment operation completed: dynopay_create_payment_address (3162.28ms)
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.478744+00:00", "level": "ERROR", "component": "services.dynopay", "message": "\u274c CRITICAL ERROR: No payment intent found for order_id='hosting_81_5168006768_1765876489' - cannot store auth_token!", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+2025-12-16 09:14:52,479 INFO payment_system: Payment operation completed: dynopay_create_payment_address (3162.28ms)
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.479645+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: dynopay_create_payment_address (3162.28ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+2025-12-16 09:14:52,478 ERROR services.dynopay: ❌ CRITICAL ERROR: No payment intent found for order_id='hosting_81_5168006768_1765876489' - cannot store auth_token!
+12-16 09:14:52
+2025-12-16 09:14:52,478 INFO services.dynopay: 🔍 CRITICAL FIX: Found 0 recent dynopay intents with addresses but missing auth_tokens
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.478282+00:00", "level": "INFO", "component": "services.dynopay", "message": "\ud83d\udd0d CRITICAL FIX: Found 0 recent dynopay intents with addresses but missing auth_tokens", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.479645+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: dynopay_create_payment_address (3162.28ms)", "payment_context": {"operation_start_time": 1765876489.3171246, "duration_ms": 3162.282705307007, "metadata": {}}}
+12-16 09:14:52
+2025-12-16 09:14:52,481 INFO handlers: Executing message edit for user 5168006768
+12-16 09:14:52
+2025-12-16 09:14:52,481 INFO handlers: Attempting message edit for user 5168006768, message 5168006768_22541
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.481025+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5168006768, message 5168006768_22541", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+{"timestamp": "2025-12-16T09:14:52.481640+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5168006768", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:14:52
+2025-12-16 09:14:52,724 INFO handlers: Message edit successful for user 5168006768
+12-16 09:14:52
+INFO: 35.191.77.8:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+12-16 09:15:00
+2025-12-16 09:15:00,286 INFO database: 🔍 SQL UPDATE: Executing query with 1 parameters
+12-16 09:15:00
+{"timestamp": "2025-12-16T09:15:00.350914+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:15:01
+INFO: 35.191.79.251:0 - "GET /api/v1/hosting/orders/2147001001 HTTP/1.1" 401 Unauthorized
+12-16 09:15:02
+INFO: 35.191.79.249:0 - "GET /api/v1/hosting/orders/2147001059 HTTP/1.1" 401 Unauthorized
+12-16 09:15:02
+INFO: 35.191.79.249:0 - "GET /api/v1/hosting/orders/2147001060 HTTP/1.1" 401 Unauthorized
+12-16 09:15:02
+INFO: 35.191.79.249:0 - "GET /api/v1/hosting/orders/2147001060 HTTP/1.1" 401 Unauthorized
+12-16 09:15:02
+INFO: 35.191.79.248:0 - "GET /api/v1/hosting/orders/2147001062 HTTP/1.1" 401 Unauthorized
+12-16 09:15:09
+{"timestamp": "2025-12-16T09:15:09.986848+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:15:09
+2025-12-16 09:15:09,986 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment

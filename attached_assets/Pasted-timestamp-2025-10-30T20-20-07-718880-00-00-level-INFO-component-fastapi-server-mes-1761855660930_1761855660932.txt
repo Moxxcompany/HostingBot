@@ -1,0 +1,29 @@
+timestamp": "2025-10-30T20:20:07.718880+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83e\udd16 Telegram Bot:       \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,718 INFO fastapi_server:    🌐 Webhook/Polling:    ❌ Inactive
+{"timestamp": "2025-10-30T20:20:07.718997+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83c\udf10 Webhook/Polling:    \u274c Inactive", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,719 INFO fastapi_server:    🗄️  Database:           ✅ Connected
+{"timestamp": "2025-10-30T20:20:07.719107+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83d\uddc4\ufe0f  Database:           \u2705 Connected", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,719 INFO fastapi_server:    📅 Scheduler:          ✅ Running
+{"timestamp": "2025-10-30T20:20:07.719444+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83d\udcc5 Scheduler:          \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,720 INFO fastapi_server:    🧹 Payment Cleanup:    ✅ Running
+{"timestamp": "2025-10-30T20:20:07.720495+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83e\uddf9 Payment Cleanup:    \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,720 INFO fastapi_server:    🌍 Language System:    ✅ Loaded
+{"timestamp": "2025-10-30T20:20:07.720613+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83c\udf0d Language System:    \u2705 Loaded", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,720 INFO fastapi_server:    📬 Message Queue:      ✅ Running
+{"timestamp": "2025-10-30T20:20:07.720739+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \ud83d\udcec Message Queue:      \u2705 Running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,720 INFO fastapi_server: ================================================================================
+{"timestamp": "2025-10-30T20:20:07.720950+00:00", "level": "INFO", "component": "fastapi_server", "message": "================================================================================", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,721 WARNING fastapi_server: ⚠️ PARTIAL STARTUP: 6/7 services running
+{"timestamp": "2025-10-30T20:20:07.721076+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u26a0\ufe0f PARTIAL STARTUP: 6/7 services running", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,721 WARNING fastapi_server:    Failed services may impact functionality but HTTP server is operational
+{"timestamp": "2025-10-30T20:20:07.721503+00:00", "level": "WARNING", "component": "fastapi_server", "message": "   Failed services may impact functionality but HTTP server is operational", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,721 INFO fastapi_server: ================================================================================
+{"timestamp": "2025-10-30T20:20:07.721612+00:00", "level": "INFO", "component": "fastapi_server", "message": "================================================================================", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,721 INFO fastapi_server: 🌐 HTTP ENDPOINTS AVAILABLE:
+{"timestamp": "2025-10-30T20:20:07.721715+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83c\udf10 HTTP ENDPOINTS AVAILABLE:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,722 INFO fastapi_server:    • GET  /          - Service info
+{"timestamp": "2025-10-30T20:20:07.722054+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \u2022 GET  /          - Service info", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,722 INFO fastapi_server:    • GET  /health    - Health check (always responds)
+{"timestamp": "2025-10-30T20:20:07.722133+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \u2022 GET  /health    - Health check (always responds)", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-30 20:20:07,722 INFO fastapi_server:    • POST /webhook/telegram - Telegram webhook
+{"timestamp": "2025-10-30T20:20:07.722199+00:00", "level": "INFO", "component": "fastapi_server", "message": "   \u20

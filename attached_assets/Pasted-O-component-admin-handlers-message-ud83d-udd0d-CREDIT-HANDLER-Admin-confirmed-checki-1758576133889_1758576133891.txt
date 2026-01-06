@@ -1,0 +1,14 @@
+O", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Admin confirmed - checking credit state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,486 INFO admin_handlers: 🔍 CREDIT HANDLER: Credit state: {'step': 'awaiting_amount', 'target_telegram_id': 5590563715}
+{"timestamp": "2025-09-22T21:21:28.486019+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Credit state: {'step': 'awaiting_amount', 'target_telegram_id': 5590563715}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,486 INFO admin_handlers: 🔍 CREDIT HANDLER: Processing step 'awaiting_amount' with input: 'Bdjsjejeejjejej.sbs...'
+{"timestamp": "2025-09-22T21:21:28.486100+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Processing step 'awaiting_amount' with input: 'Bdjsjejeejjejej.sbs...'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,486 INFO admin_handlers: 🔍 CREDIT HANDLER: Starting amount processing
+{"timestamp": "2025-09-22T21:21:28.486231+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Starting amount processing", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,486 WARNING localization: ⚠️ No translation found for key 'admin.credit.invalid_amount_detailed' in any language
+{"timestamp": "2025-09-22T21:21:28.486399+00:00", "level": "WARNING", "component": "localization", "message": "\u26a0\ufe0f No translation found for key 'admin.credit.invalid_amount_detailed' in any language", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,716 INFO admin_handlers: 🔍 CREDIT HANDLER: Amount processing completed successfully
+{"timestamp": "2025-09-22T21:21:28.716031+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Amount processing completed successfully", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 21:21:28,716 INFO fastapi_server: ✅ Processed Telegram update: 786431716
+{"timestamp": "2025-09-22T21:21:28.716259+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431716", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:47282 - "POST /webhook/telegram HTTP/1.1" 200 OK

@@ -1,0 +1,57 @@
+25,137 - health_monitor - INFO - 🔍 Performing comprehensive health check...
+2025-09-20 10:25:25.32
+1208c2e7
+User
+2025-09-20 09:25:25,327 - webhook_handler - INFO - ✅ Webhook secret is configured
+2025-09-20 10:25:25.32
+1208c2e7
+User
+2025-09-20 09:25:25,327 - webhook_handler - INFO - ✅ Webhook secret appears to be properly formatted
+2025-09-20 10:26:09.21
+1208c2e7
+User
+2025-09-20 09:26:09,210 - apscheduler.executors.default - INFO - Running job "safe_hosting_health_job (trigger: interval[0:02:00], next run at: 2025-09-20 09:28:09 UTC)" (scheduled at 2025-09-20 09:26:09.200924+00:00)
+2025-09-20 10:26:09.21
+1208c2e7
+User
+2025-09-20 09:26:09,210 - apscheduler.executors.default - INFO - Job "safe_hosting_health_job (trigger: interval[0:02:00], next run at: 2025-09-20 09:28:09 UTC)" executed successfully
+2025-09-20 10:26:25.33
+1208c2e7
+User
+2025-09-20 09:26:25,332 - health_monitor - INFO - 🔍 Performing comprehensive health check...
+2025-09-20 10:26:25.52
+1208c2e7
+User
+2025-09-20 09:26:25,524 - webhook_handler - INFO - ✅ Webhook secret is configured
+2025-09-20 10:26:25.52
+1208c2e7
+User
+2025-09-20 09:26:25,524 - webhook_handler - INFO - ✅ Webhook secret appears to be properly formatted
+2025-09-20 10:27:09.20
+1208c2e7
+User
+2025-09-20 09:27:09,208 - apscheduler.executors.default - INFO - Running job "safe_hosting_monitoring_job (trigger: interval[0:05:00], next run at: 2025-09-20 09:32:09 UTC)" (scheduled at 2025-09-20 09:27:09.200470+00:00)
+2025-09-20 10:27:09.20
+1208c2e7
+User
+2025-09-20 09:27:09,208 - hosting_monitor - INFO - 🔍 Starting hosting accounts status check...
+2025-09-20 10:27:09.25
+1208c2e7
+User
+2025-09-20 09:27:09,254 - hosting_monitor - INFO - ℹ️ No active hosting subscriptions found
+2025-09-20 10:27:09.25
+1208c2e7
+User
+2025-09-20 09:27:09,254 - apscheduler.executors.default - INFO - Job "safe_hosting_monitoring_job (trigger: interval[0:05:00], next run at: 2025-09-20 09:32:09 UTC)" executed successfully
+2025-09-20 10:27:25.52
+1208c2e7
+User
+2025-09-20 09:27:25,528 - health_monitor - INFO - 🔍 Performing comprehensive health check...
+2025-09-20 10:27:25.72
+1208c2e7
+User
+2025-09-20 09:27:25,720 - webhook_handler - INFO - ✅ Webhook secret is configured
+2025-09-20 10:27:25.72
+1208c2e7
+User
+2025-09-20 09:27:25,720 - webhook_handler - INFO - ✅ Webhook secret appears to be properly

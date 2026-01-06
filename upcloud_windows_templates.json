@@ -1,0 +1,98 @@
+[
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 3.36,
+    "size": 28,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2016 Datacenter",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010060200"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 1.3888,
+    "size": 29,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2016 Standard",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010060300"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 3.36,
+    "size": 25,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2019 Datacenter",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010070200"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 1.3888,
+    "size": 25,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2019 Standard",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010070300"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 3.36,
+    "size": 18,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2022 Datacenter",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010080200"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 1.3888,
+    "size": 18,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2022 Standard",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010080300"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 3.36,
+    "size": 25,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2025 Datacenter",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010090200"
+  },
+  {
+    "access": "public",
+    "encrypted": "no",
+    "labels": [],
+    "license": 1.3888,
+    "size": 25,
+    "state": "online",
+    "template_type": "native",
+    "title": "Windows Server 2025 Standard",
+    "type": "template",
+    "uuid": "01000000-0000-4000-8000-000010090300"
+  }
+]

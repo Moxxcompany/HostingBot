@@ -1,0 +1,14 @@
+d": null, "context": {}}
+2025-09-21 13:03:26,096 WARNING fastapi_server: ❌ DynoPay webhook security validation failed: Missing timestamp header
+{"timestamp": "2025-09-21T13:03:26.096025+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u274c DynoPay webhook security validation failed: Missing timestamp header", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.120.66:53180 - "POST /webhook/dynopay?order_id=28&auth_token=TX6WBPoVnbvKnBYvPLu-5w4YG2x-MTgxU1LhxO36ZCc HTTP/1.1" 403 Forbidden
+2025-09-21 13:03:26,169 WARNING security.webhook_security: ⚠️ No webhook secret configured for provider: dynopay
+{"timestamp": "2025-09-21T13:03:26.169800+00:00", "level": "WARNING", "component": "security.webhook_security", "message": "\u26a0\ufe0f No webhook secret configured for provider: dynopay", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:03:26,170 WARNING fastapi_server: ❌ DynoPay webhook security validation failed: Missing timestamp header
+{"timestamp": "2025-09-21T13:03:26.170024+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u274c DynoPay webhook security validation failed: Missing timestamp header", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.120.66:53180 - "POST /webhook/dynopay?order_id=28&auth_token=TX6WBPoVnbvKnBYvPLu-5w4YG2x-MTgxU1LhxO36ZCc HTTP/1.1" 403 Forbidden
+2025-09-21 13:03:26,234 WARNING security.webhook_security: ⚠️ No webhook secret configured for provider: dynopay
+{"timestamp": "2025-09-21T13:03:26.234563+00:00", "level": "WARNING", "component": "security.webhook_security", "message": "\u26a0\ufe0f No webhook secret configured for provider: dynopay", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 13:03:26,234 WARNING fastapi_server: ❌ DynoPay webhook security validation failed: Missing timestamp header
+{"timestamp": "2025-09-21T13:03:26.234847+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u274c DynoPay webhook security validation failed: Missing timestamp header", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.120.66:53180 - "POST /webhook/dynopay?order_id=28&auth_token=TX6WBPoVnbvKnBYvPLu-5w4YG2x-MTgxU1LhxO36ZCc HTTP/1.1" 403 Forbidden

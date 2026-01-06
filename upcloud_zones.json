@@ -1,0 +1,67 @@
+[
+  {
+    "description": "Sydney #1",
+    "id": "au-syd1",
+    "public": "yes"
+  },
+  {
+    "description": "Frankfurt #1",
+    "id": "de-fra1",
+    "public": "yes"
+  },
+  {
+    "description": "Madrid #1",
+    "id": "es-mad1",
+    "public": "yes"
+  },
+  {
+    "description": "Helsinki #1",
+    "id": "fi-hel1",
+    "public": "yes"
+  },
+  {
+    "description": "Helsinki #2",
+    "id": "fi-hel2",
+    "public": "yes"
+  },
+  {
+    "description": "Amsterdam #1",
+    "id": "nl-ams1",
+    "public": "yes"
+  },
+  {
+    "description": "Warsaw #1",
+    "id": "pl-waw1",
+    "public": "yes"
+  },
+  {
+    "description": "Stockholm #1",
+    "id": "se-sto1",
+    "public": "yes"
+  },
+  {
+    "description": "Singapore #1",
+    "id": "sg-sin1",
+    "public": "yes"
+  },
+  {
+    "description": "London #1",
+    "id": "uk-lon1",
+    "public": "yes"
+  },
+  {
+    "description": "Chicago #1",
+    "id": "us-chi1",
+    "public": "yes"
+  },
+  {
+    "description": "New York #1",
+    "id": "us-nyc1",
+    "public": "yes"
+  },
+  {
+    "description": "San Jose #1",
+    "id": "us-sjo1",
+    "public": "yes"
+  }
+]

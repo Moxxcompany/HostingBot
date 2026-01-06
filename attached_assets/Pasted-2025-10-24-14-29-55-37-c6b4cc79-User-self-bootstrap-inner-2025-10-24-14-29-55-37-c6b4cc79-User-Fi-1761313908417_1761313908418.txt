@@ -1,0 +1,140 @@
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+self._bootstrap_inner()
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 982, in run
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+work_item.run()
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+payment_logger.log_payment_event(
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+File "/home/runner/workspace/utils/payment_logging.py", line 283, in log_payment_event
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+prod_logger.log_structured(
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+logger.log(log_level, message, extra=extra)
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+2025-10-24 13:29:55,376 AUDIT payment_system: Financial transaction completed: $0.00 → $0.49
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.377526+00:00", "level": "INFO", "component": "payment_system", "event_type": "wallet_credited", "message": "Wallet credited with $0.49", "correlation_id": "d2a93512-c904-4063-bd2f-01fe4f4c35bd", "user_id": 837, "order_id": "overpayment_domain_bfka.email_318245440_1761312536", "payment_context": {"correlation_id": "d2a93512-c904-4063-bd2f-01fe4f4c35bd", "user_id": 837, "order_id": "overpayment_domain_bfka.email_318245440_1761312536", "amount_usd": 0.49, "current_status": "completed", "transaction_id": "overpay_0x90fb13593c3a6a0cb9b38e0fb4df98f1d38d72e106ad4e8fa7a9e402da1fddc2_2549", "metadata": {}}}
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.378056+00:00", "level": "INFO", "component": "payment_system", "message": "Wallet credited with $0.49", "user_id": 837, "order_id": "overpayment_domain_bfka.email_318245440_1761312536", "payment_context": {}}
+2025-10-24 14:29:55.37
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.378056+00:00", "level": "INFO", "component": "payment_system", "message": "Wallet credited with $0.49", "trace_id": null, "user_id": 837, "order_id": "overpayment_domain_bfka.email_318245440_1761312536", "context": {"correlation_id": "d2a93512-c904-4063-bd2f-01fe4f4c35bd", "user_id": 837, "order_id": "overpayment_domain_bfka.email_318245440_1761312536", "amount_usd": 0.49, "current_status": "completed", "transaction_id": "overpay_0x90fb13593c3a6a0cb9b38e0fb4df98f1d38d72e106ad4e8fa7a9e402da1fddc2_2549", "metadata": {}}}
+2025-10-24 14:29:55.42
+c6b4cc79
+User
+2025-10-24 13:29:55,422 INFO database: 🔄 CACHE_INVALIDATED: User cache cleared for telegram_id 318245440 after wallet credit
+2025-10-24 14:29:55.42
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.423537+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: credit_user_wallet (225.93ms)", "payment_context": {"operation_start_time": 1761312595.197409, "duration_ms": 225.92997550964355, "metadata": {}}}
+2025-10-24 14:29:55.42
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.424462+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: credit_user_wallet (225.93ms)", "payment_context": {}}
+2025-10-24 14:29:55.42
+c6b4cc79
+User
+2025-10-24 13:29:55,425 INFO webhook_handler: 🎯 Processing domain payment: bfka.email for telegram_id 318245440
+2025-10-24 14:29:55.42
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.425260+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83c\udfaf Processing domain payment: bfka.email for telegram_id 318245440", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.54
+c6b4cc79
+User
+2025-10-24 13:29:55,545 ERROR webhook_handler: ❌ No domain order found for domain_bfka.email_318245440_1761312536, user 837, domain bfka.email
+2025-10-24 14:29:55.54
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.545502+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c No domain order found for domain_bfka.email_318245440_1761312536, user 837, domain bfka.email", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+2025-10-24 13:29:55,665 ERROR payment_state_validation: 🚫 INVALID STATE TRANSITION: address_created → confirmed (intent_id=90, order_id=domain_bfka.email_318245440_1761312536) - Invalid current payment state: address_created
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.665972+00:00", "level": "ERROR", "component": "payment_state_validation", "message": "\ud83d\udeab INVALID STATE TRANSITION: address_created \u2192 confirmed (intent_id=90, order_id=domain_bfka.email_318245440_1761312536) - Invalid current payment state: address_created", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+2025-10-24 13:29:55,666 ERROR database: 🚫 STATE VALIDATION FAILED: Intent 90 cannot transition from 'address_created' to 'confirmed': Invalid current payment state: address_created
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.666503+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udeab STATE VALIDATION FAILED: Intent 90 cannot transition from 'address_created' to 'confirmed': Invalid current payment state: address_created", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.667284+00:00", "level": "ERROR", "component": "payment_system", "event_type": "error_occurred", "message": "Payment error (invalid_state_transition): Invalid current payment state: address_created", "correlation_id": "137b513d-e41d-48a2-a7da-f1d0d10b6d2a", "user_id": 837, "order_id": "domain_bfka.email_318245440_1761312536", "payment_context": {"correlation_id": "137b513d-e41d-48a2-a7da-f1d0d10b6d2a", "user_id": 837, "order_id": "domain_bfka.email_318245440_1761312536", "payment_intent_id": 90, "provider": "dynopay", "previous_status": "address_created", "current_status": "confirmed", "error_code": "ValueError", "error_category": "invalid_state_transition", "metadata": {"validation_error": "Invalid current payment state: address_created", "attempted_transition": "address_created \u2192 confirmed", "validation_failure": true, "error_message": "Invalid current payment state: address_created", "error_type": "ValueError", "category": "invalid_state_transition", "actionable_steps": "Review payment state machine: address_created cannot transition to confirmed, Check business logic for valid state transitions, Verify webhook data and payment processing flow, Consider if this is a duplicate/late webhook callback"}}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+2025-10-24 13:29:55,667 ERROR payment_system: Payment error (invalid_state_transition): Invalid current payment state: address_created
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.667825+00:00", "level": "ERROR", "component": "payment_system", "message": "Payment error (invalid_state_transition): Invalid current payment state: address_created", "trace_id": null, "user_id": 837, "order_id": "domain_bfka.email_318245440_1761312536", "context": {"correlation_id": "137b513d-e41d-48a2-a7da-f1d0d10b6d2a", "user_id": 837, "order_id": "domain_bfka.email_318245440_1761312536", "payment_intent_id": 90, "provider": "dynopay", "previous_status": "address_created", "current_status": "confirmed", "error_code": "ValueError", "error_category": "invalid_state_transition", "metadata": {"validation_error": "Invalid current payment state: address_created", "attempted_transition": "address_created \u2192 confirmed", "validation_failure": true, "error_message": "Invalid current payment state: address_created", "error_type": "ValueError", "category": "invalid_state_transition", "actionable_steps": "Review payment state machine: address_created cannot transition to confirmed, Check business logic for valid state transitions, Verify webhook data and payment processing flow, Consider if this is a duplicate/late webhook callback"}}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.668228+00:00", "level": "ERROR", "component": "payment_system", "message": "Error occurred: Invalid current payment state: address_created", "user_id": 837, "order_id": "domain_bfka.email_318245440_1761312536", "payment_context": {}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.668579+00:00", "level": "INFO", "component": "payment_system", "event_type": "performance_metric", "message": "Payment operation completed: update_payment_intent_status (63.03ms)", "payment_context": {"operation_start_time": 1761312595.6054182, "duration_ms": 63.025474548339844, "metadata": {}}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.668928+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: update_payment_intent_status (63.03ms)", "payment_context": {}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.668928+00:00", "level": "INFO", "component": "payment_system", "message": "Payment operation completed: update_payment_intent_status (63.03ms)", "trace_id": null, "user_id": null, "order_id": null, "context": {"operation_start_time": 1761312595.6054182, "duration_ms": 63.025474548339844, "metadata": {}}}
+2025-10-24 14:29:55.66
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.669256+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udeab PaymentWebhookHandler: State validation failed for order domain_bfka.email_318245440_1761312536 - cannot update to 'confirmed'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.77
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.772980+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:55.87
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:55.874839+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-24 14:29:56.03
+c6b4cc79
+User
+2025-10-24 13:29:56,034 INFO database: 🔍 SQL UPDATE: Executing query with 14 parameters
+2025-10-24 14:29:56.03
+c6b4cc79
+User
+{"timestamp": "2025-10-24T13:29:56.034851+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d S

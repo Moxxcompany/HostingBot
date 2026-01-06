@@ -1,0 +1,40 @@
+2025-09-22 11:13:45.07
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:45.076513+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83d\udcc4 DOMAIN ONLY: Routing mrelay-exped.com to domain orchestrator", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+2025-09-22 10:14:30,077 ERROR webhook_handler: ⏰ DOMAIN TIMEOUT: Domain-only registration timed out after 45s for order 21
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:30.077552+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u23f0 DOMAIN TIMEOUT: Domain-only registration timed out after 45s for order 21", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+2025-09-22 10:14:30,078 ERROR admin_alerts: ❌ Admin alert system error: 'timeout' is not a valid AlertCategory
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:30.078916+00:00", "level": "ERROR", "component": "admin_alerts", "message": "\u274c Admin alert system error: 'timeout' is not a valid AlertCategory", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+2025-09-22 10:14:30,079 ERROR admin_alerts: 🚨 ALERT (failed to send): [domain_registration] Domain-only registration timed out after 45s for order 21
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:30.079198+00:00", "level": "ERROR", "component": "admin_alerts", "message": "\ud83d\udea8 ALERT (failed to send): [domain_registration] Domain-only registration timed out after 45s for order 21", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+2025-09-22 10:14:30,079 ERROR webhook_handler: ❌ Error routing domain payment:
+2025-09-22 11:14:30.07
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:14:30.079334+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c Error routing domain payment: ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:14:30.08
+4ffaf11d
+User
+2025-09-22 10:14:30,081 INFO services.registration_orchestrator: 🎯 ORCHESTRATOR: Starting registration for order 21, domain mrelay-exped.com

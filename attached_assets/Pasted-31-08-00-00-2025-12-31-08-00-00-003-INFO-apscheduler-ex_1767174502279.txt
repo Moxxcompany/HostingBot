@@ -1,0 +1,35 @@
+31 08:00:00
+2025-12-31 08:00:00,003 INFO apscheduler.executors.default: Running job "cPanel Reconciliation (trigger: cron[hour='*/4'], next run at: 2025-12-31 12:00:00 UTC)" (scheduled at 2025-12-31 08:00:00+00:00)
+12-31 08:00:00
+2025-12-31 08:00:00,003 INFO services.cpanel_reconciliation: 📅 Scheduled cPanel account reconciliation starting...
+12-31 08:00:00
+{"timestamp": "2025-12-31T08:00:00.003754+00:00", "level": "INFO", "component": "services.cpanel_reconciliation", "message": "\ud83d\udcc5 Scheduled cPanel account reconciliation starting...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-31 08:00:00
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12-31 08:00:00
+File "/home/runner/workspace/services/cpanel_reconciliation.py", line 204, in run_cpanel_reconciliation
+12-31 08:00:00
+retval = await job.func(*job.args, **job.kwargs)
+12-31 08:00:00
+ImportError: cannot import name 'cpanel' from 'services.cpanel' (/home/runner/workspace/services/cpanel.py)
+12-31 08:00:00
+2025-12-31 08:00:00,012 INFO apscheduler.executors.default: Running job "RDP Reconciliation (trigger: cron[hour='*/2'], next run at: 2025-12-31 10:00:00 UTC)" (scheduled at 2025-12-31 08:00:00+00:00)
+12-31 08:00:00
+{"timestamp": "2025-12-31T08:00:00.011074+00:00", "level": "ERROR", "component": "apscheduler.executors.default", "message": "Job \"cPanel Reconciliation (trigger: cron[hour='*/4'], next run at: 2025-12-31 12:00:00 UTC)\" raised an exception", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-31 08:00:00
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/apscheduler/executors/base_py3.py", line 30, in run_coroutine_job
+12-31 08:00:00
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12-31 08:00:00
+from services.cpanel import cpanel
+12-31 08:00:00
+Traceback (most recent call last):
+12-31 08:00:00
+2025-12-31 08:00:00,011 ERROR apscheduler.executors.default: Job "cPanel Reconciliation (trigger: cron[hour='*/4'], next run at: 2025-12-31 12:00:00 UTC)" raised an exception
+12-31 08:00:00
+result = await cpanel_reconciliation.reconcile_all_accounts(notify_admin=True)
+12-31 08:00:00
+File "/home/runner/workspace/services/cpanel_reconciliation.py", line 37, in reconcile_all_accounts
+12-31 08:00:00
+2025-12-31 08:00:00,013 INFO services.rdp_reconciliation: 🔄 Starting RDP server reconciliation...
+12-31 08:00:00

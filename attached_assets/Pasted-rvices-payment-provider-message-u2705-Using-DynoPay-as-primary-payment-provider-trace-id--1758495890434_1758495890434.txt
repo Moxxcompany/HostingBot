@@ -1,0 +1,26 @@
+rvices.payment_provider", "message": "\u2705 Using DynoPay as primary payment provider", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,675 ERROR database: Database query error: invalid input syntax for type integer: "domain_huisjsjsj.sbs_5590563715_1758495866"
+LINE 3:                VALUES ('domain_huisjsjsj.sbs_5590563715_1758...
+                               ^
+
+{"timestamp": "2025-09-21T23:04:26.675424+00:00", "level": "ERROR", "component": "database", "message": "Database query error: invalid input syntax for type integer: \"domain_huisjsjsj.sbs_5590563715_1758495866\"\nLINE 3:                VALUES ('domain_huisjsjsj.sbs_5590563715_1758...\n                               ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,675 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T23:04:26.675607+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,784 ERROR database: Database query error: invalid input syntax for type integer: "domain_huisjsjsj.sbs_5590563715_1758495866"
+LINE 1: SELECT id FROM payment_intents WHERE order_id = 'domain_huis...
+                                                        ^
+
+{"timestamp": "2025-09-21T23:04:26.784224+00:00", "level": "ERROR", "component": "database", "message": "Database query error: invalid input syntax for type integer: \"domain_huisjsjsj.sbs_5590563715_1758495866\"\nLINE 1: SELECT id FROM payment_intents WHERE order_id = 'domain_huis...\n                                                        ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,784 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T23:04:26.784428+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,784 ERROR services.payment_provider: ❌ Failed to create payment intent for order domain_huisjsjsj.sbs_5590563715_1758495866
+{"timestamp": "2025-09-21T23:04:26.784776+00:00", "level": "ERROR", "component": "services.payment_provider", "message": "\u274c Failed to create payment intent for order domain_huisjsjsj.sbs_5590563715_1758495866", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,784 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_4953
+{"timestamp": "2025-09-21T23:04:26.784941+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_4953", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:26,785 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-21T23:04:26.785032+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:27,019 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-21T23:04:27.019389+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:04:27,019 INFO fastapi_server: ✅ Processed Telegram update: 786430875
+{"timestamp": "2025-09-21T23:04:27.019524+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786430875", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:48396 - "POST /webhook/telegram HTTP/1.1" 200 OK

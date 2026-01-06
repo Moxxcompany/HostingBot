@@ -1,0 +1,17 @@
+"timestamp": "2025-09-22T20:56:10.428231+00:00", "level": "INFO", "component": "database", "message": "\u2705 Created registration intent 1 for hsjsjsjsjsj.sbs by user 3", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,532 ERROR database: Database query error: column "intent_id" of relation "domain_orders" does not exist
+LINE 1: ...ss, expected_amount, currency, blockbee_order_id, intent_id)...
+                                                             ^
+
+{"timestamp": "2025-09-22T20:56:10.532961+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"intent_id\" of relation \"domain_orders\" does not exist\nLINE 1: ...ss, expected_amount, currency, blockbee_order_id, intent_id)...\n                                                             ^\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,533 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-22T20:56:10.533145+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,533 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5553
+{"timestamp": "2025-09-22T20:56:10.533365+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5553", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,533 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T20:56:10.533478+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,770 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T20:56:10.770265+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 20:56:10,770 INFO fastapi_server: ✅ Processed Telegram update: 786431673
+{"timestamp": "2025-09-22T20:56:10.770423+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786431673", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.103.2:50518 - "POST /webhook/telegram HTTP/1.1" 200 OK

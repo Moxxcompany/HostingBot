@@ -1,0 +1,56 @@
+11-04 16:35:30
+INFO: 35.191.122.125:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+11-04 16:35:31
+2025-11-04 16:35:31,628 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+11-04 16:35:31
+{"timestamp": "2025-11-04T16:35:31.628875+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:37
+2025-11-04 16:35:37,186 INFO handlers: 🖱️ USER_ACTIVITY: Button click from user 1027722772 (@peanutsauce100) - action: search_domains
+11-04 16:35:37
+{"timestamp": "2025-11-04T16:35:37.186467+00:00", "level": "INFO", "component": "handlers", "message": "\ud83d\uddb1\ufe0f USER_ACTIVITY: Button click from user 1027722772 (@peanutsauce100) - action: search_domains", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:37
+2025-11-04 16:35:37,740 INFO handlers: Routing to: show_search_interface
+11-04 16:35:37
+{"timestamp": "2025-11-04T16:35:37.740040+00:00", "level": "INFO", "component": "handlers", "message": "Routing to: show_search_interface", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:37
+2025-11-04 16:35:37,740 INFO handlers: Attempting message edit for user 1027722772, message 1027722772_14046
+11-04 16:35:37
+{"timestamp": "2025-11-04T16:35:37.740583+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 1027722772, message 1027722772_14046", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:37
+2025-11-04 16:35:37,740 INFO handlers: Executing message edit for user 1027722772
+11-04 16:35:37
+{"timestamp": "2025-11-04T16:35:37.740926+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:38
+2025-11-04 16:35:38,001 INFO handlers: Message edit successful for user 1027722772
+11-04 16:35:38
+{"timestamp": "2025-11-04T16:35:38.001952+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:38
+2025-11-04 16:35:38,002 INFO fastapi_server: ✅ Processed Telegram update: 786439067
+11-04 16:35:38
+{"timestamp": "2025-11-04T16:35:38.002177+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Processed Telegram update: 786439067", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:38
+INFO: 35.191.113.88:0 - "POST /webhook/telegram HTTP/1.1" 200 OK
+11-04 16:35:45
+2025-11-04 16:35:45,785 INFO admin_handlers: 🔍 CREDIT HANDLER: Called for user 1027722772
+11-04 16:35:45
+{"timestamp": "2025-11-04T16:35:45.785542+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Called for user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:45
+2025-11-04 16:35:45,785 INFO admin_handlers: 🔍 CREDIT HANDLER: Not admin - user 1027722772
+11-04 16:35:45
+{"timestamp": "2025-11-04T16:35:45.785863+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d CREDIT HANDLER: Not admin - user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:45
+2025-11-04 16:35:45,786 INFO admin_handlers: 🔍 ADMIN BROADCAST HANDLER: Called for user 1027722772
+11-04 16:35:45
+{"timestamp": "2025-11-04T16:35:45.786161+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d ADMIN BROADCAST HANDLER: Called for user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:45
+2025-11-04 16:35:45,786 INFO admin_handlers: 🔍 ADMIN BROADCAST HANDLER: Not admin - user 1027722772
+11-04 16:35:45
+{"timestamp": "2025-11-04T16:35:45.786377+00:00", "level": "INFO", "component": "admin_handlers", "message": "\ud83d\udd0d ADMIN BROADCAST HANDLER: Not admin - user 1027722772", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:46
+2025-11-04 16:35:46,357 INFO services.openprovider: 🔐 Authenticating with OpenProvider API...
+11-04 16:35:46
+{"timestamp": "2025-11-04T16:35:46.357235+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udd10 Authenticating with OpenProvider API...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+11-04 16:35:46
+2025-11-04 16:35:46,358 INFO services.openprovider: 🔍 Detecting public IP address using fallback services...
+11-04 16:35:46
+{"timestamp": "2025-11-04T16:35:46.358221+00:00", "level": "INFO", "component": "services.openprovider", "message": "\ud83d\udd0d Detecting public IP address using fallback services...", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

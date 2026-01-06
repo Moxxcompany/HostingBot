@@ -1,0 +1,64 @@
+2025-09-22 11:12:44.30
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:12:44.300707+00:00", "level": "INFO", "component": "webhook_handler", "message": "\u2705 Overpayment $0.06 credited to wallet for user 334", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+2025-09-22 10:13:44,301 ERROR webhook_handler: ❌ Error processing domain payment:
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.301704+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c Error processing domain payment: ", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+2025-09-22 10:13:44,302 ERROR webhook_handler: 🔍 Payment details: {'status': 'successful', 'amount_usd': 39.59, 'amount_crypto': 0.0095, 'currency': 'ETH', 'txid': '0xd10233f534e62730c4a36b9aa663c5ae559d13714142efe1ba9e21f88ea448e4', 'confirmations': 1, 'payment_method': 'crypto', 'overpayment_amount': 0.06, 'overpayment_credited': True, 'expected_usd': 39.53}
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.302404+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Payment details: {'status': 'successful', 'amount_usd': 39.59, 'amount_crypto': 0.0095, 'currency': 'ETH', 'txid': '0xd10233f534e62730c4a36b9aa663c5ae559d13714142efe1ba9e21f88ea448e4', 'confirmations': 1, 'payment_method': 'crypto', 'overpayment_amount': 0.06, 'overpayment_credited': True, 'expected_usd': 39.53}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+2025-09-22 10:13:44,302 ERROR webhook_handler: 🔍 Order ID: domain_mrelay-exped.com_924873522_1758535910
+2025-09-22 11:13:44.30
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.302620+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Order ID: domain_mrelay-exped.com_924873522_1758535910", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+2025-09-22 10:13:44,579 ERROR webhook_handler: 🔍 Full traceback: Traceback (most recent call last):
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+File "/home/runner/workspace/webhook_handler.py", line 984, in _process_domain_payment
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+future.result(timeout=60.0) # Increased for hosting bundle processing (domain + hosting + DNS)
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/_base.py", line 458, in result
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+raise TimeoutError()
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+TimeoutError
+2025-09-22 11:13:44.57
+4ffaf11d
+User
+{"timestamp": "2025-09-22T10:13:44.579437+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\ud83d\udd0d Full traceback: Traceback (most recent call last):\n File \"/home/runner/workspace/webhook_handler.py\", line 984, in _process_domain_payment\n future.result(timeout=60.0) # Increased for hosting bundle processing (domain + hosting + DNS)\n ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n File \"/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/_base.py\", line 458, in result\n raise TimeoutError()\nTimeoutError\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 11:13:44.79
+4ffaf11d
+User
+2025-09-22 10:13:44,798 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - domain_order:domain_mrelay-exped.com_924873522_1758535910:1

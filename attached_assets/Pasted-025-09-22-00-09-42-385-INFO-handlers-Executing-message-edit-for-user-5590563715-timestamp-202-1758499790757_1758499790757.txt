@@ -1,0 +1,16 @@
+025-09-22 00:09:42,385 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T00:09:42.385792+00:00", "level": "INFO", "component": "handlers", "message": "Executing message edit for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,830 INFO handlers: Message edit successful for user 5590563715
+{"timestamp": "2025-09-22T00:09:42.830716+00:00", "level": "INFO", "component": "handlers", "message": "Message edit successful for user 5590563715", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,830 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 7
+{"timestamp": "2025-09-22T00:09:42.830866+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: hosting_bundle_failure notification sent to user for order 7", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,938 INFO services.hosting_orchestrator: ❌ HOSTING ORCHESTRATOR: Bundle marked as failed - order 7, intent 7: Hosting provisioning failed: Hosting provisioning returned false
+{"timestamp": "2025-09-22T00:09:42.938183+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u274c HOSTING ORCHESTRATOR: Bundle marked as failed - order 7, intent 7: Hosting provisioning failed: Hosting provisioning returned false", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,938 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: Bundle processing completed for order 7
+{"timestamp": "2025-09-22T00:09:42.938342+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: Bundle processing completed for order 7", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,938 WARNING handlers: ⚠️ HANDLERS: Unexpected orchestrator result for intent 7: {'success': False, 'error': 'Hosting provisioning failed: Hosting provisioning returned false', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}
+{"timestamp": "2025-09-22T00:09:42.938421+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f HANDLERS: Unexpected orchestrator result for intent 7: {'success': False, 'error': 'Hosting provisioning failed: Hosting provisioning returned false', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,938 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5009
+{"timestamp": "2025-09-22T00:09:42.938478+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5009", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:09:42,938 INFO handlers: Executing message edit for user 5590563715
+{"timestamp": "2025-09-22T00:

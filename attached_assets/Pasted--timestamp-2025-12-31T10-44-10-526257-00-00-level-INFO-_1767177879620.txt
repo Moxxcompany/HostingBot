@@ -1,0 +1,34 @@
+
+{"timestamp": "2025-12-31T10:44:10.526257+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Global error handler registered - unhandled exceptions will be logged properly", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:44:10.52
+62966e1c
+User
+{"timestamp": "2025-12-31T10:44:10.526257+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 Global error handler registered - unhandled exceptions will be logged properly", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:44:15.54
+62966e1c
+User
+2025-12-31 10:44:15,542 WARNING fastapi_server: ⚠️ Bot init error on attempt 1: Timed out
+2025-12-31 10:44:15.54
+62966e1c
+User
+{"timestamp": "2025-12-31T10:44:15.542927+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u26a0\ufe0f Bot init error on attempt 1: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:44:15.54
+62966e1c
+User
+2025-12-31 10:44:15,542 WARNING fastapi_server: ⚠️ Bot init error on attempt 1: Timed out
+2025-12-31 10:44:15.54
+62966e1c
+User
+{"timestamp": "2025-12-31T10:44:15.542927+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u26a0\ufe0f Bot init error on attempt 1: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:44:15.54
+62966e1c
+User
+2025-12-31 10:44:15,542 WARNING fastapi_server: ⚠️ Bot init error on attempt 1: Timed out
+2025-12-31 10:44:15.54
+62966e1c
+User
+{"timestamp": "2025-12-31T10:44:15.542927+00:00", "level": "WARNING", "component": "fastapi_server", "message": "\u26a0\ufe0f Bot init error on attempt 1: Timed out", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-12-31 10:44:17.54
+62966e1c
+User
+{"timestamp": "2025-12-31T10:44:17.545477+00:00", "level": "INFO", "component": "fastapi_server", "message": "\ud83d\ude80 Initializing Telegram bot (attempt 2/3, timeo

@@ -1,0 +1,40 @@
+2025-12-16 09:10:00,293 INFO database: 🔍 SQL UPDATE: Executing query with 1 parameters
+12-16 09:10:00
+2025-12-16 09:10:00,358 INFO database: ✅ SQL UPDATE: Successfully affected 1 rows
+12-16 09:10:00
+{"timestamp": "2025-12-16T09:10:00.358206+00:00", "level": "INFO", "component": "database", "message": "\u2705 SQL UPDATE: Successfully affected 1 rows", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:00
+INFO: 35.191.119.87:0 - "GET /api/v1/hosting/orders/2147001043 HTTP/1.1" 200 OK
+12-16 09:10:02
+INFO: 35.191.76.9:0 - "GET /api/v1/hosting/orders/2147001001 HTTP/1.1" 401 Unauthorized
+12-16 09:10:03
+INFO: 35.191.76.11:0 - "GET /api/v1/hosting/orders/2147001002 HTTP/1.1" 401 Unauthorized
+12-16 09:10:04
+INFO: 35.191.76.8:0 - "GET /api/v1/hosting/orders/2147001059 HTTP/1.1" 401 Unauthorized
+12-16 09:10:04
+INFO: 35.191.76.8:0 - "GET /api/v1/hosting/orders/2147001060 HTTP/1.1" 401 Unauthorized
+12-16 09:10:05
+INFO: 35.191.76.11:0 - "GET /api/v1/hosting/orders/2147001062 HTTP/1.1" 401 Unauthorized
+12-16 09:10:07
+{"timestamp": "2025-12-16T09:10:07.931334+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:07
+2025-12-16 09:10:07,931 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-16 09:10:07
+{"timestamp": "2025-12-16T09:10:07.931334+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:07
+2025-12-16 09:10:07,931 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-16 09:10:07
+2025-12-16 09:10:07,931 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-16 09:10:07
+{"timestamp": "2025-12-16T09:10:07.931334+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:07
+2025-12-16 09:10:07,931 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-16 09:10:07
+{"timestamp": "2025-12-16T09:10:07.931334+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:38
+{"timestamp": "2025-12-16T09:10:38.156389+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:38
+2025-12-16 09:10:38,156 INFO utils.environment_manager: 📊 Using default DATABASE_URL for production environment
+12-16 09:10:38
+{"timestamp": "2025-12-16T09:10:38.156389+00:00", "level": "INFO", "component": "utils.environment_manager", "message": "\ud83d\udcca Using default DATABASE_URL for production environment", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+12-16 09:10:38

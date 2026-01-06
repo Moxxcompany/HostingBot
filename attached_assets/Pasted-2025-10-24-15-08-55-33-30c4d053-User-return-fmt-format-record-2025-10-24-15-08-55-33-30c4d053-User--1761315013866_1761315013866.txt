@@ -1,0 +1,156 @@
+2025-10-24 15:08:55.33
+30c4d053
+User
+return fmt.format(record)
+2025-10-24 15:08:55.33
+30c4d053
+User
+^^^^^^^^^^^^^^^^^^
+2025-10-24 15:08:55.33
+30c4d053
+User
+File "/home/runner/workspace/monitoring/production_logging.py", line 173, in format
+2025-10-24 15:08:55.33
+30c4d053
+User
+return json.dumps(log_data)
+2025-10-24 15:08:55.33
+30c4d053
+User
+^^^^^^^^^^^^^^^^^^^^
+2025-10-24 15:08:55.33
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/json/__init__.py", line 231, in dumps
+2025-10-24 15:08:55.33
+30c4d053
+User
+return _default_encoder.encode(obj)
+2025-10-24 15:08:55.33
+30c4d053
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-10-24 15:08:55.33
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/json/encoder.py", line 200, in encode
+2025-10-24 15:08:55.33
+30c4d053
+User
+chunks = self.iterencode(o, _one_shot=True)
+2025-10-24 15:08:55.33
+30c4d053
+User
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-10-24 15:08:55.33
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/json/encoder.py", line 258, in iterencode
+2025-10-24 15:08:55.33
+30c4d053
+User
+return _iterencode(o, 0)
+2025-10-24 15:08:55.33
+30c4d053
+User
+^^^^^^^^^^^^^^^^^
+2025-10-24 15:08:55.33
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/json/encoder.py", line 180, in default
+2025-10-24 15:08:55.33
+30c4d053
+User
+raise TypeError(f'Object of type {o.__class__.__name__} '
+2025-10-24 15:08:55.33
+30c4d053
+User
+TypeError: Object of type Decimal is not JSON serializable
+2025-10-24 15:08:55.33
+30c4d053
+User
+Call stack:
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 1002, in _bootstrap
+2025-10-24 15:08:55.34
+30c4d053
+User
+self._bootstrap_inner()
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+2025-10-24 15:08:55.34
+30c4d053
+User
+self.run()
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/threading.py", line 982, in run
+2025-10-24 15:08:55.34
+30c4d053
+User
+self._target(*self._args, **self._kwargs)
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/thread.py", line 83, in _worker
+2025-10-24 15:08:55.34
+30c4d053
+User
+work_item.run()
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+2025-10-24 15:08:55.34
+30c4d053
+User
+result = self.fn(*self.args, **self.kwargs)
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/home/runner/workspace/database.py", line 6945, in _credit_wallet_with_retry
+2025-10-24 15:08:55.34
+30c4d053
+User
+payment_logger.log_payment_event(
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/home/runner/workspace/utils/payment_logging.py", line 283, in log_payment_event
+2025-10-24 15:08:55.34
+30c4d053
+User
+prod_logger.log_structured(
+2025-10-24 15:08:55.34
+30c4d053
+User
+File "/home/runner/workspace/monitoring/production_logging.py", line 295, in log_structured
+2025-10-24 15:08:55.34
+30c4d053
+User
+logger.log(log_level, message, extra=extra)
+2025-10-24 15:08:55.34
+30c4d053
+User
+Message: 'Wallet credit successful: $24.00 credited to user 837'
+2025-10-24 15:08:55.34
+30c4d053
+User
+Arguments: ()
+2025-10-24 15:08:55.34
+30c4d053
+User
+{"timestamp": "2025-10-24T14:08:55.340789+00:00", "level": "AUDIT", "component": "payment_system", "event_type": "payment_confirmed", "message": "Financial transaction completed: $2.20 \u2192 $26.20", "correlation_id": "13fa86ae-20bf-404e-8124-c36c8659a372", "user_id": 837, "order_id": "admin_credit_1761314935", "payment_context": {"correlation_id": "13fa86ae-20bf-404e-8124-c36c8659a372", "user_id": 837, "order_id": "admin_credit_1761314935", "provider": "admin", "currency": "USD", "amount_usd": 24.0, "current_status": "completed", "transaction_id": "admin_1761314935_5168006768", "duration_ms": 140.455961227417, "metadata": {"previous_balance": 2.2, "new_balance": 26.2, "balance_change": 24.0, "wallet_transaction_id": 144, "idempotency_check": "passed", "security_gate": "passed", "operation_type": "wallet_credit"}}}
+2025-10-24 15:08:55.34
+30c4d053
+User
+2025-10-24 14:08:55,340 AUDIT payment_system: Financial transaction completed: $2.20 → $26.20
+2025-10-24 15:08:55.34
+30c4d053
+User
+{"timestamp": "2025-10-24T14:08:55.340789+00:00", "level": "AUDIT", "component": "payment_system", "message": "Financial transaction completed: $2.20 \u2192 $26.20", "trace_id": null, "user_id": 837, "order_id": "admin_credit_1761314935", "context": {}}

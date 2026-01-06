@@ -1,0 +1,102 @@
+2025-10-13 17:54:21.00
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:21.002039+00:00", "level": "INFO", "component": "database", "message": "\ud83d\udd0d SQL UPDATE: Executing query with 14 parameters", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+2025-10-13 16:54:21,051 ERROR database: 💥 SQL ERROR in execute_update:
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:21.051612+00:00", "level": "ERROR", "component": "database", "message": "\ud83d\udca5 SQL ERROR in execute_update:", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+2025-10-13 16:54:21,051 ERROR database: Query:
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+INSERT INTO webhook_provider_health (
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+id, provider, metric_window_start, metric_window_end, window_duration_minutes,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+total_expected_webhooks, total_received_webhooks, total_successful_webhooks,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+total_failed_webhooks, avg_delivery_delay_seconds, avg_processing_time_ms,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+delivery_success_rate, processing_success_rate, health_score, health_status
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+) VALUES (DEFAULT, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+ON CONFLICT (provider, metric_window_start, window_duration_minutes)
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+DO UPDATE SET
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+total_received_webhooks = EXCLUDED.total_received_webhooks,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+total_successful_webhooks = EXCLUDED.total_successful_webhooks,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+total_failed_webhooks = EXCLUDED.total_failed_webhooks,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+avg_delivery_delay_seconds = EXCLUDED.avg_delivery_delay_seconds,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+delivery_success_rate = EXCLUDED.delivery_success_rate,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+processing_success_rate = EXCLUDED.processing_success_rate,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+health_score = EXCLUDED.health_score,
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+{"timestamp": "2025-10-13T16:54:21.052051+00:00", "level": "ERROR", "component": "database", "message": " Params: ('dynopay', datetime.datetime(2025, 10, 13, 15, 54, 20, 888581, tzinfo=datetime.timezone.utc), datetime.datetime(2025, 10, 13, 16, 54, 20, 888596, tzinfo=datetime.timezone.utc), 60, 0, 1, 1, 0, 0.0, 452, 1.0, 1.0, 100.0, 'healthy')", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+2025-10-13 16:54:21,052 ERROR database: Error Type: NotNullViolation
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+2025-10-13 16:54:21,052 ERROR database: Error Message: null value in column "id" of relation "webhook_provider_health" violates not-null constraint
+2025-10-13 17:54:21.05
+ce3b5d0d
+User
+DETAIL: Failing row contains (null, dynopay, 2025-10-13 15:54:20.888581, 2025-10-13 16:54:20.888596, 60, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).
+2025-10-13 17:54:21.07
+ce3b5d0d
+User
+DETAIL: Failing row contains (null, dynopay, 2025-10-13 15:54:20.888581, 2025-10-13 16:54:20.888596, 60, 0, 1, 1, 0, 0, 0.000, 452.000, null, null, null, 1.0000, 1.0000, null, 0, 0, 0, 0, 0, 100.00, healthy, null).
+2025-10-13 17:54:21.07
+ce3b5d0d
+User
+2025-10-13 16:54:21,074 INFO database: 🏥 FALLBACK: Update operation aborted with clean rollback
+2025-10-13 17:54:21.07
+ce

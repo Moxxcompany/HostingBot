@@ -1,0 +1,26 @@
+bhook_handler", "message": "\ud83d\udcb0 FALLBACK: No payment intent found, trying simple payment processing", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:31,963 INFO simple_payment_handler: 💰 SIMPLE: Processing payment - order_id=9, amount=$11.42, status=successful
+{"timestamp": "2025-09-21T23:21:31.963688+00:00", "level": "INFO", "component": "simple_payment_handler", "message": "\ud83d\udcb0 SIMPLE: Processing payment - order_id=9, amount=$11.42, status=successful", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,271 ERROR database: Database query error: column "txid" does not exist
+LINE 1: SELECT user_id FROM payment_intents WHERE txid = 'e47c781a24...
+                                                  ^
+HINT:  Perhaps you meant to reference the column "payment_intents.id".
+
+{"timestamp": "2025-09-21T23:21:32.271347+00:00", "level": "ERROR", "component": "database", "message": "Database query error: column \"txid\" does not exist\nLINE 1: SELECT user_id FROM payment_intents WHERE txid = 'e47c781a24...\n                                                  ^\nHINT:  Perhaps you meant to reference the column \"payment_intents.id\".\n", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,271 WARNING database: 🔄 Database operation failed - returning empty result set for graceful degradation
+{"timestamp": "2025-09-21T23:21:32.271526+00:00", "level": "WARNING", "component": "database", "message": "\ud83d\udd04 Database operation failed - returning empty result set for graceful degradation", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,384 ERROR simple_payment_handler: ❌ SIMPLE: Could not safely resolve user - manual review required
+{"timestamp": "2025-09-21T23:21:32.384149+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: Could not safely resolve user - manual review required", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,384 ERROR simple_payment_handler: ❌ SIMPLE: order_id='9', txid='e47c781a24e2ad04f7cb166203cba327b73b086fb84904b2cd49082bbdca570f', amount=$11.42
+{"timestamp": "2025-09-21T23:21:32.384323+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: order_id='9', txid='e47c781a24e2ad04f7cb166203cba327b73b086fb84904b2cd49082bbdca570f', amount=$11.42", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,384 ERROR simple_payment_handler: ❌ SIMPLE: callback_url=''
+{"timestamp": "2025-09-21T23:21:32.384382+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: callback_url=''", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,384 ERROR simple_payment_handler: ❌ SIMPLE: external_id='9'
+{"timestamp": "2025-09-21T23:21:32.384441+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: external_id='9'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,384 ERROR webhook_handler: ❌ FALLBACK: Simple payment processing also failed for order 9
+{"timestamp": "2025-09-21T23:21:32.384521+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c FALLBACK: Simple payment processing also failed for order 9", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,488 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:9:1
+{"timestamp": "2025-09-21T23:21:32.488128+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:9:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:21:32,488 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T23:21:32.488309+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:40408 - "POST /webhook/dynopay?order_id=9&auth_token=fF5SBaV3Df8GRslOAjfdCM9YuEQMxTW8XeONjSoH67M HTTP/1.1" 200 OK

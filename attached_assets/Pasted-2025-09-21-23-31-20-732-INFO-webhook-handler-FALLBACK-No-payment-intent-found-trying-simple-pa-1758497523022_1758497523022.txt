@@ -1,0 +1,19 @@
+2025-09-21 23:31:20,732 INFO webhook_handler: 💰 FALLBACK: No payment intent found, trying simple payment processing
+{"timestamp": "2025-09-21T23:31:20.732375+00:00", "level": "INFO", "component": "webhook_handler", "message": "\ud83d\udcb0 FALLBACK: No payment intent found, trying simple payment processing", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:20,732 INFO simple_payment_handler: 💰 SIMPLE: Processing payment - order_id=10, amount=$5.71, status=successful
+{"timestamp": "2025-09-21T23:31:20.732506+00:00", "level": "INFO", "component": "simple_payment_handler", "message": "\ud83d\udcb0 SIMPLE: Processing payment - order_id=10, amount=$5.71, status=successful", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,154 ERROR simple_payment_handler: ❌ SIMPLE: Could not safely resolve user - manual review required
+{"timestamp": "2025-09-21T23:31:21.154986+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: Could not safely resolve user - manual review required", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,155 ERROR simple_payment_handler: ❌ SIMPLE: order_id='10', txid='973cd66be86adee2ae2c9b298c22a3228676cd7ca9dad8fbce4db492bd0f09f5', amount=$5.71
+{"timestamp": "2025-09-21T23:31:21.155132+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: order_id='10', txid='973cd66be86adee2ae2c9b298c22a3228676cd7ca9dad8fbce4db492bd0f09f5', amount=$5.71", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,155 ERROR simple_payment_handler: ❌ SIMPLE: callback_url=''
+{"timestamp": "2025-09-21T23:31:21.155218+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: callback_url=''", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,155 ERROR simple_payment_handler: ❌ SIMPLE: external_id='10'
+{"timestamp": "2025-09-21T23:31:21.155339+00:00", "level": "ERROR", "component": "simple_payment_handler", "message": "\u274c SIMPLE: external_id='10'", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,155 ERROR webhook_handler: ❌ FALLBACK: Simple payment processing also failed for order 10
+{"timestamp": "2025-09-21T23:31:21.155419+00:00", "level": "ERROR", "component": "webhook_handler", "message": "\u274c FALLBACK: Simple payment processing also failed for order 10", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,262 INFO database: ✅ WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:10:1
+{"timestamp": "2025-09-21T23:31:21.262534+00:00", "level": "INFO", "component": "database", "message": "\u2705 WEBHOOK IDEMPOTENCY: Callback marked as completed - wallet_deposit:10:1", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-21 23:31:21,262 INFO fastapi_server: ✅ FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None
+{"timestamp": "2025-09-21T23:31:21.262715+00:00", "level": "INFO", "component": "fastapi_server", "message": "\u2705 FALLBACK SUCCESS: DynoPay webhook processed with complex handler: None", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+INFO:     172.31.82.226:49328 - "POST /webhook/dynopay?order_id=10&auth_token=O6lpuyENqzN1SmnlK04Rr3xsV-IxdhXJIrXFIVDchIc HTTP/1.1" 200 OK

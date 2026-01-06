@@ -1,0 +1,16 @@
+9-25 01:59:42
+2025-09-25 00:59:42,252 ERROR services.openprovider: ❌ Nameserver update API failed: 500 - {"desc":"This action is prohibitted for current domain status.","code":366}
+09-25 01:59:42
+{"timestamp": "2025-09-25T00:59:42.252901+00:00", "level": "ERROR", "component": "services.openprovider", "message": "\u274c Nameserver update API failed: 500 - {\"desc\":\"This action is prohibitted for current domain status.\",\"code\":366}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-25 01:59:42
+2025-09-25 00:59:42,253 ERROR services.openprovider: Request URL: https://api.openprovider.eu/v1beta/domains/28170167
+09-25 01:59:42
+{"timestamp": "2025-09-25T00:59:42.253110+00:00", "level": "ERROR", "component": "services.openprovider", "message": " Request URL: https://api.openprovider.eu/v1beta/domains/28170167", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-25 01:59:42
+2025-09-25 00:59:42,253 ERROR services.openprovider: Request Body: {'domain': {'name': 'cxh5tph6f3', 'extension': 'de'}, 'name_servers': [{'name': 'diana.ns.cloudflare.com', 'seq_nr': 1}, {'name': 'luke.ns.cloudflare.com', 'seq_nr': 2}], 'owner_handle': 'JC960450-US', 'admin_handle': 'JC960450-US', 'tech_handle': 'JC960450-US', 'billing_handle': ''}
+09-25 01:59:42
+{"timestamp": "2025-09-25T00:59:42.253239+00:00", "level": "ERROR", "component": "services.openprovider", "message": " Request Body: {'domain': {'name': 'cxh5tph6f3', 'extension': 'de'}, 'name_servers': [{'name': 'diana.ns.cloudflare.com', 'seq_nr': 1}, {'name': 'luke.ns.cloudflare.com', 'seq_nr': 2}], 'owner_handle': 'JC960450-US', 'admin_handle': 'JC960450-US', 'tech_handle': 'JC960450-US', 'billing_handle': ''}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+09-25 01:59:42
+2025-09-25 00:59:42,497 WARNING handlers: OpenProvider API unavailable for nameserver update of cxh5tph6f3.de
+09-25 01:59:42
+{"timestamp": "2025-09-25T00:59:42.497989+00:00", "level": "WARNING", "component": "handlers", "message": "OpenProvider API unavailable for nameserver update of cxh5tph6f3.de", "trace_id": null, "user_id": null, "order_id": null, "context": {}}

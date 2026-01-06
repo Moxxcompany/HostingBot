@@ -1,0 +1,14 @@
+{"timestamp": "2025-09-22T00:07:32.887733+00:00", "level": "INFO", "component": "database", "message": "\ud83c\udfe5 FALLBACK: Update operation aborted with clean rollback", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,887 INFO database:    └─ Database remains in consistent state
+{"timestamp": "2025-09-22T00:07:32.887804+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Database remains in consistent state", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,887 INFO database:    └─ Application will continue with degraded functionality
+{"timestamp": "2025-09-22T00:07:32.887857+00:00", "level": "INFO", "component": "database", "message": "   \u2514\u2500 Application will continue with degraded functionality", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,888 INFO services.hosting_orchestrator: ❌ HOSTING ORCHESTRATOR: Bundle marked as failed - order 6, intent 6: Hosting provisioning failed: Hosting provisioning returned false
+{"timestamp": "2025-09-22T00:07:32.888065+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u274c HOSTING ORCHESTRATOR: Bundle marked as failed - order 6, intent 6: Hosting provisioning failed: Hosting provisioning returned false", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,888 INFO services.hosting_orchestrator: ✅ HOSTING ORCHESTRATOR: Bundle processing completed for order 6
+{"timestamp": "2025-09-22T00:07:32.888205+00:00", "level": "INFO", "component": "services.hosting_orchestrator", "message": "\u2705 HOSTING ORCHESTRATOR: Bundle processing completed for order 6", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,888 WARNING handlers: ⚠️ HANDLERS: Unexpected orchestrator result for intent 6: {'success': False, 'error': 'Hosting provisioning failed: Hosting provisioning returned false', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}
+{"timestamp": "2025-09-22T00:07:32.888300+00:00", "level": "WARNING", "component": "handlers", "message": "\u26a0\ufe0f HANDLERS: Unexpected orchestrator result for intent 6: {'success': False, 'error': 'Hosting provisioning failed: Hosting provisioning returned false', 'phase': 'hosting_provisioning', 'domain_result': None, 'requires_refund': False}", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,888 INFO handlers: Attempting message edit for user 5590563715, message 5590563715_5004
+{"timestamp": "2025-09-22T00:07:32.888364+00:00", "level": "INFO", "component": "handlers", "message": "Attempting message edit for user 5590563715, message 5590563715_5004", "trace_id": null, "user_id": null, "order_id": null, "context": {}}
+2025-09-22 00:07:32,888 INFO handlers: Executing message edit for user 5590563715

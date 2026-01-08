@@ -244,8 +244,8 @@ class HostingRenewalProcessor:
             
             if renewal_action == 'warning':
                 return await self._send_renewal_warning(subscription)
-            elif renewal_action == 'process_renewal':
-                return await self._process_subscription_payment(subscription)
+            elif renewal_action == 'move_to_grace':
+                return await self._move_to_grace_and_suspend(subscription)
             elif renewal_action == 'grace_period_warning':
                 return await self._handle_grace_period_warning(subscription)
             elif renewal_action == 'suspend':
@@ -277,19 +277,19 @@ class HostingRenewalProcessor:
         
         days_until_billing = (next_billing_date - now).days
         
-        # Handle multi-period overdue subscriptions (more than one billing cycle behind)
+        # Handle overdue subscriptions - move to grace period (no auto-renewal)
         if next_billing_date < now:
             days_overdue = (now - next_billing_date).days
             
-            # Check if subscription is severely overdue (multiple billing periods)
-            if billing_cycle == 'monthly' and days_overdue > 60:  # More than 2 months overdue
+            # Log overdue status
+            if billing_cycle == 'monthly' and days_overdue > 60:
                 logger.warning(f"⚠️ Subscription {subscription['id']} severely overdue: {days_overdue} days ({days_overdue//30} months)")
-            elif billing_cycle == 'yearly' and days_overdue > 730:  # More than 2 years overdue
+            elif billing_cycle == 'yearly' and days_overdue > 730:
                 logger.warning(f"⚠️ Subscription {subscription['id']} severely overdue: {days_overdue} days ({days_overdue//365} years)")
             
-            # For severely overdue subscriptions, prioritize renewal processing
+            # Move overdue subscriptions to grace period (no automatic wallet charging)
             if current_status in ('active', 'pending_renewal'):
-                return 'process_renewal'
+                return 'move_to_grace'
         
         # Check if renewal warning is needed (only for active subscriptions approaching due date)
         if (days_until_billing <= self.warning_days_before and 
@@ -298,9 +298,9 @@ class HostingRenewalProcessor:
             not last_warning_sent):
             return 'warning'
         
-        # Check if renewal payment is due or overdue
+        # Check if subscription is due - move to grace period (no auto-renewal)
         if next_billing_date <= now and current_status in ('active', 'pending_renewal'):
-            return 'process_renewal'
+            return 'move_to_grace'
         
         # Check grace period status with enhanced validation
         if current_status == 'grace_period':
@@ -731,6 +731,66 @@ class HostingRenewalProcessor:
         except Exception as e:
             logger.error(f"❌ Error moving subscription to grace period: {e}")
             return False
+    
+    async def _move_to_grace_and_suspend(self, subscription: Dict) -> Dict[str, Any]:
+        """
+        Move expired subscription to grace period and suspend cPanel account.
+        No automatic wallet charging - user must manually renew.
+        """
+        subscription_id = subscription['id']
+        telegram_id = subscription['telegram_id']
+        domain_name = subscription.get('domain_name', 'unknown')
+        cpanel_username = subscription.get('cpanel_username')
+        billing_cycle = subscription.get('billing_cycle', 'monthly')
+        
+        try:
+            # Suspend cPanel account
+            cpanel_suspended = False
+            if cpanel_username:
+                from services.cpanel import CPanelService
+                cpanel = CPanelService()
+                try:
+                    cpanel_suspended = await cpanel.suspend_account(cpanel_username)
+                    if cpanel_suspended:
+                        logger.info(f"✅ cPanel suspended for expired subscription: {cpanel_username}")
+                    else:
+                        logger.warning(f"⚠️ Failed to suspend cPanel for: {cpanel_username}")
+                except Exception as cpanel_error:
+                    logger.error(f"❌ Error suspending cPanel {cpanel_username}: {cpanel_error}")
+            
+            # Move to grace period with suspension tracking
+            grace_period_days = self.get_grace_period_days(billing_cycle)
+            await execute_update("""
+                UPDATE hosting_subscriptions 
+                SET status = 'grace_period',
+                    grace_period_started = CURRENT_TIMESTAMP,
+                    cpanel_suspension_status = %s,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = %s
+            """, ('success' if cpanel_suspended else 'failed', subscription_id))
+            
+            # Send expiration notification
+            await self._send_renewal_notification_with_fallback(
+                telegram_id, 'expired', {
+                    'domain_name': domain_name,
+                    'amount': self._calculate_renewal_cost(subscription),
+                    'grace_period_days': grace_period_days
+                }
+            )
+            
+            self.stats['grace_period'] += 1
+            logger.warning(f"⏰ Subscription expired and suspended: {domain_name} (cPanel: {'✅' if cpanel_suspended else '❌'}, grace period: {grace_period_days} days)")
+            
+            return {
+                'status': 'moved_to_grace',
+                'subscription_id': subscription_id,
+                'cpanel_suspended': cpanel_suspended,
+                'grace_period_days': grace_period_days
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Error moving subscription to grace: {e}")
+            return {'status': 'error', 'subscription_id': subscription_id, 'error': str(e)}
     
     async def _send_renewal_warning(self, subscription: Dict) -> Dict[str, Any]:
         """Send renewal warning notification to user"""

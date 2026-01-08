@@ -979,7 +979,9 @@ async def renew_hosting(
     status = subscription['status']
     cpanel_username = subscription['cpanel_username']
     
-    if status in ['suspended', 'cancelled', 'terminated']:
+    # Allow renewal for suspended accounts (7-day grace period before deletion)
+    # Block only cancelled/terminated/deleted accounts
+    if status in ['cancelled', 'terminated', 'deleted']:
         raise BadRequestError(f"Cannot renew {status} subscription. Please contact support.")
     
     plan_switching = False
@@ -1058,9 +1060,23 @@ async def renew_hosting(
         period_days = 7 if 'pro_7day' in target_plan_code or '7' in target_plan_name else 30
         extension_days = period_days * request.period
         
+        # Handle unsuspension for suspended accounts
+        was_suspended = status == 'suspended'
+        unsuspend_success = False
+        
+        if was_suspended and cpanel_username:
+            try:
+                unsuspend_success = await cpanel.unsuspend_account(cpanel_username)
+                if unsuspend_success:
+                    logger.info(f"✅ cPanel account unsuspended: {cpanel_username}")
+                else:
+                    logger.warning(f"⚠️ cPanel unsuspension returned False for {cpanel_username}")
+            except Exception as unsuspend_error:
+                logger.error(f"❌ cPanel unsuspension error for {cpanel_username}: {unsuspend_error}")
+        
         if plan_switching:
             whm_package = target_plan_code
-            if cpanel_username and status == 'active':
+            if cpanel_username and (status == 'active' or unsuspend_success):
                 package_changed = await cpanel.change_package(cpanel_username, whm_package)
                 if not package_changed:
                     logger.error(f"❌ cPanel package change failed for {cpanel_username} to {whm_package}")
@@ -1071,7 +1087,15 @@ async def renew_hosting(
             await execute_update("""
                 UPDATE hosting_subscriptions
                 SET hosting_plan_id = %s,
-                    next_billing_date = next_billing_date + (%s || ' days')::interval,
+                    next_billing_date = COALESCE(
+                        CASE WHEN next_billing_date < NOW() THEN NOW() ELSE next_billing_date END,
+                        NOW()
+                    ) + (%s || ' days')::interval,
+                    status = 'active',
+                    suspended_at = NULL,
+                    deletion_scheduled_for = NULL,
+                    grace_period_started = NULL,
+                    cpanel_suspension_status = NULL,
                     updated_at = NOW()
                 WHERE id = %s
             """, (target_plan_id, extension_days, subscription_id))
@@ -1079,7 +1103,15 @@ async def renew_hosting(
         else:
             await execute_update("""
                 UPDATE hosting_subscriptions
-                SET next_billing_date = next_billing_date + (%s || ' days')::interval,
+                SET next_billing_date = COALESCE(
+                        CASE WHEN next_billing_date < NOW() THEN NOW() ELSE next_billing_date END,
+                        NOW()
+                    ) + (%s || ' days')::interval,
+                    status = 'active',
+                    suspended_at = NULL,
+                    deletion_scheduled_for = NULL,
+                    grace_period_started = NULL,
+                    cpanel_suspension_status = NULL,
                     updated_at = NOW()
                 WHERE id = %s
             """, (extension_days, subscription_id))
@@ -1113,9 +1145,18 @@ async def renew_hosting(
         if plan_switching:
             response_data["previous_plan"] = current_plan_name
         
+        # Add restoration info if account was suspended
+        if was_suspended:
+            response_data["restored"] = True
+            response_data["cpanel_unsuspended"] = unsuspend_success
+        
         message = "Hosting renewed successfully with 10% API discount"
+        if was_suspended:
+            message = "Hosting restored and renewed successfully with 10% API discount"
         if plan_switching:
             message = f"Plan switched from {current_plan_name} to {target_plan_name} and renewed with 10% API discount"
+            if was_suspended:
+                message = f"Hosting restored, plan switched to {target_plan_name}, and renewed with 10% API discount"
         
         return success_response(response_data, message)
         
@@ -1195,14 +1236,14 @@ async def get_renewal_options(
     """
     Get all available renewal options for a subscription.
     
-    Returns all available plans with pricing for periods 1-6, perfect for populating a dropdown.
-    Shows which plan is currently active and pricing for both same-plan renewal and plan switching.
+    Returns all available plans with monthly and yearly pricing options.
+    Includes grace periods for each plan and lifecycle information.
     """
     check_permission(key_data, "hosting", "read")
     user_id = key_data["user_id"]
     
     result = await execute_query("""
-        SELECT hp.id as plan_id, hp.plan_name, hp.plan_code, hs.next_billing_date, hs.status
+        SELECT hp.id as plan_id, hp.plan_name, hs.next_billing_date, hs.status, hs.billing_cycle
         FROM hosting_subscriptions hs
         JOIN hosting_plans hp ON hs.hosting_plan_id = hp.id
         WHERE hs.id = %s AND hs.user_id = %s
@@ -1212,63 +1253,127 @@ async def get_renewal_options(
         raise ResourceNotFoundError("Hosting subscription", str(subscription_id))
     
     subscription = result[0]
-    current_plan_code = subscription['plan_code']
     current_plan_name = subscription['plan_name']
+    current_billing_cycle = subscription.get('billing_cycle', 'monthly')
     
     all_plans = await execute_query("""
-        SELECT id, plan_name, plan_code, duration_days FROM hosting_plans ORDER BY duration_days
+        SELECT id, plan_name, plan_type, duration_days, monthly_price, yearly_price 
+        FROM hosting_plans ORDER BY duration_days
     """)
     
     current_balance = await get_user_wallet_balance_by_id(user_id)
     
+    def get_grace_period_days(duration_days: int) -> int:
+        if duration_days == 7:
+            return 1
+        elif duration_days == 30:
+            return 2
+        elif duration_days >= 365:
+            return 7
+        else:
+            return 2
+    
     renewal_options = []
     
     for plan in all_plans:
-        plan_code = plan['plan_code']
         plan_name = plan['plan_name']
         duration_days = plan['duration_days']
-        is_current = plan_code == current_plan_code
+        monthly_price = Decimal(str(plan['monthly_price'])) if plan['monthly_price'] else Decimal("80.00")
+        yearly_price = Decimal(str(plan['yearly_price'])) if plan['yearly_price'] else monthly_price * 10
+        is_current = plan_name == current_plan_name
+        grace_days = get_grace_period_days(duration_days)
         
-        price_per_period = HOSTING_PRICES.get(plan_name) or HOSTING_PRICES.get(plan_code) or get_hosting_prices().get("pro_30day", Decimal("80.00"))
+        plan_code = "pro_7day" if duration_days == 7 else "pro_30day" if duration_days == 30 else "pro_yearly"
         
-        periods = []
-        for p in range(1, 7):
-            total_before_discount = price_per_period * p
-            api_discount = total_before_discount * Decimal("0.10")
-            total_price = total_before_discount - api_discount
-            extension_days = duration_days * p
+        pricing_options = []
+        
+        monthly_discount = monthly_price * Decimal("0.10")
+        monthly_final = monthly_price - monthly_discount
+        pricing_options.append({
+            "billing_cycle": "monthly",
+            "label": f"{duration_days} days",
+            "extension_days": duration_days,
+            "price_before_discount": float(monthly_price),
+            "api_discount": float(monthly_discount),
+            "total_price": float(monthly_final),
+            "can_afford": current_balance >= monthly_final
+        })
+        
+        for multiplier in [2, 3, 6]:
+            ext_days = duration_days * multiplier
+            price = monthly_price * multiplier
+            discount = price * Decimal("0.10")
+            final_price = price - discount
             
-            label = f"{extension_days} days" if extension_days < 30 else f"{extension_days // 30} month{'s' if extension_days >= 60 else ''}"
+            if ext_days < 30:
+                label = f"{ext_days} days"
+            elif ext_days < 365:
+                months = ext_days // 30
+                label = f"{months} month{'s' if months > 1 else ''}"
+            else:
+                label = f"{ext_days // 30} months"
             
-            periods.append({
-                "period": p,
-                "extension_days": extension_days,
+            pricing_options.append({
+                "billing_cycle": f"{multiplier}x",
                 "label": label,
-                "price_before_discount": float(total_before_discount),
-                "api_discount": float(api_discount),
-                "total_price": float(total_price),
-                "can_afford": current_balance >= total_price
+                "extension_days": ext_days,
+                "price_before_discount": float(price),
+                "api_discount": float(discount),
+                "total_price": float(final_price),
+                "can_afford": current_balance >= final_price
             })
+        
+        yearly_discount = yearly_price * Decimal("0.10")
+        yearly_final = yearly_price - yearly_discount
+        yearly_ext_days = duration_days * 12 if duration_days < 365 else 365
+        pricing_options.append({
+            "billing_cycle": "yearly",
+            "label": "1 year",
+            "extension_days": yearly_ext_days,
+            "price_before_discount": float(yearly_price),
+            "api_discount": float(yearly_discount),
+            "total_price": float(yearly_final),
+            "can_afford": current_balance >= yearly_final,
+            "savings": float((monthly_price * 12) - yearly_price) if yearly_price < (monthly_price * 12) else 0
+        })
         
         renewal_options.append({
             "plan_code": plan_code,
             "plan_name": plan_name,
             "duration_days": duration_days,
             "is_current_plan": is_current,
-            "price_per_period": float(price_per_period),
-            "periods": periods
+            "grace_period_days": grace_days,
+            "pricing_options": pricing_options
         })
+    
+    lifecycle_info = {
+        "stages": [
+            {"status": "active", "description": "Normal service until expiry"},
+            {"status": "grace_period", "description": "cPanel suspended, warnings sent (1-7 days based on plan)"},
+            {"status": "pending_deletion", "description": "Account suspended, 7 days to renew before deletion"},
+            {"status": "deleted", "description": "cPanel account permanently terminated"}
+        ],
+        "grace_periods": {
+            "pro_7day": "1 day",
+            "pro_30day": "2 days",
+            "monthly": "7 days",
+            "yearly": "7 days"
+        },
+        "deletion_window": "7 days after grace period ends"
+    }
     
     return success_response({
         "subscription_id": subscription_id,
         "current_plan": {
-            "code": current_plan_code,
-            "name": current_plan_name
+            "name": current_plan_name,
+            "billing_cycle": current_billing_cycle
         },
         "next_billing_date": subscription['next_billing_date'].isoformat() if subscription['next_billing_date'] else None,
+        "status": subscription['status'],
         "wallet_balance": float(current_balance),
         "renewal_options": renewal_options,
-        "note": "Pass plan=pro_7day or plan=pro_30day to POST /hosting/{subscription_id}/renew to switch plans"
+        "lifecycle": lifecycle_info,
+        "note": "10% API discount applied to all prices. Suspended accounts can be renewed to restore service."
     })
 
 

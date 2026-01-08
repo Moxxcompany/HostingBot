@@ -455,8 +455,7 @@ async def unified_order_hosting(
             user_id=user_id,
             domain_name=domain_name,
             plan=request.plan,
-            hold_transaction_id=hold_transaction_id,
-            auto_renew=request.auto_renew
+            hold_transaction_id=hold_transaction_id
         ))
     elif domain_type == "existing":
         asyncio.create_task(hosting_orchestrator.provision_hosting_for_existing_domain(
@@ -465,8 +464,7 @@ async def unified_order_hosting(
             user_id=user_id,
             domain_name=domain_name,
             plan=request.plan,
-            hold_transaction_id=hold_transaction_id,
-            auto_renew=request.auto_renew
+            hold_transaction_id=hold_transaction_id
         ))
     else:  # external
         asyncio.create_task(hosting_orchestrator.provision_hosting_for_external_domain(
@@ -476,7 +474,6 @@ async def unified_order_hosting(
             domain_name=domain_name,
             plan=request.plan,
             hold_transaction_id=hold_transaction_id,
-            auto_renew=request.auto_renew,
             linking_mode=request.linking_mode or "nameserver"
         ))
     
@@ -610,7 +607,7 @@ async def get_hosting_order_status(
         subscription_result = await execute_query("""
             SELECT hs.id, hs.status AS subscription_status, hs.cpanel_username,
                    hs.created_at, hs.next_billing_date, hs.suspended_at,
-                   hs.grace_period_started, hs.auto_renew, 
+                   hs.grace_period_started,
                    hs.updated_at AS subscription_updated_at,
                    hs.deleted_at AS subscription_deleted_at,
                    hs.deleted_by AS subscription_deleted_by,
@@ -661,8 +658,7 @@ async def get_hosting_order_status(
             "cpanel_username": subscription.get('cpanel_username'),
             "plan_name": subscription.get('plan_name'),
             "created_at": subscription['created_at'].isoformat() if subscription['created_at'] else None,
-            "expires_at": subscription['next_billing_date'].isoformat() if subscription.get('next_billing_date') else None,
-            "auto_renew": subscription.get('auto_renew', False)
+            "expires_at": subscription['next_billing_date'].isoformat() if subscription.get('next_billing_date') else None
         }
         
         # Add subscription updated_at timestamp when available
@@ -856,8 +852,8 @@ async def get_hosting_subscription(
     user_id = key_data["user_id"]
     
     result = await execute_query("""
-        SELECT hs.id, hs.domain_name, hp.plan_name, hs.status, hs.cpanel_username, 
-               hs.created_at, hs.next_billing_date, hs.server_ip, hs.auto_renew
+        SELECT hs.id, hs.domain_name, hp.plan_name, hp.plan_code, hp.price, hs.status, hs.cpanel_username, 
+               hs.created_at, hs.next_billing_date, hs.server_ip, hs.billing_cycle
         FROM hosting_subscriptions hs
         JOIN hosting_plans hp ON hs.hosting_plan_id = hp.id
         WHERE hs.id = %s AND hs.user_id = %s
@@ -869,10 +865,17 @@ async def get_hosting_subscription(
     s = result[0]
     server_ip = s.get('server_ip') or cpanel.default_server_ip
     
+    # Calculate renewal pricing with 10% API discount
+    plan_price = Decimal(str(s.get('price', 0))) if s.get('price') else HOSTING_PRICES.get(s['plan_name'], Decimal("80.00"))
+    renewal_discount = plan_price * Decimal("0.10")
+    renewal_price = plan_price - renewal_discount
+    
     response_data = {
         "id": s['id'],
         "domain_name": s['domain_name'],
         "plan": s['plan_name'],
+        "plan_code": s.get('plan_code'),
+        "billing_cycle": s.get('billing_cycle'),
         "status": s['status'],
         # New generic field name
         "username": s['cpanel_username'],
@@ -881,7 +884,11 @@ async def get_hosting_subscription(
         "created_at": s['created_at'].isoformat() if s['created_at'] else None,
         "expires_at": s['next_billing_date'].isoformat() if s['next_billing_date'] else None,
         "server_ip": server_ip,
-        "is_active": s['status'] == "active"
+        "is_active": s['status'] == "active",
+        # Renewal pricing info
+        "renewal_price": float(renewal_price),
+        "renewal_price_before_discount": float(plan_price),
+        "renewal_note": "10% API discount applied. Use GET /hosting/{id}/renewal-options for all plan options."
     }
     
     include_list = [x.strip().lower() for x in include.split(',')] if include else []

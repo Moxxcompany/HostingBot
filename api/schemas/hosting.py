@@ -35,7 +35,6 @@ class UnifiedOrderHostingRequest(BaseModel):
     plan: str = Field(..., pattern="^(pro_7day|pro_30day)$", examples=["pro_30day"])
     period: int = Field(1, ge=1, le=12, description="Billing periods", examples=[1])
     linking_mode: Optional[str] = Field("nameserver", pattern="^(nameserver|a_record)$", description="For external domains: nameserver or a_record method")
-    auto_renew: bool = Field(True, description="Enable automatic renewal before expiration")
     
     model_config = {
         "json_schema_extra": {
@@ -44,23 +43,20 @@ class UnifiedOrderHostingRequest(BaseModel):
                     "domain_name": "example.com",
                     "domain_type": "new",
                     "plan": "pro_30day",
-                    "period": 1,
-                    "auto_renew": True
+                    "period": 1
                 },
                 {
                     "domain_name": "myexisting.com",
                     "domain_type": "existing",
                     "plan": "pro_30day",
-                    "period": 1,
-                    "auto_renew": True
+                    "period": 1
                 },
                 {
                     "domain_name": "external-domain.com",
                     "domain_type": "external",
                     "plan": "pro_30day",
                     "period": 1,
-                    "linking_mode": "nameserver",
-                    "auto_renew": True
+                    "linking_mode": "nameserver"
                 }
             ]
         }
@@ -72,7 +68,6 @@ class OrderHostingRequest(BaseModel):
     plan: str = Field(..., pattern="^(pro_7day|pro_30day)$", examples=["pro_30day"])
     period: int = Field(1, ge=1, le=12, description="Billing periods", examples=[1])
     domain_name: Optional[str] = Field(None, examples=["example.com"])
-    auto_renew: bool = Field(True, description="Enable automatic renewal before expiration")
     
     model_config = {
         "json_schema_extra": {
@@ -80,8 +75,7 @@ class OrderHostingRequest(BaseModel):
                 {
                     "plan": "pro_30day",
                     "period": 1,
-                    "domain_name": "example.com",
-                    "auto_renew": True
+                    "domain_name": "example.com"
                 }
             ]
         }
@@ -93,7 +87,6 @@ class OrderHostingExistingRequest(BaseModel):
     domain_name: str
     plan: str = Field(..., pattern="^(pro_7day|pro_30day)$")
     period: int = Field(1, ge=1, le=12)
-    auto_renew: bool = Field(True, description="Enable automatic renewal before expiration")
 
 
 class OrderHostingExternalRequest(BaseModel):
@@ -102,13 +95,34 @@ class OrderHostingExternalRequest(BaseModel):
     plan: str = Field(..., pattern="^(pro_7day|pro_30day)$")
     linking_mode: str = Field(..., pattern="^(smart|manual)$")
     period: int = Field(1, ge=1, le=12)
-    auto_renew: bool = Field(True, description="Enable automatic renewal before expiration")
 
 
 class RenewHostingRequest(BaseModel):
-    """Request to renew hosting"""
-    period: int = Field(1, ge=1, le=12)
-    auto_renew: Optional[bool] = Field(None, description="Update auto-renewal setting (optional)")
+    """
+    Request to renew hosting subscription.
+    
+    Supports both same-plan renewal and plan switching:
+    - Omit 'plan' to renew with current plan
+    - Specify 'plan' to switch to a different plan during renewal
+    
+    Note: Downgrading may be rejected if current resource usage exceeds the new plan's limits.
+    """
+    period: int = Field(1, ge=1, le=12, description="Number of billing periods to renew")
+    plan: Optional[str] = Field(None, pattern="^(pro_7day|pro_30day)$", description="Optional: Switch to a different plan (pro_7day or pro_30day)")
+    
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "period": 1
+                },
+                {
+                    "period": 2,
+                    "plan": "pro_7day"
+                }
+            ]
+        }
+    }
 
 
 class ResetPasswordRequest(BaseModel):
@@ -124,7 +138,6 @@ class HostingSubscriptionResponse(BaseModel):
     status: str
     username: str = Field(..., description="Hosting control panel username")
     server_ip: str
-    auto_renew: bool
     created_at: str
     expires_at: str
     is_active: bool
@@ -151,17 +164,6 @@ class HostingUsageResponse(BaseModel):
     email_accounts_limit: int
 
 
-class AutoRenewalSettingRequest(BaseModel):
-    """Request to update auto-renewal setting"""
-    auto_renew: bool = Field(..., description="Enable or disable automatic renewal")
-
-
-class AutoRenewalSettingResponse(BaseModel):
-    """Auto-renewal setting response"""
-    subscription_id: int
-    domain_name: str
-    auto_renew: bool
-    updated_at: str
 
 
 # ====================================================================

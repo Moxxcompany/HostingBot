@@ -640,6 +640,69 @@ class CPanelService:
         
         return False
     
+    async def change_package(self, username: str, new_package: str) -> bool:
+        """
+        Change the hosting package for a cPanel account.
+        
+        Args:
+            username: The cPanel username
+            new_package: The WHM package name (e.g., 'pro_7day', 'pro_30day')
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            if not self.whm_api_token and not self.whm_password:
+                logger.info(f"🔧 Simulated package change: {username} -> {new_package}")
+                return True
+            
+            change_data = {
+                'api.version': '1',
+                'user': username,
+                'pkg': new_package
+            }
+            
+            headers = None
+            auth = None
+            
+            if self.whm_api_token:
+                headers = {'Authorization': f'WHM {self.whm_username}:{self.whm_api_token}'}
+            elif self.whm_password:
+                auth = (self.whm_username, self.whm_password)
+            
+            async with httpx.AsyncClient(verify=True) as client:
+                kwargs = {
+                    'data': change_data,
+                    'timeout': 30.0
+                }
+                if headers:
+                    kwargs['headers'] = headers
+                if auth:
+                    kwargs['auth'] = auth
+                    
+                response = await client.post(
+                    f"https://{self.whm_host}:2087/json-api/changepackage",
+                    **kwargs
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get('metadata', {}).get('result') == 1:
+                        logger.info(f"✅ Package changed for {username} to {new_package}")
+                        return True
+                    else:
+                        reason = data.get('metadata', {}).get('reason', 'Unknown error')
+                        logger.error(f"❌ Package change failed for {username}: {reason}")
+                        return False
+                else:
+                    logger.error(f"❌ WHM API request failed for package change: HTTP {response.status_code}")
+                    return False
+                        
+        except Exception as e:
+            logger.error(f"❌ Error changing package for {username}: {e}")
+        
+        return False
+    
     
     async def delete_single_account(self, username: str, confirm_username: str) -> bool:
         """

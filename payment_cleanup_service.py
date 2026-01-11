@@ -18,7 +18,15 @@ import signal
 import sys
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
-from database import cleanup_stale_and_expired_payments, get_db_executor
+from database import (
+    cleanup_stale_and_expired_payments, 
+    cleanup_expired_hosting_intents, 
+    cleanup_failed_hosting_orders,
+    cleanup_failed_domain_orders,
+    cleanup_stale_domain_intents,
+    cleanup_failed_rdp_orders,
+    get_db_executor
+)
 
 logger = logging.getLogger(__name__)
 
@@ -133,23 +141,39 @@ class PaymentCleanupService:
         logger.info(f"   • Time: {self.stats['last_cleanup_time']}")
         
         try:
-            # Run the actual cleanup
+            # Run the actual cleanup - payment intents
             cleaned_count = await cleanup_stale_and_expired_payments()
+            
+            # Also cleanup hosting intents and orders
+            hosting_intents_cleaned = await cleanup_expired_hosting_intents()
+            hosting_orders_cleaned = await cleanup_failed_hosting_orders()
+            
+            # Domain cleanup
+            domain_orders_cleaned = await cleanup_failed_domain_orders()
+            domain_intents_cleaned = await cleanup_stale_domain_intents()
+            
+            # RDP cleanup
+            rdp_orders_cleaned = await cleanup_failed_rdp_orders()
+            
+            total_cleaned = (cleaned_count + hosting_intents_cleaned + hosting_orders_cleaned + 
+                           domain_orders_cleaned + domain_intents_cleaned + rdp_orders_cleaned)
             
             # Update statistics
             self.stats['total_cleanups'] += 1
-            self.stats['total_payments_cleaned'] += cleaned_count
+            self.stats['total_payments_cleaned'] += total_cleaned
             self.stats['last_cleanup_duration'] = time.time() - cycle_start
             
             # Log cycle completion
             logger.info(f"✅ CLEANUP SERVICE: Cycle completed successfully")
-            logger.info(f"   • Payments cleaned this cycle: {cleaned_count}")
+            logger.info(f"   • Payments cleaned: {cleaned_count}")
+            logger.info(f"   • Hosting intents/orders: {hosting_intents_cleaned}/{hosting_orders_cleaned}")
+            logger.info(f"   • Domain intents/orders: {domain_intents_cleaned}/{domain_orders_cleaned}")
+            logger.info(f"   • RDP orders: {rdp_orders_cleaned}")
             logger.info(f"   • Cycle duration: {self.stats['last_cleanup_duration']:.2f}s")
-            logger.info(f"   • Total cleanups: {self.stats['total_cleanups']}")
-            logger.info(f"   • Total payments cleaned: {self.stats['total_payments_cleaned']}")
+            logger.info(f"   • Total cleaned this cycle: {total_cleaned}")
             
             # Send admin notification for significant cleanup activity
-            if cleaned_count >= 10:
+            if total_cleaned >= 10:
                 try:
                     from admin_alerts import send_warning_alert
                     await send_warning_alert(

@@ -284,43 +284,61 @@ class FastForexService:
     
     async def prewarm_rates(self):
         """
-        Pre-warm cache for all supported cryptocurrencies in parallel.
+        Pre-warm cache for all supported cryptocurrencies using a single batch API call.
         Called by APScheduler background job every 3 minutes.
-        
-        This ensures webhook processing always has fresh cached rates.
         """
-        logger.info(f"🔄 Pre-warming exchange rates for {len(SUPPORTED_CRYPTOS)} currencies...")
+        if not self.api_key:
+            return 0, len(SUPPORTED_CRYPTOS)
+
+        logger.info(f"🔄 Batch pre-warming exchange rates for {len(SUPPORTED_CRYPTOS)} currencies...")
         start_time = datetime.now()
         
-        # Fetch all rates in parallel
-        tasks = [
-            self.get_crypto_rate(crypto, "USD")
-            for crypto in SUPPORTED_CRYPTOS
-        ]
-        
         try:
-            results = await asyncio.gather(*tasks, return_exceptions=True)
-            
-            # Count successes vs failures
-            successes = sum(1 for r in results if not isinstance(r, Exception) and r is not None)
-            failures = len(results) - successes
-            
-            duration = (datetime.now() - start_time).total_seconds()
-            
-            if failures > 0:
-                logger.warning(
-                    f"⚠️ Pre-warm completed with {failures} failures: "
-                    f"{successes}/{len(SUPPORTED_CRYPTOS)} rates updated in {duration:.2f}s"
-                )
-            else:
-                logger.info(
-                    f"✅ Pre-warm SUCCESS: All {successes} rates updated in {duration:.2f}s"
-                )
-            
-            return successes, failures
-            
+            # Use fetch-all to get all rates for USD in one call
+            async with httpx.AsyncClient() as client:
+                url = f"{self.base_url}/fetch-all"
+                params = {
+                    'api_key': self.api_key,
+                    'from': 'USD'
+                }
+                
+                timeout_config = httpx.Timeout(5.0, connect=2.0)
+                response = await client.get(url, params=params, timeout=timeout_config)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    results = data.get('results', {})
+                    
+                    success_count = 0
+                    async with self.cache_lock:
+                        for crypto in SUPPORTED_CRYPTOS:
+                            # Normalize for API check (some might be lowercase in results)
+                            rate = results.get(crypto.upper()) or results.get(crypto.lower())
+                            
+                            if rate is not None:
+                                cache_key = f"{crypto}-USD"
+                                self.cache[cache_key] = {
+                                    'rate': float(rate),
+                                    'timestamp': datetime.now()
+                                }
+                                success_count += 1
+                    
+                    duration = (datetime.now() - start_time).total_seconds()
+                    logger.info(f"✅ Batch pre-warm SUCCESS: {success_count}/{len(SUPPORTED_CRYPTOS)} rates updated in {duration:.2f}s")
+                    
+                    # Reset circuit breaker
+                    self.consecutive_failures = 0
+                    self.circuit_open_until = None
+                    
+                    return success_count, len(SUPPORTED_CRYPTOS) - success_count
+                else:
+                    logger.error(f"❌ FastForex batch API error: {response.status_code}")
+                    self._record_failure()
+                    return 0, len(SUPPORTED_CRYPTOS)
+                    
         except Exception as e:
-            logger.error(f"❌ Pre-warm FAILED: {e}")
+            logger.error(f"❌ Batch pre-warm FAILED: {e}")
+            self._record_failure()
             return 0, len(SUPPORTED_CRYPTOS)
     
     def get_cache_stats(self) -> Dict:

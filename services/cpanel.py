@@ -66,12 +66,11 @@ class CPanelService:
         Returns:
             List of account data if successful, None on error
         """
+        import requests
         try:
             if not self.whm_api_token and not self.whm_password:
                 logger.warning("⚠️ cPanel credentials not configured")
                 return None
-            
-            import requests
             
             if self.whm_api_token:
                 auth_header = f"WHM {self.whm_username}:{self.whm_api_token}"

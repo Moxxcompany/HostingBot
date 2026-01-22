@@ -11644,6 +11644,10 @@ def clear_all_dns_wizard_state(context):
     if 'expecting_nameserver_input' in context.user_data:
         del context.user_data['expecting_nameserver_input']
     
+    # Clear custom subdomain flag for MX
+    if 'expecting_custom_subdomain_mx' in context.user_data:
+        del context.user_data['expecting_custom_subdomain_mx']
+    
     # Clear edit input context
     if 'edit_input' in context.user_data:
         del context.user_data['edit_input']
@@ -11786,7 +11790,7 @@ Type your subdomain:
         # Get Cloudflare zone to check existing records
         cf_zone = await get_cloudflare_zone(domain)
         if not cf_zone:
-            await safe_edit_message(query, f"❌ DNS Unavailable\n\nNo zone for {domain}")
+            await safe_edit_message(query, f"❌ {t('dns.dns_unavailable_title', user_lang)}\n\n{t('dns.no_zone_for', user_lang, domain=domain)}")
             return
             
         # Get available names for A records
@@ -11800,7 +11804,7 @@ Type your subdomain:
             )
             return
             
-        message = f"🅰️ <b>A Record - {domain}</b>\n\n<b>Choose available name:</b>"
+        message = f"🅰️ {t('dns_wizard.a_record_title', user_lang, step=1, domain=domain)}\n\n{t('dns_wizard.choose_name', user_lang)}"
         
         # Create dynamic buttons
         keyboard = []
@@ -11820,13 +11824,9 @@ Type your subdomain:
     elif 'ip' not in data:
         # Step 2: IP Address
         name_display = data['name'] if data['name'] != '@' else domain
-        message = f"""
-🅰️ Add A Record (2/4): {domain}
-
-Name: {name_display}
-
-Enter the IPv4 address this record should point to.
-"""
+        message = f"🅰️ {t('dns_wizard.a_record_title', user_lang, step=2, domain=domain)}\n\n" \
+                  f"{t('common_labels.name', user_lang)}: {name_display}\n\n" \
+                  f"{t('dns_wizard.enter_ipv4', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.use_8_8_8_8", user_lang), callback_data=f"dns_wizard:{domain}:A:ip:8.8.8.8")],
             [InlineKeyboardButton(t("buttons.use_1_1_1_1", user_lang), callback_data=f"dns_wizard:{domain}:A:ip:1.1.1.1")],
@@ -11835,14 +11835,10 @@ Enter the IPv4 address this record should point to.
     elif 'ttl' not in data:
         # Step 3: TTL
         name_display = data['name'] if data['name'] != '@' else domain
-        message = f"""
-🅰️ Add A Record (3/4): {domain}
-
-Name: {name_display}
-IP: {data['ip']}
-
-Select TTL (Time To Live):
-"""
+        message = f"🅰️ {t('dns_wizard.a_record_title', user_lang, step=3, domain=domain)}\n\n" \
+                  f"{t('common_labels.name', user_lang)}: {name_display}\n" \
+                  f"IP: {data['ip']}\n\n" \
+                  f"{t('dns_wizard.select_ttl', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:1")],
             [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:300")],
@@ -11861,18 +11857,12 @@ Select TTL (Time To Live):
         
         if can_proxy:
             # Public IP - show both options
-            message = f"""
-🅰️ Add A Record (4/4): {domain}
-
-Name: {name_display}
-IP: {data['ip']}
-TTL: {ttl_display}
-
-Select Proxy setting:
-
-🟠 Proxied - Traffic goes through Cloudflare (faster, protected)
-⚪ Direct - Traffic goes directly to your server
-"""
+            message = f"🅰️ {t('dns_wizard.a_record_title', user_lang, step=4, domain=domain)}\n\n" \
+                      f"{t('common_labels.name', user_lang)}: {name_display}\n" \
+                      f"IP: {data['ip']}\n" \
+                      f"TTL: {ttl_display}\n\n" \
+                      f"{t('dns_wizard.proxy_setting', user_lang)}\n\n" \
+                      f"{t('dns_wizard.proxy_explanation', user_lang)}"
             keyboard = [
                 [InlineKeyboardButton(t("buttons.proxied_recommended", user_lang), callback_data=f"dns_wizard:{domain}:A:proxied:true")],
                 [InlineKeyboardButton(t("buttons.direct", user_lang), callback_data=f"dns_wizard:{domain}:A:proxied:false")],
@@ -11880,20 +11870,11 @@ Select Proxy setting:
             ]
         else:
             # Private/Reserved IP - only show direct option with explanation
-            message = f"""
-🅰️ Add A Record (4/4): {domain}
-
-Name: {name_display}
-IP: {data['ip']}
-TTL: {ttl_display}
-
-🚫 Proxy mode not available for this IP
-
-Private IP addresses cannot use proxy mode because they're not reachable from the internet.
-
-Available option:
-⚪ Direct - Traffic goes directly to your server
-"""
+            message = f"🅰️ {t('dns_wizard.a_record_title', user_lang, step=4, domain=domain)}\n\n" \
+                      f"{t('common_labels.name', user_lang)}: {name_display}\n" \
+                      f"IP: {data['ip']}\n" \
+                      f"TTL: {ttl_display}\n\n" \
+                      f"{t('dns_wizard.proxy_not_available', user_lang)}"
             keyboard = [
                 [InlineKeyboardButton(t("buttons.direct_only_option", user_lang), callback_data=f"dns_wizard:{domain}:A:proxied:false")],
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:back")]
@@ -12071,32 +12052,23 @@ async def create_dns_record_from_wizard(query, context, wizard_state):
             
             if record_type == "A":
                 proxy_display = "🟠 Proxied" if record_proxied else "⚪ Direct"
-                message = f"""
-✅ {record_type} Record Created ({proxy_display})
-{name_display} → {content_display}
-"""
+                message = f"✅ {t('dns_wizard.record_created_title', user_lang, type=record_type)}\n" \
+                          f"{proxy_display}\n" \
+                          f"{name_display} → {content_display}"
             elif record_type == "TXT":
                 content_preview = content_display[:80] + "..." if len(content_display) > 80 else content_display
-                message = f"""
-✅ {record_type} Record Created
-{name_display}: {content_preview}
-"""
+                message = f"✅ {t('dns_wizard.record_created_title', user_lang, type=record_type)}\n" \
+                          f"{name_display}: {content_preview}"
             elif record_type == "CNAME":
-                message = f"""
-✅ {record_type} Record Created
-{name_display} → {content_display}
-"""
+                message = f"✅ {t('dns_wizard.record_created_title', user_lang, type=record_type)}\n" \
+                          f"{name_display} → {content_display}"
             elif record_type == "MX":
-                message = f"""
-✅ {record_type} Record Created
-{name_display} → {content_display} (Priority: {data['priority']})
-"""
+                message = f"✅ {t('dns_wizard.record_created_title', user_lang, type=record_type)}\n" \
+                          f"{name_display} → {content_display} ({t('common_labels.priority', user_lang)}: {data['priority']})"
             else:
                 # Default message for other record types
-                message = f"""
-✅ {record_type} Record Created
-{name_display}: {content_display}
-"""
+                message = f"✅ {t('dns_wizard.record_created_title', user_lang, type=record_type)}\n" \
+                          f"{name_display}: {content_display}"
             
             keyboard = [
                 [InlineKeyboardButton(t("buttons.view_dns_dashboard", user_lang), callback_data=f"dns:{domain}:view")],
@@ -12165,20 +12137,15 @@ async def show_a_record_confirmation(query, wizard_state):
     ttl_display = "Auto" if data['ttl'] == 1 else f"{data['ttl']}s"
     proxy_display = "🟠 Proxied" if data['proxied'] == "true" else "⚪ Direct"
     
-    message = f"""
-✅ Confirm A Record Creation
-
-Domain: {domain}
-Name: {name_display}
-Points to: {data['ip']}
-TTL: {ttl_display}
-Proxy: {proxy_display}
-
-This will create:
-{name_display} → {data['ip']}
-
-Ready to create this DNS record?
-"""
+    message = f"✅ {t('dns_wizard.confirm_a_record_creation', user_lang)}\n\n" \
+              f"Domain: {domain}\n" \
+              f"{t('common_labels.name', user_lang)}: {name_display}\n" \
+              f"IP: {data['ip']}\n" \
+              f"TTL: {ttl_display}\n" \
+              f"Proxy: {proxy_display}\n\n" \
+              f"{t('dns_wizard.this_will_create', user_lang)}\n" \
+              f"{name_display} → {data['ip']}\n\n" \
+              f"{t('dns_wizard.ready_to_create', user_lang)}"
     
     keyboard = [
         [InlineKeyboardButton(t("buttons.create_record", user_lang), callback_data=f"dns_wizard:{domain}:A:create:confirm")],
@@ -12212,17 +12179,13 @@ async def show_txt_record_confirmation(query, wizard_state):
     content_display, parse_mode = escape_content_for_display(data['content'], mode="full")
     name_summary, _ = escape_content_for_display(name_display, mode="summary")
     
-    message = f"""
-✅ Create TXT Record - Final Confirmation
-
-Domain: {domain}
-Type: TXT
-Name: {name_summary}
-Content: {content_display}
-TTL: {ttl_display}
-
-Ready to create this DNS record?
-"""
+    message = f"✅ {t('dns_wizard.confirm_txt_record_creation', user_lang)}\n\n" \
+              f"Domain: {domain}\n" \
+              f"Type: TXT\n" \
+              f"{t('common_labels.name', user_lang)}: {name_summary}\n" \
+              f"{t('common_labels.content', user_lang)}: {content_display}\n" \
+              f"TTL: {ttl_display}\n\n" \
+              f"{t('dns_wizard.ready_to_create', user_lang)}"
     
     keyboard = [
         [InlineKeyboardButton(t("buttons.create_record", user_lang), callback_data=f"dns_wizard:{domain}:TXT:create:confirm")],
@@ -12256,17 +12219,13 @@ async def show_cname_record_confirmation(query, wizard_state):
     target_display, parse_mode = escape_content_for_display(data['target'], mode="full")
     name_summary, _ = escape_content_for_display(name_display, mode="summary")
     
-    message = f"""
-✅ Create CNAME Record - Final Confirmation
-
-Domain: {domain}
-Type: CNAME
-Name: {name_summary}
-Target: {target_display}
-TTL: {ttl_display}
-
-Ready to create this DNS record?
-"""
+    message = f"✅ {t('dns_wizard.confirm_cname_record_creation', user_lang)}\n\n" \
+              f"Domain: {domain}\n" \
+              f"Type: CNAME\n" \
+              f"{t('common_labels.name', user_lang)}: {name_summary}\n" \
+              f"{t('common_labels.target', user_lang)}: {target_display}\n" \
+              f"TTL: {ttl_display}\n\n" \
+              f"{t('dns_wizard.ready_to_create', user_lang)}"
     
     keyboard = [
         [InlineKeyboardButton(t("buttons.create_record", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:create:confirm")],
@@ -12300,18 +12259,14 @@ async def show_mx_record_confirmation(query, wizard_state):
     server_display, parse_mode = escape_content_for_display(data['server'], mode="full")
     name_summary, _ = escape_content_for_display(name_display, mode="summary")
     
-    message = f"""
-✅ Create MX Record - Final Confirmation
-
-Domain: {domain}
-Type: MX
-Name: {name_summary}
-Mail Server: {server_display}
-Priority: {data['priority']}
-TTL: {ttl_display}
-
-Ready to create this DNS record?
-"""
+    message = f"✅ {t('dns_wizard.confirm_mx_record_creation', user_lang)}\n\n" \
+              f"Domain: {domain}\n" \
+              f"Type: MX\n" \
+              f"{t('common_labels.name', user_lang)}: {name_summary}\n" \
+              f"{t('common_labels.server', user_lang)}: {server_display}\n" \
+              f"{t('common_labels.priority', user_lang)}: {data['priority']}\n" \
+              f"TTL: {ttl_display}\n\n" \
+              f"{t('dns_wizard.ready_to_create', user_lang)}"
     
     keyboard = [
         [InlineKeyboardButton(t("buttons.create_record", user_lang), callback_data=f"dns_wizard:{domain}:MX:create:confirm")],
@@ -12404,17 +12359,11 @@ Type your subdomain:
         keyboard.append([InlineKeyboardButton(t("buttons.custom_subdomain", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:name:custom")])
         keyboard.append([InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain}:add")])
     elif 'target' not in data:
-        # Step 2: Target Domain
+        # Step 2: CNAME Target
         name_display = data['name'] if data['name'] != '@' else domain
-        message = f"""
-🔗 Add CNAME Record (2/3): {domain}
-
-Name: {escape_content_for_display(name_display, mode="summary")[0]}
-
-Enter the target domain this CNAME should point to.
-
-Enter full domain name with extension.
-"""
+        message = f"🔗 {t('dns_wizard.cname_record_title', user_lang, step=2, domain=domain)}\n\n" \
+                  f"{t('common_labels.name', user_lang)}: {escape_content_for_display(name_display, mode='summary')[0]}\n\n" \
+                  f"{t('dns_wizard.enter_cname_target', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:name:back")]
         ]
@@ -12422,14 +12371,10 @@ Enter full domain name with extension.
         # Step 3: TTL
         name_display = data['name'] if data['name'] != '@' else domain
         target_preview = escape_content_for_display(data['target'], mode="summary")
-        message = f"""
-🔗 Add CNAME Record (3/3): {domain}
-
-Name: {escape_content_for_display(name_display, mode="summary")[0]}
-Target: {target_preview[0] if isinstance(target_preview, tuple) else target_preview}
-
-Select TTL (Time To Live):
-"""
+        message = f"🔗 {t('dns_wizard.cname_record_title', user_lang, step=3, domain=domain)}\n\n" \
+                  f"{t('common_labels.name', user_lang)}: {escape_content_for_display(name_display, mode='summary')[0]}\n" \
+                  f"{t('common_labels.target', user_lang)}: {target_preview[0] if isinstance(target_preview, tuple) else target_preview}\n\n" \
+                  f"{t('dns_wizard.select_ttl', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:1")],
             [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:300")],
@@ -12529,7 +12474,9 @@ Type your subdomain:
     elif 'content' not in data:
         # Step 2: TXT Content
         name_display = data['name'] if data['name'] != '@' else domain
-        message = f"📝 TXT Value\n\nExample: v=spf1 include:_spf.google.com ~all"
+        message = f"📝 {t('dns_wizard.txt_record_title', user_lang, step=2, domain=domain)}\n\n" \
+                  f"{t('common_labels.name', user_lang)}: {escape_content_for_display(name_display, mode='summary')[0]}\n\n" \
+                  f"{t('dns_wizard.enter_txt_content', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.spf_record", user_lang), callback_data=await compress_callback(f"dns_wizard:{domain}:TXT:content:v=spf1 include:_spf.google.com ~all", context))],
             [InlineKeyboardButton(t("buttons.google_verification", user_lang), callback_data=await compress_callback(f"dns_wizard:{domain}:TXT:content:google-site-verification=YOUR_CODE_HERE", context))],
@@ -12540,7 +12487,9 @@ Type your subdomain:
         name_display = data['name'] if data['name'] != '@' else domain
         content_preview = escape_content_for_display(data['content'], mode="full")  # Use full mode for safe HTML
         name_safe = escape_content_for_display(name_display, mode="full")
-        message = f"📝 TTL Selection\n\n{name_safe[0]} → {content_preview[0]}"
+        message = f"📝 {t('dns_wizard.txt_record_title', user_lang, step=3, domain=domain)}\n\n" \
+                  f"{name_safe[0]} → {content_preview[0]}\n\n" \
+                  f"{t('dns_wizard.select_ttl', user_lang)}"
         keyboard = [
             [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:1")],
             [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:300")],
@@ -12596,7 +12545,7 @@ async def continue_mx_record_wizard(query, context, wizard_state):
             )
             return
             
-        message = f"📧 MX Record - {domain}\n\nChoose available name:"
+        message = f"📧 {t('dns_wizard.mx_record_title', user_lang, step=1, domain=domain)}\n\n{t('dns_wizard.choose_name', user_lang)}"
         
         # Create dynamic buttons
         keyboard = []
@@ -12610,7 +12559,34 @@ async def continue_mx_record_wizard(query, context, wizard_state):
         if row:  # Add remaining buttons
             keyboard.append(row)
             
+        # Add "Custom" button to allow user-defined subdomains for MX
+        keyboard.append([InlineKeyboardButton(t("buttons.custom_subdomain", user_lang), callback_data=f"dns_wizard:{domain}:MX:name:custom")])
         keyboard.append([InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain}:add")])
+    elif data.get('name') == 'custom':
+        # Custom subdomain input prompt for MX
+        message = f"""
+✏️ <b>{t('dns_wizard.custom_subdomain_title', user_lang, domain=domain)}</b>
+
+{t('dns_wizard.custom_subdomain_examples', user_lang)}
+{t('dns_wizard.custom_subdomain_root_tip', user_lang)}
+
+{t('dns_wizard.custom_subdomain_rules', user_lang)}
+
+{t('dns_wizard.type_your_subdomain', user_lang)}
+"""
+        keyboard = [
+            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:MX:name:back")]
+        ]
+        
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await safe_edit_message(query, message, reply_markup=reply_markup)
+        
+        # Set context to expect custom subdomain input
+        context.user_data['expecting_custom_subdomain_mx'] = {
+            'domain': domain,
+            'wizard_state': wizard_state
+        }
+        return
     elif 'server' not in data:
         # Step 2: Mail Server
         name_display = data['name'] if data['name'] != '@' else domain
@@ -12868,6 +12844,20 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         elif record_type == 'MX' and 'name' in wizard_data and 'server' not in wizard_data:
             # MX record expecting server input
             await handle_dns_wizard_mx_input(update, context, text, dns_wizard)
+            return
+    
+    # Check for custom subdomain input context (MX record)
+    custom_subdomain_mx_input = user_data.get('expecting_custom_subdomain_mx')
+    if custom_subdomain_mx_input:
+        # Defensive check: verify wizard_state exists
+        dns_wizard = user_data.get('dns_wizard')
+        if not dns_wizard or dns_wizard.get('action') != 'add':
+            # Orphaned flag detected - clear it
+            logger.warning(f"⚠️ Orphaned expecting_custom_subdomain_mx flag detected for user {user.id if user else 'unknown'} - clearing")
+            if 'expecting_custom_subdomain_mx' in context.user_data:
+                del context.user_data['expecting_custom_subdomain_mx']
+        else:
+            await handle_custom_subdomain_mx_input(update, context, text, custom_subdomain_mx_input)
             return
     
     # Basic domain search functionality - only if not in wizard context
@@ -14570,6 +14560,97 @@ async def handle_dns_wizard_cname_input(update, context, target_content, wizard_
         logger.error(f"Error handling CNAME target input: {e}")
         await update.message.reply_text(
             "❌ <b>Input Error</b>\n\nPlease try entering your CNAME target again:"
+        )
+
+async def handle_custom_subdomain_mx_input(update, context, subdomain_name, custom_input):
+    """Handle custom subdomain name input for MX record wizard"""
+    try:
+        import re
+        
+        subdomain_name = subdomain_name.strip().lower()
+        wizard_state = custom_input['wizard_state']
+        domain = custom_input['domain']
+        user = update.effective_user
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        
+        # Validate subdomain format
+        if not subdomain_name:
+            await update.message.reply_text(
+                f"❌ <b>{t('errors.empty_subdomain', user_lang)}</b>\n\n{t('errors.try_again', user_lang)}"
+            )
+            return
+        
+        # Allow @ for root domain
+        if subdomain_name == '@':
+            # Use @ as-is for root domain
+            pass
+        else:
+            # Validate subdomain format (RFC 1123)
+            subdomain_pattern = r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$'
+            
+            if not re.match(subdomain_pattern, subdomain_name):
+                await update.message.reply_text(
+                    f"❌ <b>{t('errors.invalid_subdomain_format', user_lang)}</b>\n\n"
+                    f"{t('errors.subdomain_rules', user_lang)}\n\n"
+                    f"{t('errors.try_again', user_lang)}"
+                )
+                return
+        
+        # Check for CNAME conflicts (MX records cannot coexist with CNAME)
+        cf_zone = await get_cloudflare_zone(domain)
+        if cf_zone:
+            cloudflare = CloudflareService()
+            existing_records = await cloudflare.list_dns_records(cf_zone['cf_zone_id'])
+            
+            # Check if subdomain has CNAME record
+            full_name = domain if subdomain_name == '@' else f"{subdomain_name}.{domain}"
+            for record in existing_records:
+                if record.get('name') == full_name and record.get('type') == 'CNAME':
+                    await update.message.reply_text(
+                        f"❌ <b>{t('errors.cname_conflict_title', user_lang)}</b>\n\n"
+                        f"<code>{subdomain_name}</code> {t('errors.has_cname_record', user_lang)}\n\n"
+                        f"{t('errors.mx_cname_conflict', user_lang)}\n\n"
+                        f"{t('errors.try_different_subdomain', user_lang)}"
+                    )
+                    return
+        
+        # Update wizard state with validated custom subdomain
+        wizard_state['data']['name'] = subdomain_name
+        context.user_data['dns_wizard'] = wizard_state
+        
+        # Clear custom subdomain context
+        if 'expecting_custom_subdomain_mx' in context.user_data:
+            del context.user_data['expecting_custom_subdomain_mx']
+        
+        # Get the bot's last message ID from wizard state
+        bot_message_id = wizard_state.get('bot_message_id')
+        if not bot_message_id:
+            await update.message.reply_text(
+                f"❌ <b>{t('errors.wizard_error', user_lang)}</b>\n\n{t('errors.restart_wizard', user_lang)}"
+            )
+            return
+        
+        # Create adapter for continue_mx_record_wizard with bot's message ID
+        query_adapter = WizardQueryAdapter(
+            bot=context.bot,
+            chat_id=update.message.chat.id,
+            message_id=bot_message_id,
+            user_id=update.effective_user.id
+        )
+        
+        # Continue to next step (Mail Server)
+        await continue_mx_record_wizard(query_adapter, context, wizard_state)
+        
+        # Delete the input message for cleaner interface
+        try:
+            await update.message.delete()
+        except Exception:
+            pass
+            
+    except Exception as e:
+        logger.error(f"Error handling MX record custom subdomain input: {e}")
+        await update.message.reply_text(
+            f"❌ <b>{t('errors.input_error', user_lang)}</b>\n\n{t('errors.try_again', user_lang)}"
         )
 
 async def handle_dns_wizard_mx_input(update, context, server_content, wizard_state):

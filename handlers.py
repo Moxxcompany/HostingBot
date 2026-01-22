@@ -11644,9 +11644,11 @@ def clear_all_dns_wizard_state(context):
     if 'expecting_nameserver_input' in context.user_data:
         del context.user_data['expecting_nameserver_input']
     
-    # Clear custom subdomain flag for MX
-    if 'expecting_custom_subdomain_mx' in context.user_data:
-        del context.user_data['expecting_custom_subdomain_mx']
+    # CRITICAL: This prevents the nameserver update "invalid IP address" bug
+    if context and context.user_data:
+        # Clear custom subdomain flag for MX
+        if 'expecting_custom_subdomain_mx' in context.user_data:
+            del context.user_data['expecting_custom_subdomain_mx']
     
     # Clear edit input context
     if 'edit_input' in context.user_data:

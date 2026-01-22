@@ -11716,6 +11716,9 @@ async def handle_dns_wizard_callback(query, context, callback_data):
         elif field == "name" and record_type == "MX":
             # Going back from MX name step - clear wizard completely  
             wizard_state['data'] = {}
+            # Clear custom subdomain flag
+            if 'expecting_custom_subdomain_mx' in context.user_data:
+                del context.user_data['expecting_custom_subdomain_mx']
         elif field == "server" and 'name' in wizard_state['data']:
             del wizard_state['data']['name']
         elif field == "priority" and 'server' in wizard_state['data']:
@@ -11730,6 +11733,10 @@ async def handle_dns_wizard_callback(query, context, callback_data):
         else:
             # Store the field value
             wizard_state['data'][field] = value
+            
+            # CRITICAL FIX: If we just set the name to custom, we need to handle it in continue_mx_record_wizard
+            # The current continue_mx_record_wizard handles 'name' == 'custom' by showing the input prompt
+            # but we need to ensure the routing happens correctly.
         
         # Store bot message ID for later editing
         if hasattr(query, 'message') and query.message:

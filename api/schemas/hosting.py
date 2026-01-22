@@ -32,7 +32,7 @@ class UnifiedOrderHostingRequest(BaseModel):
     """
     domain_name: Optional[str] = Field(None, description="Domain name (required for existing/external, optional for new)")
     domain_type: str = Field(..., pattern="^(new|existing|external)$", description="Type of domain: new, existing, or external")
-    plan: str = Field(..., pattern="^(pro_7day|pro_30day)$", examples=["pro_30day"])
+    plan: str = Field(..., pattern="^(pro_7day|pro_30day|pro_annual)$", examples=["pro_30day"])
     period: int = Field(1, ge=1, le=12, description="Billing periods", examples=[1])
     linking_mode: Optional[str] = Field("nameserver", pattern="^(nameserver|a_record)$", description="For external domains: nameserver or a_record method")
     
@@ -65,7 +65,7 @@ class UnifiedOrderHostingRequest(BaseModel):
 
 class OrderHostingRequest(BaseModel):
     """Request to order hosting (DEPRECATED - use UnifiedOrderHostingRequest)"""
-    plan: str = Field(..., pattern="^(pro_7day|pro_30day)$", examples=["pro_30day"])
+    plan: str = Field(..., pattern="^(pro_7day|pro_30day|pro_annual)$", examples=["pro_30day"])
     period: int = Field(1, ge=1, le=12, description="Billing periods", examples=[1])
     domain_name: Optional[str] = Field(None, examples=["example.com"])
     
@@ -108,7 +108,7 @@ class RenewHostingRequest(BaseModel):
     Note: Downgrading may be rejected if current resource usage exceeds the new plan's limits.
     """
     period: int = Field(1, ge=1, le=12, description="Number of billing periods to renew")
-    plan: Optional[str] = Field(None, pattern="^(pro_7day|pro_30day)$", description="Optional: Switch to a different plan (pro_7day or pro_30day)")
+    plan: Optional[str] = Field(None, pattern="^(pro_7day|pro_30day|pro_annual)$", description="Optional: Switch to a different plan (pro_7day, pro_30day, or pro_annual)")
     
     model_config = {
         "json_schema_extra": {

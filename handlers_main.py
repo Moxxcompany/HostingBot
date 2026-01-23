@@ -3308,7 +3308,7 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                     rdp_rows = price_results[1]
                     if rdp_rows and len(rdp_rows) > 0 and rdp_rows[0].get('min_price'):
                         min_rdp_price = int(rdp_rows[0]['min_price'])
-            except:
+            except Exception:
                 pass
         
         balance_display = format_money(Decimal(str(wallet_balance)))

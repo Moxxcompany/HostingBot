@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 async def show_hosting_interface(query, context=None):
     """Show main hosting interface"""
     # Import from main handlers to avoid duplication during transition
-    from handlers import show_hosting_interface as _show_hosting_interface
+    from handlers_main import show_hosting_interface as _show_hosting_interface
     return await _show_hosting_interface(query, context)
 
 

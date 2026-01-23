@@ -6006,7 +6006,6 @@ async def show_personalized_dashboard(query):
         except asyncio.TimeoutError:
             logger.warning(f"Database timeout for user {user.id}, using fallback")
             # Use fallback values if database is slow/unavailable
-            db_user = {'id': user.id}
             wallet_balance = 0.0
         except Exception as db_error:
             logger.warning(f"Database error for user {user.id}: {db_error}, using fallback")

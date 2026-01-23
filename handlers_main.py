@@ -3084,7 +3084,7 @@ async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TY
                 return
             
             # Accept terms and create/update user
-            db_user = await get_or_create_user(
+            await get_or_create_user(
                 telegram_id=user.id,
                 username=user.username,
                 first_name=user.first_name,

@@ -6173,12 +6173,18 @@ Quick Actions:
         reseller_text = await t_for_user('buttons.become_reseller', user.id)
         
         # Fallback button texts if translations missing
-        if 'buttons.' in search_text: search_text = "🌐 Register Domain - ❌ DMCA"
-        if 'buttons.' in domains_text: domains_text = "🌐 My Domains"
-        if 'buttons.' in hosting_text: hosting_text = "🏠 Web Hosting"
-        if 'buttons.' in wallet_text: wallet_text = "💰 Wallet"
-        if 'buttons.' in profile_text: profile_text = "👤 Profile"
-        if 'buttons.' in reseller_text: reseller_text = "🤝 Become a Reseller"
+        if 'buttons.' in search_text:
+            search_text = "🌐 Register Domain - ❌ DMCA"
+        if 'buttons.' in domains_text:
+            domains_text = "🌐 My Domains"
+        if 'buttons.' in hosting_text:
+            hosting_text = "🏠 Web Hosting"
+        if 'buttons.' in wallet_text:
+            wallet_text = "💰 Wallet"
+        if 'buttons.' in profile_text:
+            profile_text = "👤 Profile"
+        if 'buttons.' in reseller_text:
+            reseller_text = "🤝 Become a Reseller"
         
         keyboard = [
             [InlineKeyboardButton(search_text, callback_data="search_domains")],

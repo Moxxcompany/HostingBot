@@ -5023,6 +5023,19 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data != data or data.startswith("error:"):
         logger.info(f"Callback data resolved: {query.data} -> {data}")
     
+    # MODULAR ROUTER: Try routing through the modular callback router first
+    # This allows gradual migration of routes to the new modular system
+    try:
+        from handlers.callback_router import get_callback_router
+        router = get_callback_router()
+        if await router.route(data, query, context):
+            logger.debug(f"Callback '{data}' handled by modular router")
+            return  # Handled by modular router
+    except ImportError:
+        logger.warning("Callback router not available, using legacy routing")
+    except Exception as router_error:
+        logger.warning(f"Router error for '{data}': {router_error}, falling back to legacy")
+    
     try:
         # Terms acceptance callbacks
         if data.startswith("terms:") or data in ["accept_terms", "decline_terms", "full_terms"]:

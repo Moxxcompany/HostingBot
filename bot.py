@@ -37,7 +37,7 @@ from handlers.core_handlers import (
 
 # Import remaining handlers from main handlers module (for now)
 # These will be migrated to modular structure incrementally
-import handlers as handlers_main
+import handlers_main
 domain_command = handlers_main.domain_command
 dns_command = handlers_main.dns_command
 wallet_command = handlers_main.wallet_command

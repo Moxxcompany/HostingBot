@@ -1573,7 +1573,7 @@ async def show_hosting_management(query, subscription_id: str):
                 if isinstance(created_date, str):
                     created_date = datetime.fromisoformat(created_date.replace('Z', '+00:00'))
                 formatted_date = created_date.strftime('%B %d, %Y')
-            except:
+            except (ValueError, AttributeError):
                 formatted_date = str(created_date)[:10]
         else:
             formatted_date = t("common_labels.unknown", user_lang)

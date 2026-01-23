@@ -8572,7 +8572,7 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
         
         if unified_flow == 'awaiting_new_domain':
             # Handle new domain registration with immediate feedback
-            analyzing_msg = await message.reply_text(
+            await message.reply_text(
                 f"🔄 Checking {domain_name}...",
                 parse_mode=ParseMode.HTML
             )

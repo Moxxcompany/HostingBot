@@ -1,12 +1,10 @@
 """
 RDP Handlers - Windows RDP server management
 
-Handles:
-- RDP server purchase flow
-- Server deployment and provisioning
-- Server management (start, stop, restart)
-- Server reinstallation and deletion
-- Payment processing for RDP
+Contains actual implementations for:
+- RDP main menu
+- RDP purchase flow
+- Server management
 """
 
 import logging
@@ -17,7 +15,6 @@ from telegram.constants import ParseMode
 
 from handlers.common import (
     safe_edit_message,
-    get_user_lang_fast,
     get_region_name,
 )
 
@@ -25,20 +22,193 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================================================
-# RDP Main Interface
+# Imports helper
+# ============================================================================
+
+def _get_imports():
+    """Lazy imports to avoid circular dependencies"""
+    from localization import t, t_for_user
+    from database import execute_query
+    from unified_user_id_handlers import get_internal_user_id_from_telegram_id
+    return t, t_for_user, execute_query, get_internal_user_id_from_telegram_id
+
+
+async def get_user_lang_fast(user, context):
+    """Get user language with caching"""
+    from handlers.common import get_user_lang_fast as _get_user_lang_fast
+    return await _get_user_lang_fast(user, context)
+
+
+# ============================================================================
+# RDP Main Interface (Implemented)
 # ============================================================================
 
 async def handle_rdp_main(query):
-    """Show main RDP interface"""
-    from handlers_main import handle_rdp_main as _handler
-    return await _handler(query)
+    """Show RDP main menu with features and options"""
+    _, t_for_user, _, _ = _get_imports()
+    
+    try:
+        user = query.from_user
+        
+        message = await t_for_user('rdp.main.title', user.id)
+        message += "\n\n"
+        message += await t_for_user('rdp.main.features', user.id)
+        message += "\n"
+        message += await t_for_user('rdp.main.description', user.id)
+        message += "\n"
+        message += await t_for_user('rdp.main.offerings', user.id)
+        
+        keyboard = [
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.purchase', user.id), callback_data="rdp_purchase_start")],
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.my_servers', user.id), callback_data="rdp_my_servers")],
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.back_main', user.id), callback_data="main_menu")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
+        
+    except Exception as e:
+        logger.error("Error in RDP main menu: %s", e)
+        user = query.from_user
+        await safe_edit_message(query, await t_for_user('rdp.errors.menu_error', user.id))
 
 
 async def handle_rdp_purchase_start(query, context):
-    """Start RDP purchase flow"""
-    from handlers_main import handle_rdp_purchase_start as _handler
-    return await _handler(query, context)
+    """Two-path entry point for RDP purchase - Quick Deploy or Customize"""
+    _, t_for_user, execute_query, get_internal_user_id_from_telegram_id = _get_imports()
+    
+    user = query.from_user
+    try:
+        logger.info("🚀 RDP purchase start - two-path entry for user %s", user.id)
+        
+        # Initialize wizard state
+        context.user_data['rdp_wizard'] = {
+            'template_id': None,
+            'plan_id': None,
+            'region': None,
+            'billing_cycle': 'monthly'
+        }
+        
+        # Get user ID and existing servers
+        db_user_id = await get_internal_user_id_from_telegram_id(user.id)
+        servers = []
+        if db_user_id:
+            servers = await execute_query("""
+                SELECT id, hostname, status, plan_id, public_ip 
+                FROM rdp_servers 
+                WHERE user_id = %s AND deleted_at IS NULL 
+                ORDER BY created_at DESC 
+                LIMIT 3
+            """, (db_user_id,))
+        
+        message = await t_for_user('rdp.purchase.title', user.id) + "\n\n"
+        message += await t_for_user('rdp.purchase.features_short', user.id) + "\n"
+        message += await t_for_user('rdp.purchase.description_short', user.id) + "\n\n"
+        
+        # Show existing servers if any
+        if servers and len(servers) > 0:
+            message += f"<b>{await t_for_user('rdp.purchase.your_servers', user.id)}</b>\n"
+            for server in servers:
+                status_emoji = "🟢" if server['status'] == 'active' else "🟡" if server['status'] == 'provisioning' else "⚪"
+                ip = server['public_ip'] if server.get('public_ip') else await t_for_user('rdp.purchase.pending', user.id)
+                message += f"{status_emoji} <code>{ip}</code>\n"
+            message += "\n"
+        
+        message += f"<b>{await t_for_user('rdp.purchase.choose_method', user.id)}</b>\n\n"
+        message += f"<b>{await t_for_user('rdp.purchase.quick_deploy_label', user.id)}</b> {await t_for_user('rdp.purchase.quick_deploy_desc', user.id)}\n"
+        message += f"<b>{await t_for_user('rdp.purchase.customize_label', user.id)}</b> {await t_for_user('rdp.purchase.customize_desc', user.id)}"
+        
+        keyboard = [
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.quick_deploy', user.id), callback_data="rdp_quick_deploy")],
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.customize', user.id), callback_data="rdp_customize_start")]
+        ]
+        
+        # Add "My Servers" button if user has servers
+        if servers and len(servers) > 0:
+            keyboard.append([InlineKeyboardButton(await t_for_user('rdp.buttons.view_all', user.id), callback_data="rdp_my_servers")])
+        
+        keyboard.append([InlineKeyboardButton(await t_for_user('rdp.buttons.back_main', user.id), callback_data="main_menu")])
+        
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
+        
+    except Exception as e:
+        logger.error("Error in RDP purchase start: %s", e)
+        await safe_edit_message(query, await t_for_user('rdp.errors.purchase_start_error', user.id))
 
+
+async def handle_rdp_my_servers(query, context=None):
+    """Show user's RDP servers with status and management options"""
+    _, t_for_user, execute_query, get_internal_user_id_from_telegram_id = _get_imports()
+    
+    user = query.from_user
+    
+    try:
+        db_user_id = await get_internal_user_id_from_telegram_id(user.id)
+        
+        if not db_user_id:
+            message = await t_for_user('rdp.my_servers.no_account', user.id)
+            keyboard = [[InlineKeyboardButton(await t_for_user('rdp.buttons.back_main', user.id), callback_data="rdp_main")]]
+            await safe_edit_message(query, message, reply_markup=InlineKeyboardMarkup(keyboard))
+            return
+        
+        servers = await execute_query("""
+            SELECT id, hostname, status, plan_id, public_ip, region, 
+                   created_at, billing_cycle, next_billing_date
+            FROM rdp_servers 
+            WHERE user_id = %s AND deleted_at IS NULL 
+            ORDER BY created_at DESC
+        """, (db_user_id,))
+        
+        if not servers:
+            message = await t_for_user('rdp.my_servers.no_servers', user.id)
+            keyboard = [
+                [InlineKeyboardButton(await t_for_user('rdp.buttons.purchase', user.id), callback_data="rdp_purchase_start")],
+                [InlineKeyboardButton(await t_for_user('rdp.buttons.back_main', user.id), callback_data="rdp_main")]
+            ]
+            await safe_edit_message(query, message, reply_markup=InlineKeyboardMarkup(keyboard))
+            return
+        
+        message = await t_for_user('rdp.my_servers.title', user.id) + "\n\n"
+        
+        keyboard = []
+        for server in servers:
+            status = server['status']
+            if status == 'active':
+                status_emoji = "🟢"
+            elif status == 'provisioning':
+                status_emoji = "🟡"
+            elif status == 'stopped':
+                status_emoji = "🔴"
+            else:
+                status_emoji = "⚪"
+            
+            ip = server['public_ip'] or await t_for_user('rdp.my_servers.pending', user.id)
+            region = get_region_name(server['region']) if server.get('region') else 'Unknown'
+            
+            message += f"{status_emoji} <code>{ip}</code>\n"
+            message += f"   Region: {region}\n"
+            message += f"   Status: {status.title()}\n\n"
+            
+            button_text = f"{status_emoji} {ip}"
+            keyboard.append([InlineKeyboardButton(button_text, callback_data=f"rdp_server_{server['id']}")])
+        
+        keyboard.extend([
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.purchase', user.id), callback_data="rdp_purchase_start")],
+            [InlineKeyboardButton(await t_for_user('rdp.buttons.back_main', user.id), callback_data="rdp_main")]
+        ])
+        
+        await safe_edit_message(query, message, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode='HTML')
+        
+    except Exception as e:
+        logger.error("Error showing RDP servers: %s", e)
+        await safe_edit_message(query, await t_for_user('rdp.errors.servers_error', user.id))
+
+
+# ============================================================================
+# RDP Configuration (Delegated)
+# ============================================================================
 
 async def handle_rdp_quick_deploy(query, context):
     """Handle quick deploy option"""
@@ -51,10 +221,6 @@ async def handle_rdp_customize_start(query, context):
     from handlers_main import handle_rdp_customize_start as _handler
     return await _handler(query, context)
 
-
-# ============================================================================
-# RDP Configuration
-# ============================================================================
 
 async def handle_rdp_select_plan(query, context, plan_id: str):
     """Handle plan selection"""
@@ -105,7 +271,7 @@ async def handle_rdp_change_billing(query, context, region_code: str):
 
 
 # ============================================================================
-# RDP Order & Payment
+# RDP Order & Payment (Delegated)
 # ============================================================================
 
 async def handle_rdp_compact_confirmation(query, context):
@@ -138,30 +304,6 @@ async def handle_rdp_pay_crypto(query, context):
     return await _handler(query, context)
 
 
-async def handle_rdp_crypto_currency(query, context, currency: str):
-    """Handle crypto currency selection"""
-    from handlers_main import handle_rdp_crypto_currency as _handler
-    return await _handler(query, context, currency)
-
-
-async def handle_rdp_crypto_from_qr(query, context, order_uuid: str):
-    """Handle crypto payment from QR"""
-    from handlers_main import handle_rdp_crypto_from_qr as _handler
-    return await _handler(query, context, order_uuid)
-
-
-async def handle_rdp_payment_back(query, context, order_uuid: str):
-    """Go back from payment"""
-    from handlers_main import handle_rdp_payment_back as _handler
-    return await _handler(query, context, order_uuid)
-
-
-async def handle_rdp_cancel_order(query, context, order_uuid: str):
-    """Cancel RDP order"""
-    from handlers_main import handle_rdp_cancel_order as _handler
-    return await _handler(query, context, order_uuid)
-
-
 async def handle_rdp_pay_wallet(query, context):
     """Handle wallet payment"""
     from handlers_main import handle_rdp_pay_wallet as _handler
@@ -169,30 +311,8 @@ async def handle_rdp_pay_wallet(query, context):
 
 
 # ============================================================================
-# RDP Provisioning
+# RDP Server Management (Delegated)
 # ============================================================================
-
-async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
-    """Provision RDP server"""
-    from handlers_main import provision_rdp_server as _handler
-    return await _handler(telegram_id, order_id, metadata)
-
-
-async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance_id: str):
-    """Wait for reinstall to complete"""
-    from handlers_main import wait_for_reinstall_complete as _handler
-    return await _handler(telegram_id, server_id, instance_id)
-
-
-# ============================================================================
-# RDP Server Management
-# ============================================================================
-
-async def handle_rdp_my_servers(query, context=None):
-    """Show user's RDP servers"""
-    from handlers_main import handle_rdp_my_servers as _handler
-    return await _handler(query, context)
-
 
 async def handle_rdp_server_details(query, context, server_id: str):
     """Show server details"""
@@ -243,31 +363,19 @@ async def handle_rdp_delete(query, context, server_id: str):
 
 
 # ============================================================================
-# Legacy Selection Handlers
+# RDP Provisioning (Delegated)
 # ============================================================================
 
-async def handle_rdp_template_selection(query, context, template_id: str):
-    """Handle template selection (legacy)"""
-    from handlers_main import handle_rdp_template_selection as _handler
-    return await _handler(query, context, template_id)
+async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
+    """Provision RDP server"""
+    from handlers_main import provision_rdp_server as _handler
+    return await _handler(telegram_id, order_id, metadata)
 
 
-async def handle_rdp_plan_selection(query, context, plan_id: str):
-    """Handle plan selection (legacy)"""
-    from handlers_main import handle_rdp_plan_selection as _handler
-    return await _handler(query, context, plan_id)
-
-
-async def handle_rdp_region_selection(query, context, region_id: str):
-    """Handle region selection (legacy)"""
-    from handlers_main import handle_rdp_region_selection as _handler
-    return await _handler(query, context, region_id)
-
-
-async def handle_rdp_billing_selection(query, context, billing_cycle: str):
-    """Handle billing selection (legacy)"""
-    from handlers_main import handle_rdp_billing_selection as _handler
-    return await _handler(query, context, billing_cycle)
+async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance_id: str):
+    """Wait for reinstall to complete"""
+    from handlers_main import wait_for_reinstall_complete as _handler
+    return await _handler(telegram_id, server_id, instance_id)
 
 
 # ============================================================================
@@ -276,5 +384,10 @@ async def handle_rdp_billing_selection(query, context, billing_cycle: str):
 
 def get_rdp_default(key):
     """Get RDP default value"""
-    from handlers_main import get_rdp_default as _func
-    return _func(key)
+    defaults = {
+        'template_id': '2379',  # Windows Server 2022
+        'plan_id': 'vc2-1c-1gb',
+        'region': 'ewr',
+        'billing_cycle': 'monthly'
+    }
+    return defaults.get(key)

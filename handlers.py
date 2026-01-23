@@ -996,7 +996,7 @@ async def auto_apply_with_feedback(query, context, session: AutoApplySession):
             
             # Get user language for localized buttons
             user = query.from_user
-            user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+            user_lang = await get_user_lang_fast(user, context) if user else 'en'
             
             # Show error message with retry option
             error_message = f"""
@@ -1545,7 +1545,7 @@ async def show_hosting_management(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1642,7 +1642,7 @@ async def show_hosting_management(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting management: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_hosting_details(query, subscription_id: str):
@@ -1653,7 +1653,7 @@ async def show_hosting_details(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1704,7 +1704,7 @@ async def show_hosting_details(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting details: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_cpanel_login(query, subscription_id: str):
@@ -1715,7 +1715,7 @@ async def show_cpanel_login(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1757,7 +1757,7 @@ async def show_cpanel_login(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing cPanel login: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_hosting_usage(query, subscription_id: str):
@@ -1768,7 +1768,7 @@ async def show_hosting_usage(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1812,7 +1812,7 @@ async def show_hosting_usage(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting usage: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def handle_renew_suspended_hosting(query, subscription_id: str):
@@ -1829,7 +1829,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
         subscription = await get_hosting_subscription_details(int(subscription_id), db_user['id'])
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         if not subscription:
             await safe_edit_message(query, f"❌ {t('hosting.not_found_or_denied', user_lang)}")
@@ -1900,7 +1900,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing renewal options: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, f"❌ {t('errors.general', user_lang)}")
 
 async def process_manual_renewal_wallet(query, subscription_id: str):
@@ -1908,7 +1908,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
     user = query.from_user
     
     # Get user language early for translations
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import (get_or_create_user, get_hosting_subscription_details,
@@ -1951,7 +1951,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
 async def process_manual_renewal_crypto(query, subscription_id: str):
     """Process manual renewal payment via cryptocurrency"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     # Reuse existing hosting payment flow
     await safe_edit_message(query, f"🔧 {t('renewal.crypto_coming_soon', user_lang)}")
 
@@ -1973,7 +1973,7 @@ async def handle_manual_renewal(query, subscription_id: str):
         subscription = await get_hosting_subscription_details(int(subscription_id), db_user['id'])
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         if not subscription:
             await safe_edit_message(query, f"❌ {t('hosting.not_found_or_denied', user_lang)}")
@@ -2096,14 +2096,14 @@ async def handle_manual_renewal(query, subscription_id: str):
             
     except Exception as e:
         logger.error(f"Error in handle_manual_renewal: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, f"❌ <b>{t('renewal.error_processing', user_lang)}</b>\n\n{t('renewal.unexpected_error', user_lang)}", parse_mode='HTML')
 
 
 async def show_insufficient_funds_message(query, subscription_id: str):
     """Show message about insufficient wallet funds with add funds option"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, get_user_wallet_balance, get_hosting_plan
@@ -2167,7 +2167,7 @@ async def suspend_hosting_account(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -2209,13 +2209,13 @@ async def suspend_hosting_account(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing suspension confirmation: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def confirm_hosting_suspension(query, subscription_id: str):
     """Execute hosting account suspension"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, update_hosting_subscription_status
@@ -2287,7 +2287,7 @@ async def confirm_hosting_suspension(query, subscription_id: str):
 async def unsuspend_hosting_account(query, subscription_id: str):
     """Execute hosting account unsuspension"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, update_hosting_subscription_status
@@ -2359,7 +2359,7 @@ async def unsuspend_hosting_account(query, subscription_id: str):
 async def restart_hosting_services(query, subscription_id: str):
     """Restart hosting services for an account"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details
@@ -2431,7 +2431,7 @@ async def restart_hosting_services(query, subscription_id: str):
 async def check_hosting_status(query, subscription_id: str):
     """Check current hosting account status"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details
@@ -2532,7 +2532,7 @@ async def check_hosting_status(query, subscription_id: str):
 async def recheck_hosting_nameservers(query, plan_id: str, domain_name: str):
     """Recheck nameserver configuration for hosting domain"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -2864,7 +2864,7 @@ async def require_user_onboarding(update: Update, context: ContextTypes.DEFAULT_
         # Check if user has accepted terms
         if not user_data['terms_accepted_bool']:
             # User hasn't completed onboarding - direct them to /start
-            user_lang = await resolve_user_language(user.id, user.language_code)
+            user_lang = await get_user_lang_fast(user, context)
             
             onboarding_message = t('auth.onboarding_required', user_lang)
             
@@ -2889,7 +2889,7 @@ async def require_user_onboarding(update: Update, context: ContextTypes.DEFAULT_
         logger.error(f"Error in authentication check for user {user.id}: {e}")
         
         # Get user_lang for error message
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Fallback error message
         await effective_message.reply_text(
@@ -3012,7 +3012,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in start command: {e}")
         
         # Get user_lang for error fallback
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Fallback to original welcome message on error
         welcome_message = get_welcome_message()
@@ -3040,7 +3040,7 @@ async def show_terms_acceptance(update: Update, context: ContextTypes.DEFAULT_TY
         return
     
     # Get user language with caching optimization
-    user_lang = await resolve_user_language(user.id, user.language_code)
+    user_lang = await get_user_lang_fast(user, context)
     platform_name = get_platform_name()
     
     # Translated terms message with proper placeholder substitution
@@ -3118,7 +3118,7 @@ async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TY
             
             if success:
                 # Show success message and go to dashboard
-                user_lang = await resolve_user_language(user.id, user.language_code)
+                user_lang = await get_user_lang_fast(user, context)
                 success_message = t_fmt('terms.accepted', user_lang)
                 
                 try:
@@ -3172,7 +3172,7 @@ You can restart anytime with /start to accept terms."""
             
         elif query.data == "terms:view":
             # Show full terms using localization system with proper placeholder substitution
-            user_lang = await resolve_user_language(user.id, user.language_code)
+            user_lang = await get_user_lang_fast(user, context)
             terms_title = t_fmt('terms.title', user_lang)
             terms_content = t_fmt('terms.content', user_lang)
             full_terms = f"{terms_title}\n\n{terms_content}"
@@ -3310,7 +3310,7 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
         
         balance_display = format_money(Decimal(str(wallet_balance)))
         platform_name = get_platform_name()
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Check if user is admin using unified admin check
         is_admin = is_admin_user(user.id)
@@ -3490,7 +3490,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if is_active and not is_admin_user(user.id):
         effective_message = update.effective_message
         if effective_message:
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
             logger.info(f"🔧 MAINTENANCE: Blocked /domain command from non-admin user {user.id}")
@@ -3510,7 +3510,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Get user's domains
         domains = await get_user_domains(db_user['id'])
         
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         if not domains:
             message = f"{t('dashboard.domains_list_title', user_lang)}\n\n{t('dashboard.no_domains_message', user_lang)}"
@@ -3545,7 +3545,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in domain command: {e}")
         effective_message = update.effective_message
         if effective_message:
-            user_lang = await resolve_user_language(user.id, user.language_code)
+            user_lang = await get_user_lang_fast(user, context)
             await effective_message.reply_text(t('errors.general', user_lang))
 
 async def dns_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3564,7 +3564,7 @@ async def dns_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /dns command from non-admin user {user.id}")
@@ -3574,7 +3574,7 @@ async def dns_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await require_user_onboarding(update, context):
         return
     
-    user_lang = await resolve_user_language(user.id, user.language_code)
+    user_lang = await get_user_lang_fast(user, context)
         
     message_text = get_dns_management_intro()
     keyboard = [
@@ -3598,7 +3598,7 @@ async def wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if is_active and user and not is_admin_user(user.id):
         effective_message = update.effective_message
         if effective_message:
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
             logger.info(f"🔧 MAINTENANCE: Blocked /wallet command from non-admin user {user.id}")
@@ -3623,7 +3623,7 @@ async def show_wallet_interface_message(update: Update):
         logger.error("Missing user or message in wallet interface")
         return
     
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -3684,7 +3684,7 @@ async def show_wallet_interface_message(update: Update):
         logger.error(f"Error showing wallet interface: {e}")
         if effective_message:
             # Get user_lang for error message
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+            user_lang = await get_user_lang_fast(user, context) if user else 'en'
             await effective_message.reply_text(t('errors.wallet_load_failed', user_lang))
 
 async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3698,13 +3698,13 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
     
     # SECURITY: Multi-layer admin validation using unified admin check
     if not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await message.reply_text(t('admin.access.denied', user_lang))
         logger.error(f"🚫 SECURITY: Non-admin user {user.id} attempted to use credit_wallet command")
         return
     
     # Resolve admin user's language for all messages
-    user_lang = await resolve_user_language(user.id, user.language_code)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         if not context.args or len(context.args) < 2:
@@ -3727,7 +3727,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
         
         # CRITICAL: Administrative safety bounds
         if amount <= 0:
-            user_lang = await resolve_user_language(user.id, user.language_code)
+            user_lang = await get_user_lang_fast(user, context)
             await message.reply_text(f"❌ {t('errors.general', user_lang)}\n\n{t('errors.amount_must_positive', user_lang)}")
             logger.warning(f"🚫 ADMIN VALIDATION: Non-positive amount attempted by admin {user.id}: {amount}")
             return
@@ -3744,7 +3744,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
         # Get and validate target user
         user_record = await get_or_create_user(target_user_id)
         if not user_record:
-            user_lang = await resolve_user_language(user.id, user.language_code)
+            user_lang = await get_user_lang_fast(user, context)
             await message.reply_text(f"❌ {t('errors.not_found', user_lang)}\n\n{t('errors.user_record_failed', user_lang)}")
             logger.error(f"🚫 ADMIN ERROR: Failed to get user record for {target_user_id}")
             return
@@ -3795,7 +3795,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
             
     except Exception as e:
         logger.error(f"🚫 ADMIN ERROR: Exception in credit_wallet_command by admin {user.id}: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         await message.reply_text(t('errors.system_error', user_lang))
 
 async def send_broadcast(broadcast_message: str, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3962,7 +3962,7 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # SECURITY: Multi-layer admin validation using unified admin check
     if not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         await message.reply_text(t('admin.access.denied', user_lang))
         logger.error(f"🚫 SECURITY: Non-admin user {user.id} attempted to use broadcast command")
         return
@@ -4033,7 +4033,7 @@ async def cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def show_openprovider_accounts(query, context):
     """Display OpenProvider accounts for admin management"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     if not is_admin_user(user.id):
         await query.answer("Access denied", show_alert=True)
@@ -4108,7 +4108,7 @@ async def show_openprovider_accounts(query, context):
 async def handle_validate_openprovider_credentials(query, context):
     """Validate credentials for all OpenProvider accounts"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     if not is_admin_user(user.id):
         await query.answer("Access denied", show_alert=True)
@@ -4169,7 +4169,7 @@ async def handle_validate_openprovider_credentials(query, context):
 async def handle_set_default_openprovider_account(query, context, account_id: int):
     """Handle setting a new default OpenProvider account"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     if not is_admin_user(user.id):
         await query.answer("Access denied", show_alert=True)
@@ -4205,7 +4205,7 @@ async def handle_set_default_openprovider_account(query, context, account_id: in
 async def handle_admin_dns_sync(query, context):
     """Handle admin DNS synchronization - reconcile database with Cloudflare"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     if not is_admin_user(user.id):
         await query.answer("Access denied", show_alert=True)
@@ -4273,7 +4273,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /search command from non-admin user {user.id}")
@@ -4290,7 +4290,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if not args:
         logger.info(f"🔍 USER_ACTIVITY: /search command with no query from user {user.id}")
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         help_text = t('search.help_title', user_lang) + "\n\n"
         help_text += t('search.help_description', user_lang) + "\n\n"
@@ -4316,7 +4316,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
         
-    user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+    user_lang = await get_user_lang_fast(user, context) if user else 'en'
     searching_msg = await message.reply_text(f"🔄 {t('wallet.searching_domain', user_lang, domain=domain_name)}")
     
     # Perform enhanced domain search with validation and warnings
@@ -4469,7 +4469,7 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /profile command from non-admin user {user.id}")
@@ -4481,7 +4481,7 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     try:
         # Get user language for localized response
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get user data for wallet balance and terms status
         user_data = await get_or_create_user(user.id, user.username, user.first_name, user.language_code)
@@ -4568,7 +4568,7 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Error in profile command for user {user.id}: {e}")
         # Get user_lang for error message
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         # Fallback error message
         error_msg = t('errors.profile_load_failed', user_lang)
         keyboard = [
@@ -4590,7 +4590,7 @@ async def hosting_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         from services.maintenance_manager import MaintenanceManager
         is_active = await MaintenanceManager.is_maintenance_active()
         if is_active and not is_admin_user(user.id):
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
             logger.info(f"🔧 MAINTENANCE: Blocked /hosting command from non-admin user {user.id}")
@@ -4601,7 +4601,7 @@ async def hosting_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     # Get user language for localized buttons
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+    user_lang = await get_user_lang_fast(user, context) if user else 'en'
         
     message_text = """
 🏠 Hosting
@@ -4630,7 +4630,7 @@ async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /language command from non-admin user {user.id}")
@@ -4642,7 +4642,7 @@ async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     try:
         # Get current user language for the interface message
-        current_lang = await resolve_user_language(user.id, user.language_code)
+        current_lang = await get_user_lang_fast(user, context)
         
         # Show language selection interface
         # TODO: Update to use new language selection flow
@@ -4658,7 +4658,7 @@ async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in language command for user {user.id}: {e}")
         
         # Get user_lang for error message
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Fallback message
         await effective_message.reply_text(
@@ -4681,7 +4681,7 @@ async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /link command from non-admin user {user.id}")
@@ -4692,7 +4692,7 @@ async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE
         return
     
     try:
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Clear any existing domain linking state
         if context.user_data:
@@ -4705,7 +4705,7 @@ async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE
         logger.error(f"Error in link domain command for user {user.id}: {e}")
         
         # Get user_lang for error message
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Fallback message
         await effective_message.reply_text(
@@ -4869,7 +4869,7 @@ async def handle_domain_linking_text_input(update: Update, context: ContextTypes
     
     try:
         domain_name = message.text.strip().lower()
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Clear the awaiting state
         context.user_data['awaiting_domain_for_linking'] = False
@@ -4897,7 +4897,7 @@ async def handle_domain_linking_text_input(update: Update, context: ContextTypes
     except Exception as e:
         logger.error(f"Error handling domain linking text input: {e}")
         # Get user_lang for error message
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         await message.reply_text(
             t('errors.domain_processing_failed', user_lang),
             reply_markup=InlineKeyboardMarkup([[
@@ -5928,7 +5928,7 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
 async def handle_language_selection_callback(query, lang_code: str, context: ContextTypes.DEFAULT_TYPE):
     """Handle language selection callback from menu"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     if not user:
         logger.error("Missing user in language selection callback")
@@ -6044,7 +6044,7 @@ async def show_personalized_dashboard(query):
             wallet_balance = 0.0
         
         balance_display = format_money(Decimal(str(wallet_balance)))
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Check if user is admin using unified admin check
         is_admin = is_admin_user(user.id)
@@ -6132,7 +6132,7 @@ async def show_main_menu(query):
     
     try:
         # Get user's language preference
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Get localized main menu message
         platform_title = await t_for_user('dashboard.complete_hosting_platform', user.id, platform_name=get_platform_name())
@@ -6183,7 +6183,7 @@ Quick Actions:
     except Exception as e:
         logger.error(f"Error localizing main menu for user {user.id}: {e}")
         # Get user_lang for fallback
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         # Fallback to original hardcoded version
         message = format_branded_message("""
 🌐 {platform_name} - Complete Hosting Platform
@@ -6211,7 +6211,7 @@ async def show_reseller_info(query):
         return
     
     try:
-        user_lang = await resolve_user_language(user.id, user.language_code)
+        user_lang = await get_user_lang_fast(user, context)
         
         reseller_message = await t_for_user('reseller.message', user.id)
         contact_button_text = await t_for_user('buttons.contact_support', user.id)
@@ -6251,7 +6251,7 @@ We'll help you get started!"""
     except Exception as e:
         logger.error(f"Error showing reseller info for user {user.id}: {e}")
         # Get user_lang for fallback
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         fallback_message = format_branded_message("""🤝 <b>Reseller Program</b>
 
 Grow your business by partnering with {platform_name}!
@@ -6309,7 +6309,7 @@ async def show_user_domains_complete(query, context=None):
         clear_admin_states(context)
     
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -6364,7 +6364,7 @@ async def show_wallet_interface(query, context=None):
         clear_admin_states(context)
     
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -6432,7 +6432,7 @@ async def show_profile_interface(query):
     config = BrandConfig()
     
     # Get user language for localization
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Get localized text
     language_settings_text = await t_for_user('profile.language_settings', user.id)
@@ -6468,7 +6468,7 @@ async def show_profile_interface(query):
 async def show_contact_support(query):
     """Show contact support information"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     platform_name = get_platform_name()
     
     # Use the new HTML-formatted message template
@@ -6620,7 +6620,7 @@ async def smart_domain_handler(query, context, plan_id: str, domain_text: Option
     Automatically determines: registration, existing domain, or transfer needed
     """
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get plan information
@@ -6988,7 +6988,7 @@ def _check_cloudflare_nameservers(nameservers: List[str]) -> bool:
 async def show_smart_domain_options(query, context, plan_id: str, plan: Dict):
     """Show intelligent domain options based on user's needs"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     plan_name = plan.get('plan_name', 'Unknown')
     plan_price = plan.get('period_price', plan.get('monthly_price', 0))
@@ -7017,7 +7017,7 @@ async def show_smart_domain_options(query, context, plan_id: str, plan: Dict):
 async def handle_new_domain_hosting(query, context, plan_id: str, domain_name: str, plan: Dict):
     """Handle new domain registration + hosting bundle"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     plan_name = plan.get('plan_name', 'Unknown')
     plan_price = plan.get('period_price', plan.get('monthly_price', 0))
@@ -7080,7 +7080,7 @@ async def handle_new_domain_hosting(query, context, plan_id: str, domain_name: s
 async def handle_existing_domain_hosting(query, context, plan_id: str, domain_name: str, domain_status: Dict):
     """Handle existing domain + hosting with smart DNS detection"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # CRITICAL: Enforce hosting bundle context first - MANDATORY ROUTING ENFORCEMENT
     if domain_status.get('hosting_bundle_context', False):
@@ -7136,7 +7136,7 @@ async def handle_existing_domain_hosting(query, context, plan_id: str, domain_na
 async def unified_hosting_flow(query):
     """Main entry point for unified hosting flow"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get user hosting subscriptions for context
@@ -7194,7 +7194,7 @@ async def unified_hosting_flow(query):
 async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name: Optional[str] = None):
     """Unified checkout for hosting ± domain with dynamic pricing"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # 🎯 INSTANT FEEDBACK: Show immediate processing message
     processing_msg = "🔄 <b>Processing your order...</b>\n\n"
@@ -7326,7 +7326,7 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
 async def show_unified_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str, items: List[str], service_type: str):
     """Show unified payment options for hosting ± domain"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     items_text = "\n".join([f"• {item}" for item in items])
     
@@ -7382,7 +7382,7 @@ async def show_unified_payment_options_with_intent(query, intent_id: int, price:
     FIXED: Implements missing function that handlers were calling
     """
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     items_text = "\n".join([f"• {item}" for item in items])
     
@@ -7452,7 +7452,7 @@ async def handle_unified_plan_selection(query, context, plan_id: str):
 async def handle_unified_new_domain(query, context, plan_id: str):
     """Handle new domain registration flow"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -7496,7 +7496,7 @@ Enter domain name to register:
 async def handle_unified_existing_domain(query, context, plan_id: str):
     """Handle existing domain connection flow"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -7544,7 +7544,7 @@ async def handle_unified_existing_domain(query, context, plan_id: str):
 async def handle_unified_hosting_only(query, context, plan_id: str):
     """Handle hosting-only (no domain) flow"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -7584,7 +7584,7 @@ async def handle_unified_hosting_only(query, context, plan_id: str):
 async def process_unified_wallet_payment(query, subscription_id: str, price: str):
     """Process wallet payment for unified hosting order with financial safety checks"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Convert price to float
@@ -7737,7 +7737,7 @@ There was an error reserving funds from your wallet. Please try again or contact
 async def process_intent_crypto_payment(query, intent_id: str, crypto: str, price: str):
     """Process cryptocurrency payment for hosting provision intent - FIXED to create hosting_orders"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         from database import get_hosting_intent_by_id, get_or_create_user, create_hosting_order_crypto
@@ -7955,7 +7955,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
         await safe_edit_message(query, processing_msg, parse_mode='HTML')
         
         # Get user language for error messages
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Route through centralized orchestrator (matching registration fix pattern)
         try:
@@ -8013,7 +8013,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
 async def process_unified_crypto_payment(query, crypto_type: str, subscription_id: str, price: str):
     """Process crypto payment for unified hosting order with financial safety checks"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # 🎯 INSTANT FEEDBACK: Show immediate crypto payment processing message
     crypto_name = crypto_type.upper()
@@ -8689,7 +8689,7 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
         
     except Exception as e:
         logger.error(f"Error handling unified text input: {e}")
-        user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         await message.reply_text(f"❌ {t('errors.domain_processing_error', user_lang)}")
 
 # BACKWARDS COMPATIBILITY LAYER
@@ -8709,7 +8709,7 @@ async def show_hosting_interface(query, context=None):
 async def show_hosting_plans(query):
     """Show all available hosting plans"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     plans = cpanel.get_hosting_plans()
     
@@ -8740,7 +8740,7 @@ async def show_hosting_plans(query):
 async def show_my_hosting(query):
     """Show user's hosting subscriptions"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Import database functions
@@ -8796,7 +8796,7 @@ async def show_my_hosting(query):
 async def show_plan_details(query, plan_id):
     """Show detailed information about a hosting plan"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -8826,7 +8826,7 @@ async def show_plan_details(query, plan_id):
 async def start_hosting_purchase(query, plan_id):
     """Start the hosting plan purchase process"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -8868,7 +8868,7 @@ Next: Choose your domain option
 async def collect_hosting_domain(query, context, plan_id):
     """Collect domain information for hosting plan purchase"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -8918,7 +8918,7 @@ Plan: {plan_name} (${monthly_price}/month)
 async def start_hosting_domain_search(query, context, plan_id):
     """Start domain search for hosting package"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -8967,7 +8967,7 @@ Enter domain name to search:
 async def request_existing_domain(query, context, plan_id):
     """Request existing domain for hosting package"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -9031,7 +9031,7 @@ async def handle_hosting_domain_input(update: Update, context: ContextTypes.DEFA
         plan_price = user_data.get('plan_price', 0)
         
         if not plan_id or not hosting_flow:
-            user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+            user_lang = await get_user_lang_fast(user, context) if user else 'en'
             await message.reply_text(f"❌ {t('errors.hosting_session_expired', user_lang)}")
             return
         
@@ -9060,7 +9060,7 @@ async def handle_hosting_domain_input(update: Update, context: ContextTypes.DEFA
     except Exception as e:
         logger.error(f"Error handling hosting domain input: {e}")
         if message:
-            user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+            user_lang = await get_user_lang_fast(user, context) if user else 'en'
             await message.reply_text(f"❌ {t('errors.domain_input_error', user_lang)}")
 
 async def handle_new_domain_with_hosting(update: Update, context: ContextTypes.DEFAULT_TYPE, domain_name: str, plan_id: str, plan_name: str, plan_price: float):
@@ -9072,7 +9072,7 @@ async def handle_new_domain_with_hosting(update: Update, context: ContextTypes.D
         logger.error("No user in handle_new_domain_with_hosting")
         return
     
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Check domain availability using existing OpenProvider integration
@@ -9135,7 +9135,7 @@ async def handle_existing_domain_with_hosting(update: Update, context: ContextTy
         logger.error("No user in handle_existing_domain_with_hosting")
         return
     
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         checking_msg = None
@@ -9174,7 +9174,7 @@ async def handle_existing_domain_with_hosting(update: Update, context: ContextTy
 async def confirm_hosting_purchase(query, plan_id, domain_name=None):
     """Handle hosting plan purchase confirmation using intent system to prevent duplicates"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get user and plan details
@@ -9245,7 +9245,7 @@ async def confirm_hosting_purchase(query, plan_id, domain_name=None):
 async def handle_notify_ready(query, plan_id):
     """Handle notification request when payment is ready"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -9293,7 +9293,7 @@ async def start_domain_registration(query, domain_name):
         await safe_edit_message(query, f"🔄 Checking {domain_name}...")
         
         # Get user language for error messages
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         availability = await openprovider.check_domain_availability(domain_name)
         if not availability or not availability.get('available'):
@@ -9322,7 +9322,7 @@ async def start_domain_registration(query, domain_name):
 async def show_payment_options(query, domain_name, price, currency):
     """Phase 3: Payment Processing - Show all payment options"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -9488,7 +9488,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
         from database import get_active_hosting_intent
         hosting_intent = await get_active_hosting_intent(user_record['id'], domain_name)
         
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         if hosting_intent:
             # This is a hosting bundle - domain + hosting
@@ -9696,7 +9696,7 @@ async def process_wallet_payment(query, domain_name, price, currency):
 async def show_wallet_deposit_options(query):
     """Show deposit amount selection (first step of wallet deposit flow)"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = """
 💰 Add Funds
@@ -9726,7 +9726,7 @@ Select deposit amount:
 async def show_crypto_selection_for_deposit(query, amount_usd):
     """Show cryptocurrency selection for a specific deposit amount (step 2)"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 💰 Deposit ${amount_usd:.2f} USD
@@ -9751,7 +9751,7 @@ Select your cryptocurrency:
 async def show_wallet_transaction_history(query):
     """Show detailed wallet transaction history"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -9811,7 +9811,7 @@ async def show_wallet_transaction_history(query):
 async def process_wallet_crypto_deposit(query, crypto_type, amount_usd=None):
     """Process cryptocurrency deposit to wallet with optional fixed amount"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Convert amount to Decimal if provided
@@ -9960,7 +9960,7 @@ Address: {format_inline_code(payment_result['address'])}
 async def handle_copy_address(query, address):
     """Handle copy address button - provide feedback to user"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with address highlighted
@@ -9983,7 +9983,7 @@ Use this address for your crypto payment.
 async def handle_copy_memo(query, memo):
     """Handle copy memo button - provide feedback to user"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with memo highlighted
@@ -10006,7 +10006,7 @@ Include this memo/tag with your payment.
 async def handle_copy_hosting_credential(query, credential, credential_type):
     """Handle copy hosting credential button - provide feedback to user"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with credential highlighted
@@ -10115,7 +10115,7 @@ async def show_wallet_qr_code(query, order_id):
 async def _show_wallet_deposit_qr(query, order_id, deposit):
     """Show QR code for wallet deposit"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     usd_amount = float(deposit['usd_amount'])
     crypto_currency = deposit['crypto_currency']
@@ -10283,7 +10283,7 @@ Address: {format_inline_code(payment_address)}
 async def _show_domain_payment_qr(query, order_id, payment_intent):
     """Show QR code for domain payment with timeout handling"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     payment_address = payment_intent['payment_address']
     crypto_currency = payment_intent['crypto_currency']
@@ -10379,7 +10379,7 @@ QR code generation timed out, but you can still copy the address above."""
 async def _show_rdp_payment_qr(query, order_id, rdp_order):
     """Show QR code for RDP server payment with timeout handling"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Get payment details from rdp_order
     payment_address = rdp_order['payment_address']
@@ -10494,7 +10494,7 @@ QR code generation timed out, but you can still copy the address above."""
 async def cancel_wallet_deposit(query, order_id):
     """Cancel a wallet deposit"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get user record
@@ -10531,7 +10531,7 @@ You can start a new deposit anytime from your wallet.
 async def handle_wallet_deposit_from_qr(query):
     """Handle navigation from QR code photo to amount selection"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Delete the QR code photo message first
@@ -10578,7 +10578,7 @@ async def handle_cancel_wallet_deposit_from_qr(query, order_id):
         return
     
     # Get user language
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Delete the QR code photo message first
@@ -10615,7 +10615,7 @@ You can start a new deposit anytime from your wallet.
     except Exception as e:
         logger.error(f"Error cancelling wallet deposit from QR: {e}")
         # Fallback: just send a simple message
-        user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         await query.message.reply_text(f"❌ {t('errors.deposit_cancel_error', user_lang)}")
 
 async def back_to_wallet_payment(query, order_id):
@@ -10706,7 +10706,7 @@ async def handle_qr_cancel_order(query):
 async def check_wallet_deposit_status(query, order_id):
     """Check the status of a wallet deposit"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get user record
@@ -10867,7 +10867,7 @@ async def handle_dns_callback(query, context, callback_data):
 async def handle_setup_dns_zone(query, context, domain_name):
     """Handle DNS zone setup for domains missing Cloudflare zones"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Show progress message
     await safe_edit_message(query, t('domain.setup_dns_progress', user_lang, domain=domain_name))
@@ -10928,7 +10928,7 @@ async def handle_setup_dns_zone(query, context, domain_name):
 async def show_dns_dashboard(query, domain_name):
     """Show enhanced DNS dashboard with record counts and clear actions"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Immediate response for better UX with unique identifier
     await safe_edit_message(query, t('dns.dashboard_loading', user_lang, domain=domain_name))
@@ -11087,7 +11087,7 @@ async def show_dns_dashboard(query, domain_name):
 async def show_dns_add_type_picker(query, domain):
     """Show record type picker for adding new DNS records"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"{t('dns.add_record_title', user_lang, domain=domain)}\n\n{t('dns.add_record_prompt', user_lang)}"
     
@@ -11132,7 +11132,7 @@ async def start_dns_add_wizard(query, context, domain, record_type):
 async def continue_dns_add_wizard(query, domain, record_type, step):
     """Continue the DNS addition wizard at specified step"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     flow_id = f"{user.id}_{domain}_{record_type}"
     
@@ -11190,7 +11190,7 @@ Please type the IP address:
 async def show_dns_record_list(query, domain, page=1):
     """Show paginated list of DNS records"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Immediate response for better UX
     await safe_edit_message(query, t('dns.loading_records', user_lang))
@@ -11310,7 +11310,7 @@ async def show_dns_record_list(query, domain, page=1):
 async def show_dns_record_detail(query, domain, record_id):
     """Show details for a specific DNS record with edit/delete options"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # Immediate response for better UX with unique identifier  
     await safe_edit_message(query, t('dns.record_detail_loading', user_lang, domain=domain, id=record_id[:8]))
@@ -11430,7 +11430,7 @@ async def show_dns_record_detail(query, domain, record_id):
 async def start_dns_edit_wizard(query, context, domain, record_id):
     """Start DNS record editing wizard with pre-filled values"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Verify domain ownership
@@ -11509,7 +11509,7 @@ async def start_dns_edit_wizard(query, context, domain, record_id):
 async def confirm_dns_delete(query, context, domain, record_id):
     """Confirm DNS record deletion with safety checks"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Verify domain ownership
@@ -11575,7 +11575,7 @@ async def confirm_dns_delete(query, context, domain, record_id):
 async def execute_dns_delete(query, context, domain, record_id):
     """Execute DNS record deletion"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Verify domain ownership
@@ -11839,7 +11839,7 @@ async def handle_dns_wizard_callback(query, context, callback_data):
 async def continue_a_record_wizard(query, context, wizard_state):
     """Continue A record wizard based on current data"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -11986,7 +11986,7 @@ Type your subdomain:
 async def create_dns_record_from_wizard(query, context, wizard_state):
     """Create DNS record from wizard state with proper validation"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     record_type = wizard_state['type']
@@ -12214,7 +12214,7 @@ This {record_type} record already exists in your DNS.
 async def show_a_record_confirmation(query, wizard_state):
     """Show A record confirmation before creation"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12255,7 +12255,7 @@ async def show_a_record_confirmation(query, wizard_state):
 async def show_txt_record_confirmation(query, wizard_state):
     """Show TXT record confirmation before creation"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12295,7 +12295,7 @@ async def show_txt_record_confirmation(query, wizard_state):
 async def show_cname_record_confirmation(query, wizard_state):
     """Show CNAME record confirmation before creation"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12335,7 +12335,7 @@ async def show_cname_record_confirmation(query, wizard_state):
 async def show_mx_record_confirmation(query, wizard_state):
     """Show MX record confirmation before creation"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12376,7 +12376,7 @@ async def show_mx_record_confirmation(query, wizard_state):
 async def continue_cname_record_wizard(query, context, wizard_state):
     """Continue CNAME record wizard based on current data"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12489,7 +12489,7 @@ Type your subdomain:
 async def continue_txt_record_wizard(query, context, wizard_state):
     """Continue TXT record wizard based on current data"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12607,7 +12607,7 @@ Type your subdomain:
 async def continue_mx_record_wizard(query, context, wizard_state):
     """Continue MX record wizard based on current data"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     # CRITICAL REFRESH: Always use the state from context.user_data if it exists
     # This prevents the local variable 'wizard_state' from being stale
@@ -12767,7 +12767,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         
         is_active = await MaintenanceManager.is_maintenance_active()
         if is_active and not is_admin_user(user.id):
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(
                 maintenance_message,
@@ -12791,7 +12791,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         try:
             amount = float(text.replace('$', '').replace(',', '').strip())
             if amount < 30:
-                user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+                user_lang = await get_user_lang_fast(user, context)
                 await effective_message.reply_text(f"❌ Minimum deposit is $30 USD. Please enter a larger amount.")
                 if context.user_data is not None:
                     context.user_data['awaiting_deposit_amount'] = True  # Re-enable state
@@ -12802,7 +12802,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
                     context.user_data['awaiting_deposit_amount'] = True  # Re-enable state
                 return
             # Show crypto selection for the custom amount (InlineKeyboardButton imported at top of file)
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             
             message = f"💰 Deposit ${amount:.2f} USD\n\nSelect cryptocurrency:"
             
@@ -12990,7 +12990,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             # For inline domain detection, show helpful error message
             error_msg = get_domain_validation_error(domain_name)
             if effective_message:
-                user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+                user_lang = await get_user_lang_fast(user, context) if user else 'en'
                 await effective_message.reply_text(
                     create_warning_message(
                         "Domain Format Issue", 
@@ -13005,7 +13005,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             # Show helpful error message for unsupported TLD
             error_msg = get_unsupported_tld_message(domain_name)
             if effective_message:
-                user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+                user_lang = await get_user_lang_fast(user, context) if user else 'en'
                 await effective_message.reply_text(
                     create_warning_message(
                         "Unsupported Domain Extension", 
@@ -13017,7 +13017,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             return
         
         # Get user language for localized responses
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
             
         if effective_message:
             searching_msg = await effective_message.reply_text(
@@ -13084,7 +13084,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         return
     
     # Enhanced response for unrecognized text - help users get oriented
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+    user_lang = await get_user_lang_fast(user, context) if user else 'en'
     
     message = t('messages.unrecognized_input', user_lang)
     
@@ -13102,7 +13102,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
 async def continue_a_record_edit_wizard(query, context, wizard_state):
     """Continue A record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13195,7 +13195,7 @@ Proxy Status: {proxy_display}
 async def continue_cname_record_edit_wizard(query, wizard_state):
     """Continue CNAME record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13292,7 +13292,7 @@ TTL: {ttl_display}
 async def continue_txt_record_edit_wizard(query, wizard_state):
     """Continue TXT record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13389,7 +13389,7 @@ TTL: {ttl_display}
 async def continue_mx_record_edit_wizard(query, wizard_state):
     """Continue MX record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13518,7 +13518,7 @@ async def handle_delete_callback(query, context, callback_data):
 async def prompt_for_content_change(query, context, domain, record_id):
     """Prompt user to enter new TXT content"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 📝 Change TXT Content
@@ -13554,7 +13554,7 @@ Type your new TXT content:
 async def prompt_for_ip_change(query, context, domain, record_id):
     """Prompt user to enter a new IP address"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 📝 Change IP Address
@@ -13595,7 +13595,7 @@ Type your new IP address:
 async def prompt_for_cname_target_change(query, context, domain, record_id):
     """Prompt user to enter new CNAME target"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 🔗 Change CNAME Target
@@ -13632,7 +13632,7 @@ Type your new CNAME target:
 async def prompt_for_mx_server_change(query, context, domain, record_id):
     """Prompt user to enter new MX server"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 📧 Change MX Server
@@ -13667,7 +13667,7 @@ Type your new MX server:
 async def prompt_for_mx_priority_change(query, context, domain, record_id):
     """Prompt user to select new MX priority"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 🔢 Change MX Priority
@@ -13705,7 +13705,7 @@ Choose your MX priority:
 async def prompt_for_ttl_change(query, context, domain, record_id):
     """Show TTL selection buttons"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""
 ⏰ Change TTL (Time To Live)
@@ -13741,7 +13741,7 @@ async def toggle_proxy_setting(query, context, domain, record_id):
     """Toggle proxy setting for the DNS record with auto-apply"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         wizard_state = context.user_data.get('dns_wizard')
         if not wizard_state or wizard_state.get('record_id') != record_id:
@@ -13840,7 +13840,7 @@ async def handle_revert_changes(query, context, domain, record_type, record_id):
     """Handle reverting changes back to original state"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         wizard_state = context.user_data.get('dns_wizard')
         
         if not wizard_state or wizard_state.get('record_id') != record_id:
@@ -13881,7 +13881,7 @@ async def handle_ttl_selection(query, context, callback_data):
         record_id = parts[1]
         ttl_value = parts[2]
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Update wizard state with new TTL
         wizard_state = context.user_data.get('dns_wizard')
@@ -13980,7 +13980,7 @@ async def handle_content_input(update, context, text, edit_input):
         record_id = edit_input['record_id']
         domain = edit_input['domain']
         user = update.effective_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         
         if not wizard_state or wizard_state.get('record_id') != record_id:
             await update.message.reply_text(f"❌ <b>{t('errors.session_expired_edit', user_lang)}</b>")
@@ -14037,7 +14037,7 @@ async def handle_content_input(update, context, text, edit_input):
 async def continue_txt_record_edit_wizard_as_message(update, context, wizard_state):
     """Show TXT record edit wizard as a new message"""
     user = update.effective_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -14145,7 +14145,7 @@ async def handle_cname_target_input(update, context, target_content, edit_input)
         record_id = edit_input['record_id']
         domain = edit_input['domain']
         user = update.effective_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         
         if not wizard_state or wizard_state.get('record_id') != record_id:
             await update.message.reply_text(f"❌ <b>{t('errors.session_expired_edit', user_lang)}</b>")
@@ -14214,7 +14214,7 @@ async def handle_mx_server_input(update, context, server_content, edit_input):
         record_id = edit_input['record_id']
         domain = edit_input['domain']
         user = update.effective_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         
         if not wizard_state or wizard_state.get('record_id') != record_id:
             await update.message.reply_text(f"❌ <b>{t('errors.session_expired_edit', user_lang)}</b>")
@@ -14269,7 +14269,7 @@ async def handle_mx_server_input(update, context, server_content, edit_input):
 async def continue_cname_record_edit_wizard_as_message(update, context, wizard_state):
     """Show CNAME record edit wizard as a new message"""
     user = update.effective_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -14304,7 +14304,7 @@ TTL: {ttl_display}
 async def continue_mx_record_edit_wizard_as_message(update, context, wizard_state):
     """Show MX record edit wizard as a new message"""
     user = update.effective_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -14678,7 +14678,7 @@ async def handle_custom_subdomain_mx_input(update, context, subdomain_name, cust
         wizard_state = custom_input['wizard_state']
         domain = custom_input['domain']
         user = update.effective_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Validate subdomain format
         if not subdomain_name:
@@ -14879,7 +14879,7 @@ async def handle_ip_input(update, context, ip_address, edit_input):
         user = update.effective_user
         
         # Get user_lang early for all uses in this function
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+        user_lang = await get_user_lang_fast(user, context) if user else 'en'
         
         if not wizard_state or wizard_state.get('record_id') != record_id:
             await update.message.reply_text(f"❌ <b>{t('errors.session_expired_edit', user_lang)}</b>")
@@ -14955,7 +14955,7 @@ async def handle_ip_input(update, context, ip_address, edit_input):
 async def continue_a_record_edit_wizard_as_message(update, context, wizard_state):
     """Show A record edit wizard as a new message"""
     user = update.effective_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -14992,7 +14992,7 @@ Proxy Status: {proxy_display}
 async def save_dns_record_changes(query, context, domain, record_type, record_id):
     """Save DNS record changes from edit wizard"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get wizard state
@@ -15211,7 +15211,7 @@ Editing {record_type} records is not yet supported. You can:
 async def show_next_wizard_step(message, context, wizard_state):
     """Show next wizard step as new message instead of editing existing one"""
     user = message.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         domain = wizard_state['domain']
@@ -15314,7 +15314,7 @@ Confirm to create this DNS record?
 async def show_nameserver_management(query, domain_name, context):
     """Show nameserver management interface"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -15402,7 +15402,7 @@ Type new nameservers:
 async def confirm_switch_to_cloudflare_ns(query, domain_name):
     """Confirm switching to Cloudflare nameservers"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get current nameserver info
@@ -15441,7 +15441,7 @@ async def execute_switch_to_cloudflare_ns(query, context, domain_name):
     """Execute switch to Cloudflare nameservers via OpenProvider API"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Show processing message
         await safe_edit_message(query, t('nameservers.switching_to_cloudflare', user_lang))
@@ -15699,7 +15699,7 @@ def parse_nameserver_input(text: str) -> list:
 async def show_custom_nameserver_form(query, context, domain_name):
     """Show simplified form for entering all custom nameservers at once"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # CRITICAL: Clear all DNS wizard state to prevent cross-contamination
@@ -15755,7 +15755,7 @@ Update nameservers at your registrar after entering.
 
 async def execute_nameserver_update_text(message, context, domain_name, nameservers, user):
     """Execute nameserver update for text input with direct message sending"""
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Show processing message
@@ -15960,7 +15960,7 @@ async def execute_nameserver_update(query, context, domain_name, ns_data_token):
     """Execute custom nameserver update via OpenProvider API"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Show processing message
         await safe_edit_message(query, t('nameservers.processing_update', user_lang))
@@ -16174,7 +16174,7 @@ Automated update is currently unavailable. Please update manually.
 async def show_security_settings(query, domain_name):
     """Show Cloudflare security settings interface with JavaScript Challenge toggle"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -16294,7 +16294,7 @@ Adjust security settings for your domain:
 async def toggle_javascript_challenge(query, domain_name, action):
     """Handle JavaScript Challenge toggle"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get Cloudflare zone info
@@ -16447,7 +16447,7 @@ Please try again later.
 async def toggle_force_https_setting(query, domain_name, action):
     """Toggle Force HTTPS setting"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get Cloudflare zone info
@@ -16592,7 +16592,7 @@ async def toggle_auto_proxy_setting(query, domain_name, action):
     """Toggle Auto-Enable Proxy setting for user preference control"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         user_record = await get_or_create_user(user.id)
         
@@ -16680,7 +16680,7 @@ Please try again later.
 async def force_enable_proxy_and_feature(query, domain_name, feature_type):
     """Force enable proxy and then enable security feature when user confirms despite auto-proxy being disabled"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get Cloudflare zone info
@@ -17058,7 +17058,7 @@ def format_proxy_notification(domain_name: str, feature_name: str, modified_reco
 async def show_hosting_payment_options_with_intent(query, intent_id: int, price: float, plan_name: str, domain_name: str):
     """Show payment options for hosting provision intent"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -17099,7 +17099,7 @@ Price: ${price}/month
 async def show_hosting_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str):
     """Show payment options for hosting subscription (legacy - for existing subscriptions)"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -17138,7 +17138,7 @@ Price: ${price}/month
 async def process_hosting_crypto_payment(query, crypto_type: str, subscription_id: str, price: str):
     """Generate crypto payment for hosting subscription (based on domain crypto payment)"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         amount = float(price)
@@ -17481,7 +17481,7 @@ async def send_hosting_account_notification(user_id: int, account_details: Dict,
 async def show_domain_hosting_bundle(query):
     """Show domain + hosting bundle options with clear value proposition"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -17538,7 +17538,7 @@ async def show_domain_hosting_bundle(query):
 async def show_bundle_how_it_works(query):
     """Explain the domain + hosting bundle process"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     message = f"""💡 {t("hosting.bundle_how_it_works_title", user_lang)}
 
@@ -17559,7 +17559,7 @@ async def show_bundle_how_it_works(query):
 async def start_bundle_domain_search(query, context, plan_id):
     """Start domain search for bundle purchase"""
     user = query.from_user
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -17597,7 +17597,7 @@ async def process_bundle_domain_search(update: Update, context: ContextTypes.DEF
     user = update.effective_user
     
     # Get user_lang early for all uses in this function
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+    user_lang = await get_user_lang_fast(user, context) if user else 'en'
     
     try:
         # Validate domain format with detailed error message
@@ -17711,7 +17711,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
     user = query.from_user
     
     # Get user language early
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+    user_lang = await get_user_lang_fast(user, context)
     
     try:
         # Get final pricing and create combined order
@@ -17760,7 +17760,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
                 subscription_id = None
         
         if not subscription_id:
-            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+            user_lang = await get_user_lang_fast(user, context)
             await safe_edit_message(query, t('errors.bundle_order_creation_failed', user_lang))
             return
         
@@ -17960,7 +17960,7 @@ async def handle_rdp_quick_deploy(query, context):
     """Phase 1: Quick Deploy with smart defaults and last order memory"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         db_user_id = await get_internal_user_id_from_telegram_id(user.id)
         
@@ -18327,7 +18327,7 @@ async def handle_rdp_region_smart(query, context):
     """Phase 1: Smart region detection with top 3 suggestions"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         logger.info(f"🌍 Smart region selection for user {user.id}")
         
@@ -19255,7 +19255,7 @@ async def handle_rdp_confirm_and_create_order(query, context):
     """Create RDP order before showing payment method selection"""
     try:
         user = query.from_user
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_lang_fast(user, context)
         
         # Show loading message
         await safe_edit_message(query, await t_for_user('rdp.payment.creating_order', user.id))

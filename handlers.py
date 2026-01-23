@@ -7151,7 +7151,7 @@ async def handle_existing_domain_hosting(query, context, plan_id: str, domain_na
 async def unified_hosting_flow(query):
     """Main entry point for unified hosting flow"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         # Get user hosting subscriptions for context

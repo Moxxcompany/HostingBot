@@ -6615,9 +6615,6 @@ async def smart_domain_handler(query, context, plan_id: str, domain_text: Option
             await safe_edit_message(query, t('hosting.plan_not_found', user_lang))
             return
         
-        plan_name = plan.get('plan_name', 'Unknown')
-        plan_price = plan.get('period_price', plan.get('monthly_price', 0))
-        
         if domain_text:
             # Domain provided - analyze it
             domain_name = domain_text.lower().strip()

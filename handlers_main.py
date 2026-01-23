@@ -7536,7 +7536,6 @@ async def handle_unified_hosting_only(query, context, plan_id: str):
         
         plan_name = plan.get('plan_name', 'Unknown')
         plan_price = plan.get('period_price', plan.get('monthly_price', 0))
-        display_price = plan.get('display_price', f"${plan_price}")
         
         # Translate plan name
         translated_plan_name = t(f"hosting.plan_name_{plan_name.lower().replace(' ', '_')}", user_lang, fallback=plan_name)

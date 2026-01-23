@@ -9302,7 +9302,7 @@ async def show_payment_options(query, domain_name, price, currency):
     user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
-        user_record = await get_or_create_user(user.id)
+        await get_or_create_user(user.id)
         wallet_balance = await get_user_wallet_balance(user.id)
         
         # Check if user has sufficient wallet balance

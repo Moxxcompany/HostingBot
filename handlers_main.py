@@ -3245,7 +3245,6 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                 
             except asyncio.TimeoutError:
                 logger.warning(f"Dashboard parallel queries timeout for user {user.id}, using fallbacks")
-                db_user = {'id': user.id}
                 wallet_balance = 0.0
                 min_hosting_price = 40
                 min_rdp_price = 60

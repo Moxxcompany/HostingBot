@@ -12718,23 +12718,16 @@ async def continue_mx_record_wizard(query, context, wizard_state):
             [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:MX:name:back")]
         ]
     elif 'priority' not in data:
-        # Step 3: Priority
+        # Step 3: Priority - Use cached keyboard
         name_display = data['name'] if data['name'] != '@' else domain
         server_preview = escape_content_for_display(data['server'], mode="summary")
         message = f"📧 {t('dns_wizard.mx_record_title', user_lang, step=3, domain=domain)}\n\n" \
                   f"{t('common_labels.name', user_lang)} {escape_content_for_display(name_display, mode='summary')[0]}\n" \
                   f"{t('common_labels.server', user_lang)} {server_preview[0] if isinstance(server_preview, tuple) else server_preview}\n\n" \
                   f"{t('dns_wizard.select_priority', user_lang)}"
-        keyboard = [
-            [InlineKeyboardButton(t("buttons.priority_10", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:10")],
-            [InlineKeyboardButton(t("buttons.priority_20", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:20"),
-             InlineKeyboardButton(t("buttons.priority_30", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:30")],
-            [InlineKeyboardButton(t("buttons.priority_0", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:0"),
-             InlineKeyboardButton(t("buttons.priority_50", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:50")],
-            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:MX:server:back")]
-        ]
+        reply_markup = get_mx_priority_keyboard(domain, user_lang)
     elif 'ttl' not in data:
-        # Step 4: TTL
+        # Step 4: TTL - Use cached keyboard
         name_display = data['name'] if data['name'] != '@' else domain
         server_preview = escape_content_for_display(data['server'], mode="summary")
         message = f"📧 {t('dns_wizard.mx_record_title', user_lang, step=4, domain=domain)}\n\n" \
@@ -12742,19 +12735,15 @@ async def continue_mx_record_wizard(query, context, wizard_state):
                   f"{t('common_labels.server', user_lang)} {server_preview[0] if isinstance(server_preview, tuple) else server_preview}\n" \
                   f"{t('common_labels.priority', user_lang)} {data['priority']}\n\n" \
                   f"{t('dns_wizard.select_ttl', user_lang)}"
-        keyboard = [
-            [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:MX:ttl:1")],
-            [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:MX:ttl:300")],
-            [InlineKeyboardButton(t("buttons.1_hour_label", user_lang), callback_data=f"dns_wizard:{domain}:MX:ttl:3600"),
-             InlineKeyboardButton(t("buttons.1_day", user_lang), callback_data=f"dns_wizard:{domain}:MX:ttl:86400")],
-            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:MX:priority:back")]
-        ]
+        reply_markup = get_ttl_selection_keyboard(domain, 'MX', user_lang, 'priority')
     else:
         # Step 5: Confirmation
         await show_mx_record_confirmation(query, wizard_state)
         return
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # Create reply_markup from keyboard if not already set by cached keyboard
+    if reply_markup is None and keyboard is not None:
+        reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Use HTML parse mode for better formatting
     parse_mode = ParseMode.HTML

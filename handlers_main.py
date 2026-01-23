@@ -5027,7 +5027,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if is_active and user and not is_admin_user(user.id):
         try:
             await query.answer()
-        except:
+        except Exception:
             pass
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         
@@ -5036,7 +5036,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if query.message and isinstance(query.message, Message):
             try:
                 await query.message.edit_text(maintenance_message, parse_mode=ParseMode.HTML)
-            except:
+            except Exception:
                 pass
         logger.info(f"🔧 MAINTENANCE: Blocked callback from non-admin user {user.id}")
         return

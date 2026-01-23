@@ -6054,7 +6054,7 @@ async def show_personalized_dashboard(query):
             wallet_balance = 0.0
         
         balance_display = format_money(Decimal(str(wallet_balance)))
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Check if user is admin using unified admin check
         is_admin = is_admin_user(user.id)
@@ -6142,7 +6142,7 @@ async def show_main_menu(query):
     
     try:
         # Get user's language preference
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get localized main menu message
         platform_title = await t_for_user('dashboard.complete_hosting_platform', user.id, platform_name=get_platform_name())
@@ -6193,7 +6193,7 @@ Quick Actions:
     except Exception as e:
         logger.error(f"Error localizing main menu for user {user.id}: {e}")
         # Get user_lang for fallback
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         # Fallback to original hardcoded version
         message = format_branded_message("""
 🌐 {platform_name} - Complete Hosting Platform

@@ -78,6 +78,34 @@ from .common import (
 # Import hosting helpers
 from .hosting_handlers import get_hosting_nameservers
 
+# Import command handlers from core_handlers (required by fastapi_server.py)
+from .core_handlers import (
+    start_command,
+    profile_command,
+    hosting_command,
+    language_command,
+    dns_command,
+    handle_callback,
+)
+
+# Import command handlers from domain_handlers
+from .domain_handlers import (
+    search_command,
+    domain_command,
+    link_domain_command,
+)
+
+# Import command handlers from payment_handlers
+from .payment_handlers import (
+    wallet_command,
+)
+
+# Import handle_text_message from handlers_main (legacy location)
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from handlers_main import handle_text_message
+
 # Module references for convenient access
 from . import common
 from . import core_handlers
@@ -95,6 +123,19 @@ __all__ = [
     # Version info
     '__version__',
     '__author__',
+    
+    # Command handlers (used by fastapi_server.py)
+    'start_command',
+    'domain_command',
+    'dns_command',
+    'wallet_command',
+    'search_command',
+    'profile_command',
+    'hosting_command',
+    'language_command',
+    'handle_callback',
+    'handle_text_message',
+    'link_domain_command',
     
     # Common utilities
     'safe_edit_message',

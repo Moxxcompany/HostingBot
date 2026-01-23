@@ -959,9 +959,15 @@ async def lifespan(app: FastAPI):
         logger.info(f"   🌍 Language System: {'✅ Loaded' if _service_status['language_system'] else '❌ Failed'}")
         logger.info("=" * 60)
     
-    # Start background initialization task (runs after server is accepting requests)
-    background_init_task = asyncio.create_task(background_initialization())
-    logger.info("📋 Background initialization scheduled - server ready for requests")
+    # Run background initialization with timeout (don't block server startup too long)
+    # This ensures database and language system are ready before we log status
+    logger.info("📋 Running background initialization (database, language system)...")
+    try:
+        await asyncio.wait_for(background_initialization(), timeout=30.0)
+    except asyncio.TimeoutError:
+        logger.warning("⏱️ Background initialization timed out after 30s - continuing with partial init")
+    except Exception as bg_error:
+        logger.error(f"❌ Background initialization error: {bg_error}")
     
     # Initialize and log email configuration
     from utils.email_config import log_email_configuration

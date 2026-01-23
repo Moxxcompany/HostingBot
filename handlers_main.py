@@ -3230,7 +3230,6 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                 )
                 
                 # Extract results with fallbacks for any individual failures
-                db_user = results[0] if not isinstance(results[0], Exception) else {'id': user.id}
                 wallet_balance = results[1] if not isinstance(results[1], Exception) else 0.0
                 min_hosting_price = results[2] if not isinstance(results[2], Exception) else 40
                 min_rdp_price = results[3] if not isinstance(results[3], Exception) else 60

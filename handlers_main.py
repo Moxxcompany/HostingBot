@@ -5112,7 +5112,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         elif data.startswith("domain_linking_"):
             logger.info("Routing to: handle_domain_linking_callback")
-            user_lang = await get_user_lang_fast(query.from_user, context)
+            user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
             await handle_domain_linking_callback(query, data, context, user_lang)
         elif data == "language_selection":
             logger.info("Routing to: show_language_selection")
@@ -5359,7 +5359,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 domain, record_id = result
                 await show_dns_record_detail(query, domain, record_id)
             else:
-                user_lang = await get_user_lang_fast(query.from_user, context)
+                user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
                 await safe_edit_message(query, t('errors.dns_record_link_expired', user_lang))
         elif data.startswith("dns_edit:") and ":" not in data[9:]:
             # Short DNS edit callback (compressed to avoid 64-byte limit)
@@ -5377,7 +5377,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 }
                 await start_dns_edit_wizard(query, context, domain, record_id)
             else:
-                user_lang = await get_user_lang_fast(query.from_user, context)
+                user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
                 await safe_edit_message(query, t('errors.dns_edit_link_expired', user_lang))
         elif data.startswith("dns_delete:"):
             # Short DNS delete callback (compressed to avoid 64-byte limit)
@@ -5387,7 +5387,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 domain, record_id = result
                 await confirm_dns_delete(query, context, domain, record_id)
             else:
-                user_lang = await get_user_lang_fast(query.from_user, context)
+                user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
                 await safe_edit_message(query, t('errors.dns_delete_link_expired', user_lang))
         elif data.startswith("dns_nav:"):
             # Short DNS navigation callback (compressed for long domains)
@@ -5411,10 +5411,10 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 elif path == "ns:update":
                     await show_custom_nameserver_form(query, context, domain)
                 else:
-                    user_lang = await get_user_lang_fast(query.from_user, context)
+                    user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
                     await safe_edit_message(query, t('errors.unknown_navigation_path', user_lang))
             else:
-                user_lang = await get_user_lang_fast(query.from_user, context)
+                user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
                 await safe_edit_message(query, t('errors.navigation_link_expired', user_lang))
         elif data.startswith("dns:"):
             # New standardized DNS callback routing: dns:{domain}:{action}[:type][:id][:page]
@@ -6423,7 +6423,7 @@ async def show_wallet_interface(query, context=None):
         
     except Exception as e:
         logger.error(f"Error showing wallet interface: {e}")
-        user_lang = await get_user_lang_fast(query.from_user, context)
+        user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
         await safe_edit_message(query, t('errors.wallet_load_failed', user_lang))
 
 async def show_profile_interface(query):
@@ -15433,7 +15433,7 @@ async def confirm_switch_to_cloudflare_ns(query, domain_name):
         
     except Exception as e:
         logger.error(f"Error showing Cloudflare NS confirmation: {e}")
-        user_lang = await get_user_lang_fast(query.from_user, context)
+        user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
         await safe_edit_message(query, t('nameservers.prepare_switch_error', user_lang))
 
 async def execute_switch_to_cloudflare_ns(query, context, domain_name):
@@ -15933,7 +15933,7 @@ async def handle_retry_nameserver_update(query, context, callback_data):
     try:
         parts = callback_data.split(":")
         if len(parts) < 3:
-            user_lang = await get_user_lang_fast(query.from_user, context)
+            user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
             await safe_edit_message(query, t('nameservers.invalid_retry', user_lang))
             return
         
@@ -15943,7 +15943,7 @@ async def handle_retry_nameserver_update(query, context, callback_data):
         
         # Verify user ID matches for security
         if user.id != expected_user_id:
-            user_lang = await get_user_lang_fast(query.from_user, context)
+            user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
             await safe_edit_message(query, t('nameservers.unauthorized_retry', user_lang))
             return
         
@@ -15952,7 +15952,7 @@ async def handle_retry_nameserver_update(query, context, callback_data):
         
     except Exception as e:
         logger.error(f"Error handling retry nameserver update: {e}")
-        user_lang = await get_user_lang_fast(query.from_user, context)
+        user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
         await safe_edit_message(query, t('nameservers.retry_error', user_lang))
 
 async def execute_nameserver_update(query, context, domain_name, ns_data_token):
@@ -17776,7 +17776,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
         
     except Exception as e:
         logger.error(f"Error confirming bundle purchase: {e}")
-        user_lang = await get_user_lang_fast(query.from_user, context)
+        user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
         await safe_edit_message(query, t('errors.bundle_purchase_processing_failed', user_lang))
 
 async def handle_unified_checkout_review(query, subscription_id: str):
@@ -17787,7 +17787,7 @@ async def handle_unified_checkout_review(query, subscription_id: str):
         
         subscription = await get_hosting_subscription_details_admin(int(subscription_id))
         if not subscription:
-            user_lang = await get_user_lang_fast(query.from_user, context)
+            user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
             await safe_edit_message(query, t('errors.order_not_found', user_lang))
             return
         
@@ -17826,7 +17826,7 @@ async def handle_unified_checkout_review(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error in unified checkout review: {e}")
-        user_lang = await get_user_lang_fast(query.from_user, context)
+        user_lang = await resolve_user_language(query.from_user.id, getattr(query.from_user, 'language_code', None))
         await safe_edit_message(query, t('errors.payment_options_load_failed', user_lang))
 
 # ====================================================================

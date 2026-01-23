@@ -3257,7 +3257,6 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                 min_rdp_price = 60
         else:
             # Use provided user_data (from optimized query) + fetch prices in parallel
-            db_user = user_data
             wallet_balance = user_data['wallet_balance']
             
             # Still need to fetch min prices in parallel
@@ -3287,7 +3286,6 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                 pass
         
         balance_display = format_money(Decimal(str(wallet_balance)))
-        platform_name = get_platform_name()
         user_lang = await get_user_lang_fast(user, context)
         
         # Check if user is admin using unified admin check

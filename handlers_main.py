@@ -3412,7 +3412,7 @@ async def _emergency_dashboard_fallback(update: Update, context: ContextTypes.DE
         user_lang = lang_code[:2].lower() if lang_code else 'en'
         if user_lang not in ['en', 'es', 'fr']:
             user_lang = 'en'
-    except:
+    except Exception:
         user_lang = 'en'
     
     emergency_messages = {

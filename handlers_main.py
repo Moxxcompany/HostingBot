@@ -7958,7 +7958,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
         await safe_edit_message(query, processing_msg, parse_mode='HTML')
         
         # Get user language for error messages
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
         
         # Route through centralized orchestrator (matching registration fix pattern)
         try:

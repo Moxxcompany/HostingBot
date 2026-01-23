@@ -73,6 +73,19 @@ from localization import (
     set_user_language_preference, get_supported_languages, is_language_supported,
     get_user_language_preference, btn_t
 )
+# Performance utilities for caching
+from utils.user_context import (
+    get_user_language_cached, 
+    invalidate_user_language_cache,
+    get_user_context_cached
+)
+from utils.keyboard_cache import (
+    get_dns_record_type_keyboard,
+    get_ttl_selection_keyboard,
+    get_mx_priority_keyboard,
+    get_cache_stats as get_keyboard_cache_stats,
+    clear_keyboard_cache
+)
 # Import unified ID handling functions
 from unified_user_id_handlers import (
     ensure_user_exists_by_telegram_id,

@@ -20,14 +20,27 @@ class VultrService:
     
     def __init__(self):
         self.api_key = os.environ.get('VULTR_API_KEY')
+        self._available = bool(self.api_key)
+        
         if not self.api_key:
-            raise ValueError("VULTR_API_KEY environment variable not set")
+            logger.warning("⚠️ VULTR_API_KEY not set - Vultr service will be unavailable")
+            self.base_url = ''
+            self.headers = {}
+            self.cipher = None
+            return
         
         self.base_url = 'https://api.vultr.com/v2'
         self.headers = {
             'Authorization': f'Bearer {self.api_key}',
             'Content-Type': 'application/json'
         }
+        
+        # Initialize encryption for password storage
+        self._init_encryption()
+    
+    def is_available(self) -> bool:
+        """Check if Vultr service is available"""
+        return self._available
         
         # Initialize encryption for password storage
         self._init_encryption()

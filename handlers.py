@@ -11712,21 +11712,21 @@ async def handle_dns_wizard_callback(query, context, callback_data):
                 del wizard_state['data']['name']
             elif field == "ttl" and 'target' in wizard_state['data']:
                 del wizard_state['data']['target']
-        # MX Record back navigation
-        elif field == "name" and record_type == "MX":
-            # Going back from MX name step - clear wizard completely  
-            wizard_state['data'] = {}
-            # Clear custom subdomain flag
-            if 'expecting_custom_subdomain_mx' in context.user_data:
-                del context.user_data['expecting_custom_subdomain_mx']
-        elif field == "server" and 'name' in wizard_state['data']:
-            del wizard_state['data']['name']
-        elif field == "priority" and 'server' in wizard_state['data']:
-            del wizard_state['data']['server']
-        elif field == "ttl" and 'priority' in wizard_state['data']:
-            del wizard_state['data']['priority']
-        elif field == "create" and 'ttl' in wizard_state['data']:
-            del wizard_state['data']['ttl']
+            # MX Record back navigation
+            elif field == "name" and record_type == "MX":
+                # Going back from MX name step - clear wizard completely  
+                wizard_state['data'] = {}
+                # Clear custom subdomain flag
+                if 'expecting_custom_subdomain_mx' in context.user_data:
+                    del context.user_data['expecting_custom_subdomain_mx']
+            elif field == "server" and 'name' in wizard_state['data']:
+                del wizard_state['data']['name']
+            elif field == "priority" and 'server' in wizard_state['data']:
+                del wizard_state['data']['server']
+            elif field == "ttl" and 'priority' in wizard_state['data']:
+                del wizard_state['data']['priority']
+            elif field == "create" and 'ttl' in wizard_state['data']:
+                del wizard_state['data']['ttl']
             
             # Clear custom subdomain input flags on back navigation
             clear_dns_wizard_custom_subdomain_state(context)

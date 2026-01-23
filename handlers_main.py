@@ -93,6 +93,9 @@ from unified_user_id_handlers import (
     get_wallet_balance_by_telegram_id
 )
 
+# Import modular handlers for delegated implementations
+from handlers import dns_handlers as _dns_handlers
+
 # ============================================================================
 # PERFORMANCE HELPER: Fast user language resolution with context caching
 # ============================================================================

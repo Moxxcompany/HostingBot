@@ -7199,7 +7199,7 @@ async def unified_hosting_flow(query):
 async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name: Optional[str] = None):
     """Unified checkout for hosting ± domain with dynamic pricing"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # 🎯 INSTANT FEEDBACK: Show immediate processing message
     processing_msg = "🔄 <b>Processing your order...</b>\n\n"
@@ -7331,7 +7331,7 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
 async def show_unified_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str, items: List[str], service_type: str):
     """Show unified payment options for hosting ± domain"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     items_text = "\n".join([f"• {item}" for item in items])
     
@@ -7387,7 +7387,7 @@ async def show_unified_payment_options_with_intent(query, intent_id: int, price:
     FIXED: Implements missing function that handlers were calling
     """
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     items_text = "\n".join([f"• {item}" for item in items])
     
@@ -7589,7 +7589,7 @@ async def handle_unified_hosting_only(query, context, plan_id: str):
 async def process_unified_wallet_payment(query, subscription_id: str, price: str):
     """Process wallet payment for unified hosting order with financial safety checks"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Convert price to float
@@ -7741,7 +7741,7 @@ There was an error reserving funds from your wallet. Please try again or contact
 async def process_intent_crypto_payment(query, intent_id: str, crypto: str, price: str):
     """Process cryptocurrency payment for hosting provision intent - FIXED to create hosting_orders"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         from database import get_hosting_intent_by_id, get_or_create_user, create_hosting_order_crypto
@@ -8016,7 +8016,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
 async def process_unified_crypto_payment(query, crypto_type: str, subscription_id: str, price: str):
     """Process crypto payment for unified hosting order with financial safety checks"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # 🎯 INSTANT FEEDBACK: Show immediate crypto payment processing message
     crypto_name = crypto_type.upper()
@@ -8712,7 +8712,7 @@ async def show_hosting_interface(query, context=None):
 async def show_hosting_plans(query):
     """Show all available hosting plans"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     plans = cpanel.get_hosting_plans()
     
@@ -8743,7 +8743,7 @@ async def show_hosting_plans(query):
 async def show_my_hosting(query):
     """Show user's hosting subscriptions"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Import database functions
@@ -8799,7 +8799,7 @@ async def show_my_hosting(query):
 async def show_plan_details(query, plan_id):
     """Show detailed information about a hosting plan"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -8829,7 +8829,7 @@ async def show_plan_details(query, plan_id):
 async def start_hosting_purchase(query, plan_id):
     """Start the hosting plan purchase process"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # ⚡ INSTANT FEEDBACK: Show immediate response
@@ -9177,7 +9177,7 @@ async def handle_existing_domain_with_hosting(update: Update, context: ContextTy
 async def confirm_hosting_purchase(query, plan_id, domain_name=None):
     """Handle hosting plan purchase confirmation using intent system to prevent duplicates"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get user and plan details
@@ -9248,7 +9248,7 @@ async def confirm_hosting_purchase(query, plan_id, domain_name=None):
 async def handle_notify_ready(query, plan_id):
     """Handle notification request when payment is ready"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -9296,7 +9296,7 @@ async def start_domain_registration(query, domain_name):
         await safe_edit_message(query, f"🔄 Checking {domain_name}...")
         
         # Get user language for error messages
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
         
         availability = await openprovider.check_domain_availability(domain_name)
         if not availability or not availability.get('available'):
@@ -9325,7 +9325,7 @@ async def start_domain_registration(query, domain_name):
 async def show_payment_options(query, domain_name, price, currency):
     """Phase 3: Payment Processing - Show all payment options"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -9491,7 +9491,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
         from database import get_active_hosting_intent
         hosting_intent = await get_active_hosting_intent(user_record['id'], domain_name)
         
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
         
         if hosting_intent:
             # This is a hosting bundle - domain + hosting
@@ -9699,7 +9699,7 @@ async def process_wallet_payment(query, domain_name, price, currency):
 async def show_wallet_deposit_options(query):
     """Show deposit amount selection (first step of wallet deposit flow)"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     message = """
 💰 Add Funds
@@ -9729,7 +9729,7 @@ Select deposit amount:
 async def show_crypto_selection_for_deposit(query, amount_usd):
     """Show cryptocurrency selection for a specific deposit amount (step 2)"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     message = f"""
 💰 Deposit ${amount_usd:.2f} USD
@@ -9754,7 +9754,7 @@ Select your cryptocurrency:
 async def show_wallet_transaction_history(query):
     """Show detailed wallet transaction history"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -9814,7 +9814,7 @@ async def show_wallet_transaction_history(query):
 async def process_wallet_crypto_deposit(query, crypto_type, amount_usd=None):
     """Process cryptocurrency deposit to wallet with optional fixed amount"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Convert amount to Decimal if provided
@@ -9963,7 +9963,7 @@ Address: {format_inline_code(payment_result['address'])}
 async def handle_copy_address(query, address):
     """Handle copy address button - provide feedback to user"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with address highlighted
@@ -9986,7 +9986,7 @@ Use this address for your crypto payment.
 async def handle_copy_memo(query, memo):
     """Handle copy memo button - provide feedback to user"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with memo highlighted
@@ -10009,7 +10009,7 @@ Include this memo/tag with your payment.
 async def handle_copy_hosting_credential(query, credential, credential_type):
     """Handle copy hosting credential button - provide feedback to user"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Note: query.answer() is already called by main callback router
     # Show confirmation message with credential highlighted
@@ -10118,7 +10118,7 @@ async def show_wallet_qr_code(query, order_id):
 async def _show_wallet_deposit_qr(query, order_id, deposit):
     """Show QR code for wallet deposit"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     usd_amount = float(deposit['usd_amount'])
     crypto_currency = deposit['crypto_currency']
@@ -10285,7 +10285,7 @@ Address: {format_inline_code(payment_address)}
 async def _show_domain_payment_qr(query, order_id, payment_intent):
     """Show QR code for domain payment with timeout handling"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     payment_address = payment_intent['payment_address']
     crypto_currency = payment_intent['crypto_currency']
@@ -10380,7 +10380,7 @@ QR code generation timed out, but you can still copy the address above."""
 async def _show_rdp_payment_qr(query, order_id, rdp_order):
     """Show QR code for RDP server payment with timeout handling"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Get payment details from rdp_order
     payment_address = rdp_order['payment_address']
@@ -10494,7 +10494,7 @@ QR code generation timed out, but you can still copy the address above."""
 async def cancel_wallet_deposit(query, order_id):
     """Cancel a wallet deposit"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get user record
@@ -10531,7 +10531,7 @@ You can start a new deposit anytime from your wallet.
 async def handle_wallet_deposit_from_qr(query):
     """Handle navigation from QR code photo to amount selection"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Delete the QR code photo message first
@@ -10578,7 +10578,7 @@ async def handle_cancel_wallet_deposit_from_qr(query, order_id):
         return
     
     # Get user language
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Delete the QR code photo message first
@@ -10615,7 +10615,7 @@ You can start a new deposit anytime from your wallet.
     except Exception as e:
         logger.error(f"Error cancelling wallet deposit from QR: {e}")
         # Fallback: just send a simple message
-        user_lang = await get_user_lang_fast(user, context) if user else 'en'
+        user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None)) if user else 'en'
         await query.message.reply_text(f"❌ {t('errors.deposit_cancel_error', user_lang)}")
 
 async def back_to_wallet_payment(query, order_id):
@@ -10706,7 +10706,7 @@ async def handle_qr_cancel_order(query):
 async def check_wallet_deposit_status(query, order_id):
     """Check the status of a wallet deposit"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get user record
@@ -10928,7 +10928,7 @@ async def handle_setup_dns_zone(query, context, domain_name):
 async def show_dns_dashboard(query, domain_name):
     """Show enhanced DNS dashboard with record counts and clear actions"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Immediate response for better UX with unique identifier
     await safe_edit_message(query, t('dns.dashboard_loading', user_lang, domain=domain_name))
@@ -11087,7 +11087,7 @@ async def show_dns_dashboard(query, domain_name):
 async def show_dns_add_type_picker(query, domain):
     """Show record type picker for adding new DNS records"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     message = f"{t('dns.add_record_title', user_lang, domain=domain)}\n\n{t('dns.add_record_prompt', user_lang)}"
     
@@ -11132,7 +11132,7 @@ async def start_dns_add_wizard(query, context, domain, record_type):
 async def continue_dns_add_wizard(query, domain, record_type, step):
     """Continue the DNS addition wizard at specified step"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     flow_id = f"{user.id}_{domain}_{record_type}"
     
@@ -11190,7 +11190,7 @@ Please type the IP address:
 async def show_dns_record_list(query, domain, page=1):
     """Show paginated list of DNS records"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Immediate response for better UX
     await safe_edit_message(query, t('dns.loading_records', user_lang))
@@ -11310,7 +11310,7 @@ async def show_dns_record_list(query, domain, page=1):
 async def show_dns_record_detail(query, domain, record_id):
     """Show details for a specific DNS record with edit/delete options"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     # Immediate response for better UX with unique identifier  
     await safe_edit_message(query, t('dns.record_detail_loading', user_lang, domain=domain, id=record_id[:8]))
@@ -12216,7 +12216,7 @@ This {record_type} record already exists in your DNS.
 async def show_a_record_confirmation(query, wizard_state):
     """Show A record confirmation before creation"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12257,7 +12257,7 @@ async def show_a_record_confirmation(query, wizard_state):
 async def show_txt_record_confirmation(query, wizard_state):
     """Show TXT record confirmation before creation"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12297,7 +12297,7 @@ async def show_txt_record_confirmation(query, wizard_state):
 async def show_cname_record_confirmation(query, wizard_state):
     """Show CNAME record confirmation before creation"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -12337,7 +12337,7 @@ async def show_cname_record_confirmation(query, wizard_state):
 async def show_mx_record_confirmation(query, wizard_state):
     """Show MX record confirmation before creation"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13194,7 +13194,7 @@ Proxy Status: {proxy_display}
 async def continue_cname_record_edit_wizard(query, wizard_state):
     """Continue CNAME record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13291,7 +13291,7 @@ TTL: {ttl_display}
 async def continue_txt_record_edit_wizard(query, wizard_state):
     """Continue TXT record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -13388,7 +13388,7 @@ TTL: {ttl_display}
 async def continue_mx_record_edit_wizard(query, wizard_state):
     """Continue MX record edit wizard with auto-apply functionality"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     domain = wizard_state['domain']
     data = wizard_state['data']
@@ -15401,7 +15401,7 @@ Type new nameservers:
 async def confirm_switch_to_cloudflare_ns(query, domain_name):
     """Confirm switching to Cloudflare nameservers"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get current nameserver info
@@ -16293,7 +16293,7 @@ Adjust security settings for your domain:
 async def toggle_javascript_challenge(query, domain_name, action):
     """Handle JavaScript Challenge toggle"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get Cloudflare zone info
@@ -16446,7 +16446,7 @@ Please try again later.
 async def toggle_force_https_setting(query, domain_name, action):
     """Toggle Force HTTPS setting"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get Cloudflare zone info
@@ -16591,7 +16591,7 @@ async def toggle_auto_proxy_setting(query, domain_name, action):
     """Toggle Auto-Enable Proxy setting for user preference control"""
     try:
         user = query.from_user
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
         
         user_record = await get_or_create_user(user.id)
         
@@ -16679,7 +16679,7 @@ Please try again later.
 async def force_enable_proxy_and_feature(query, domain_name, feature_type):
     """Force enable proxy and then enable security feature when user confirms despite auto-proxy being disabled"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get Cloudflare zone info
@@ -17057,7 +17057,7 @@ def format_proxy_notification(domain_name: str, feature_name: str, modified_reco
 async def show_hosting_payment_options_with_intent(query, intent_id: int, price: float, plan_name: str, domain_name: str):
     """Show payment options for hosting provision intent"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -17098,7 +17098,7 @@ Price: ${price}/month
 async def show_hosting_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str):
     """Show payment options for hosting subscription (legacy - for existing subscriptions)"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -17137,7 +17137,7 @@ Price: ${price}/month
 async def process_hosting_crypto_payment(query, crypto_type: str, subscription_id: str, price: str):
     """Generate crypto payment for hosting subscription (based on domain crypto payment)"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         amount = float(price)
@@ -17480,7 +17480,7 @@ async def send_hosting_account_notification(user_id: int, account_details: Dict,
 async def show_domain_hosting_bundle(query):
     """Show domain + hosting bundle options with clear value proposition"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -17537,7 +17537,7 @@ async def show_domain_hosting_bundle(query):
 async def show_bundle_how_it_works(query):
     """Explain the domain + hosting bundle process"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     message = f"""💡 {t("hosting.bundle_how_it_works_title", user_lang)}
 
@@ -17710,7 +17710,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
     user = query.from_user
     
     # Get user language early
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
         # Get final pricing and create combined order
@@ -17759,7 +17759,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
                 subscription_id = None
         
         if not subscription_id:
-            user_lang = await get_user_lang_fast(user, context)
+            user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
             await safe_edit_message(query, t('errors.bundle_order_creation_failed', user_lang))
             return
         

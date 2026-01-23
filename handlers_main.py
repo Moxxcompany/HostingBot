@@ -11074,7 +11074,6 @@ async def show_dns_add_type_picker(query, domain):
 
 async def start_dns_add_wizard(query, context, domain, record_type):
     """Start the DNS record addition wizard"""
-    user = query.from_user
     
     # Initialize wizard state in context.user_data
     wizard_state = {

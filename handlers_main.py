@@ -17064,7 +17064,7 @@ async def show_hosting_payment_options(query, subscription_id: int, price: float
     user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
     try:
-        user_record = await get_or_create_user(user.id)
+        await get_or_create_user(user.id)
         wallet_balance = await get_user_wallet_balance(user.id)
         has_sufficient_balance = wallet_balance >= float(price)
         domain_display = f"Domain: {domain_name}" if domain_name != 'pending-domain' else "Domain: To be configured"

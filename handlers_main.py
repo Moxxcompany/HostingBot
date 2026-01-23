@@ -24,8 +24,7 @@ from database import (
     finalize_wallet_reservation, get_cloudflare_zone, get_domain_provider_id,
     update_domain_nameservers, get_domain_nameservers, get_domain_auto_proxy_enabled,
     set_domain_auto_proxy_enabled, accept_user_terms, has_user_accepted_terms,
-    get_or_create_user_with_status, create_cpanel_account, get_domain_by_name,
-    log_domain_search, create_registration_intent, update_intent_status,
+    get_or_create_user_with_status, create_cpanel_account, log_domain_search, create_registration_intent, update_intent_status,
     finalize_domain_registration, get_active_registration_intent, check_domain_ownership_state,
     create_hosting_intent, update_hosting_intent_status, get_active_hosting_intent, create_order_with_uuid, get_order_by_uuid,
     # Domain order functions for single-table consolidation

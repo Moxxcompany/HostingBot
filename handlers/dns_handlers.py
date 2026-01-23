@@ -101,7 +101,6 @@ async def start_a_record_wizard(
     from services.cloudflare import CloudflareService
     from database import get_cloudflare_zone
     
-    user = query.from_user
     user_lang = await get_user_language_fast_from_query(query, context)
     
     # Initialize wizard state
@@ -464,7 +463,7 @@ async def get_available_names_for_record_type(
     
     # Standard names to offer
     standard_names = [
-        {'name': '@', 'display': f'@ (root)'},
+        {'name': '@', 'display': '@ (root)'},
         {'name': 'www', 'display': 'www'},
         {'name': 'api', 'display': 'api'},
         {'name': 'mail', 'display': 'mail'},

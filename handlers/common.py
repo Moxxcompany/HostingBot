@@ -395,8 +395,8 @@ def check_rate_limit(user_id: int, operation: str) -> bool:
     
     # Cleanup old entries periodically
     if len(_rate_limit_cache) > 10000:
-        cutoff = current_time - 60
-        _rate_limit_cache.clear()  # Simple cleanup
+        # Simple cleanup - clear all old entries
+        _rate_limit_cache.clear()
     
     return True
 

@@ -4324,7 +4324,6 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 # Add markup indicator if markup was applied
                 pricing_breakdown = price_info.get('pricing_breakdown', {})
                 if pricing_breakdown.get('markup_applied', False):
-                    base_price = pricing_breakdown.get('base_price_usd', 0)
                     markup = pricing_breakdown.get('actual_markup', 0)
                     if markup > 0:
                         price_display += f" (includes {format_money(markup, currency, include_currency=True)} service fee)"

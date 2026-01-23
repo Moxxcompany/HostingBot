@@ -484,11 +484,19 @@ async def lifespan(app: FastAPI):
         bot_app = Application.builder().token(token).concurrent_updates(128).defaults(defaults).build()
         
         # Register command handlers (similar to bot.py)
-        from handlers import (
-            start_command, domain_command, dns_command, wallet_command,
-            search_command, profile_command, hosting_command, language_command,
-            handle_callback, handle_text_message
+        # Import from specific modules to avoid circular import issues
+        from handlers.core_handlers import (
+            start_command, profile_command, hosting_command, 
+            language_command, dns_command, handle_callback
         )
+        from handlers.domain_handlers import (
+            search_command, domain_command
+        )
+        from handlers.payment_handlers import (
+            wallet_command
+        )
+        # handle_text_message is in handlers_main (legacy location)
+        from handlers_main import handle_text_message
         from admin_handlers import (
             broadcast_command, cancel_command, maintenance_command,
             handle_admin_broadcast_text, handle_admin_credit_text

@@ -9259,7 +9259,7 @@ async def start_domain_registration(query, domain_name):
     
     try:
         # Get or create user in database
-        user_record = await get_or_create_user(
+        await get_or_create_user(
             telegram_id=user.id,
             username=user.username,
             first_name=user.first_name,

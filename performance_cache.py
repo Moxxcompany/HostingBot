@@ -27,18 +27,21 @@ class PerformanceCache:
         self._miss_count = 0
         self._eviction_count = 0
         
-        # Cache TTL configurations (in seconds)
+        # Cache TTL configurations (in seconds) - OPTIMIZED for performance
         self.ttl_config = {
-            'domain_pricing': 1800,      # 30 minutes - pricing changes infrequently
-            'exchange_rates': 3600,      # 1 hour - exchange rates are relatively stable
-            'domain_availability': 60,   # 1 minute - availability can change quickly
-            'tld_info': 3600,           # 1 hour - TLD info rarely changes
-            'api_responses': 300,        # 5 minutes - generic API responses
-            'database_queries': 180,     # 3 minutes - database results
-            'ip_detection': 600,         # 10 minutes - IP rarely changes
-            'dns_validation': 60,        # 1 minute - DNS validation can change
-            'user_language': 1800,       # 30 minutes - user language preferences rarely change
-            'user_data': 300,            # 5 minutes - user data for /start command optimization
+            'domain_pricing': 3600,      # 1 hour - pricing changes infrequently
+            'exchange_rates': 7200,      # 2 hours - exchange rates are relatively stable
+            'domain_availability': 120,  # 2 minutes - balance freshness vs API calls
+            'tld_info': 7200,           # 2 hours - TLD info rarely changes
+            'api_responses': 600,        # 10 minutes - generic API responses
+            'database_queries': 300,     # 5 minutes - database results
+            'ip_detection': 900,         # 15 minutes - IP rarely changes
+            'dns_validation': 30,        # 30 seconds - DNS validation needs freshness
+            'user_language': 3600,       # 1 hour - user language preferences rarely change
+            'user_data': 600,            # 10 minutes - user data for /start command optimization
+            'user_context': 3600,        # 1 hour - user context data (new)
+            'keyboards': 1800,           # 30 minutes - static keyboard layouts
+            'cloudflare_zones': 3600,    # 1 hour - zone info rarely changes
         }
         
         logger.info("✅ Performance cache initialized with TTL configurations")

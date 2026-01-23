@@ -18975,8 +18975,6 @@ async def handle_rdp_plan_selection(query, context, plan_id: str):
         # Group regions by continent for better UX
         na_regions = [r for r in regions if r.get('continent') == 'North America']
         eu_regions = [r for r in regions if r.get('continent') == 'Europe']
-        asia_regions = [r for r in regions if r.get('continent') == 'Asia']
-        others = [r for r in regions if r.get('continent') not in ['North America', 'Europe', 'Asia']]
         
         # Add North America regions
         if na_regions:

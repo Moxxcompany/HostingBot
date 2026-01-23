@@ -6019,7 +6019,6 @@ async def show_personalized_dashboard(query):
         except Exception as db_error:
             logger.warning(f"Database error for user {user.id}: {db_error}, using fallback")
             # Use fallback values if database error
-            db_user = {'id': user.id}
             wallet_balance = 0.0
         
         balance_display = format_money(Decimal(str(wallet_balance)))

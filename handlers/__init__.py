@@ -83,6 +83,10 @@ from . import domain_handlers
 from . import hosting_handlers
 from . import payment_handlers
 from . import rdp_handlers
+from . import callback_router
+
+# Callback router singleton
+from .callback_router import get_callback_router, reset_router
 
 __all__ = [
     # Version info

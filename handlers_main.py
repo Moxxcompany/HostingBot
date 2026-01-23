@@ -10352,6 +10352,7 @@ QR code generation timed out, but you can still copy the address above."""
 
 async def _show_rdp_payment_qr(query, order_id, rdp_order):
     """Show QR code for RDP server payment with timeout handling"""
+    user = query.from_user
     
     # Get payment details from rdp_order
     payment_address = rdp_order['payment_address']

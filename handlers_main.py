@@ -614,7 +614,7 @@ class AutoApplySession:
                         logger.warning(f"   Expected: {self.original_etag[:8] if self.original_etag else 'None'}...")
                         logger.warning(f"   Current:  {current_etag[:8] if current_etag else 'None'}...")
                         logger.warning(f"   New:      {new_etag[:8]}...")
-                        logger.warning(f"   🔧 Forcing reconciliation since Cloudflare update succeeded")
+                        logger.warning("   🔧 Forcing reconciliation since Cloudflare update succeeded")
                         
                         # Force reconciliation: override version tracking to match Cloudflare state
                         try:
@@ -647,7 +647,7 @@ class AutoApplySession:
                                 # Force reconciliation failed - this is serious
                                 force_error = force_result.get('error', 'Unknown error')
                                 logger.error(f"🚨 RECONCILIATION FAILED: {self.record_id}: {force_error}")
-                                logger.error(f"   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
+                                logger.error("   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
                                 
                                 self.has_version_conflict = True
                                 self.conflict_resolution_needed = True
@@ -669,7 +669,7 @@ class AutoApplySession:
                                 }
                         except Exception as force_error:
                             logger.error(f"🚨 RECONCILIATION EXCEPTION: {self.record_id}: {force_error}")
-                            logger.error(f"   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
+                            logger.error("   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
                             
                             self.has_version_conflict = True
                             self.conflict_resolution_needed = True
@@ -1100,7 +1100,7 @@ async def get_available_names_for_record_type(domain, record_type, zone_id):
         if not existing_records:
             # No existing records, all names available
             common_names = ['@', 'www', 'mail', 'blog', 'app', 'api', 'ftp']
-            return [{'name': name, 'display': name if name != '@' else f'@ (root)', 'description': _get_name_description(name, domain)} for name in common_names]
+            return [{'name': name, 'display': name if name != '@' else '@ (root)', 'description': _get_name_description(name, domain)} for name in common_names]
         
         # Group existing records by name
         records_by_name = {}
@@ -1128,7 +1128,7 @@ async def get_available_names_for_record_type(domain, record_type, zone_id):
                 if not existing_types:
                     available_names.append({
                         'name': name,
-                        'display': name if name != '@' else f'@ (root)',
+                        'display': name if name != '@' else '@ (root)',
                         'description': _get_name_description(name, domain)
                     })
             else:
@@ -1136,7 +1136,7 @@ async def get_available_names_for_record_type(domain, record_type, zone_id):
                 if 'CNAME' not in existing_types:
                     available_names.append({
                         'name': name,
-                        'display': name if name != '@' else f'@ (root)',
+                        'display': name if name != '@' else '@ (root)',
                         'description': _get_name_description(name, domain)
                     })
         
@@ -1280,7 +1280,7 @@ def get_domain_validation_error(domain_name, user_lang=None) -> str:
         else:
             return t('domain.validation.valid', user_lang)
             
-    except Exception as e:
+    except Exception:
         # Fallback to basic error messages if OpenProvider service fails
         if not domain_name or not isinstance(domain_name, str):
             return t('domain.validation.required', user_lang)
@@ -1839,7 +1839,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
             return
         
         if subscription['status'] != 'suspended':
-            await safe_edit_message(query, f"⚠️ This account is not suspended.")
+            await safe_edit_message(query, "⚠️ This account is not suspended.")
             return
         
         domain_name = subscription.get('domain_name', 'unknown')
@@ -3720,7 +3720,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
         try:
             target_user_id = int(context.args[0])
             amount = float(context.args[1])
-        except (ValueError, IndexError) as ve:
+        except (ValueError, IndexError):
             await message.reply_text(
                 "❌ Invalid Input\n\n"
                 "User ID must be a number and amount must be a valid decimal."
@@ -3936,7 +3936,7 @@ async def send_broadcast(broadcast_message: str, update: Update, context: Contex
     
     # Final status
     success_rate = (total_sent / total_users * 100) if total_users > 0 else 0
-    final_message = f"🎯 Broadcast Complete!\n\n"
+    final_message = "🎯 Broadcast Complete!\n\n"
     final_message += f"✅ Successfully Sent: {total_sent}\n"
     final_message += f"❌ Failed: {total_failed}\n"
     final_message += f"📊 Success Rate: {success_rate:.1f}%\n"
@@ -5062,88 +5062,88 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         # Terms acceptance callbacks
         if data.startswith("terms:") or data in ["accept_terms", "decline_terms", "full_terms"]:
-            logger.info(f"Routing to: handle_terms_callback")
+            logger.info("Routing to: handle_terms_callback")
             await handle_terms_callback(update, context)
         elif data == "main_menu":
-            logger.info(f"Routing to: show_personalized_dashboard")
+            logger.info("Routing to: show_personalized_dashboard")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_personalized_dashboard(query)
         elif data == "search_domains":
-            logger.info(f"Routing to: show_search_interface")
+            logger.info("Routing to: show_search_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_search_interface(query)
         elif data == "my_domains":
-            logger.info(f"Routing to: show_user_domains_complete")
+            logger.info("Routing to: show_user_domains_complete")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_user_domains_complete(query, context)
         elif data == "wallet_main":
-            logger.info(f"Routing to: show_wallet_interface")
+            logger.info("Routing to: show_wallet_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_wallet_interface(query, context)
         elif data == "profile_main":
-            logger.info(f"Routing to: show_profile_interface")
+            logger.info("Routing to: show_profile_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_profile_interface(query)
         elif data == "reseller_program":
-            logger.info(f"Routing to: show_reseller_info")
+            logger.info("Routing to: show_reseller_info")
             await show_reseller_info(query)
         elif data == "contact_support":
-            logger.info(f"Routing to: show_contact_support")
+            logger.info("Routing to: show_contact_support")
             await show_contact_support(query)
         
         # API Management routes
         elif data == "api_management_main":
-            logger.info(f"Routing to: show_api_management_dashboard")
+            logger.info("Routing to: show_api_management_dashboard")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_api_management_dashboard(update, context)
         elif data == "api_create_start":
-            logger.info(f"Routing to: start_api_key_creation")
+            logger.info("Routing to: start_api_key_creation")
             await start_api_key_creation(update, context)
         elif data.startswith("api_env_"):
-            logger.info(f"Routing to: toggle_environment")
+            logger.info("Routing to: toggle_environment")
             await toggle_environment(update, context)
         elif data == "api_create_environment":
-            logger.info(f"Routing to: show_environment_selector (back)")
+            logger.info("Routing to: show_environment_selector (back)")
             await show_environment_selector(update, context)
         elif data == "api_create_security":
-            logger.info(f"Routing to: show_security_settings")
+            logger.info("Routing to: show_security_settings")
             await show_security_settings(update, context)
         elif data == "api_create_generate":
-            logger.info(f"Routing to: generate_and_show_api_key")
+            logger.info("Routing to: generate_and_show_api_key")
             await generate_and_show_api_key(update, context)
         elif data.startswith("api_manage_"):
-            logger.info(f"Routing to: show_api_key_management")
+            logger.info("Routing to: show_api_key_management")
             await show_api_key_management(update, context)
         elif data.startswith("api_stats_"):
-            logger.info(f"Routing to: show_api_key_stats")
+            logger.info("Routing to: show_api_key_stats")
             await show_api_key_stats(update, context)
         elif data.startswith("api_revoke_confirm_"):
-            logger.info(f"Routing to: revoke_api_key")
+            logger.info("Routing to: revoke_api_key")
             await revoke_api_key(update, context)
         elif data.startswith("api_revoke_"):
-            logger.info(f"Routing to: confirm_api_key_revoke")
+            logger.info("Routing to: confirm_api_key_revoke")
             await confirm_api_key_revoke(update, context)
         elif data == "api_docs_main":
-            logger.info(f"Routing to: show_api_documentation")
+            logger.info("Routing to: show_api_documentation")
             await show_api_documentation(update, context)
         
         elif data.startswith("domain_linking_"):
-            logger.info(f"Routing to: handle_domain_linking_callback")
+            logger.info("Routing to: handle_domain_linking_callback")
             user_lang = await get_user_lang_fast(query.from_user, context)
             await handle_domain_linking_callback(query, data, context, user_lang)
         elif data == "language_selection":
-            logger.info(f"Routing to: show_language_selection")
+            logger.info("Routing to: show_language_selection")
             # Create an Update object from the query for proper routing
             mock_update = Update(update_id=0, callback_query=query)
             await show_language_selection(mock_update, context)
         elif data == "language_selection_from_profile":
-            logger.info(f"Routing to: show_language_selection_from_profile")
+            logger.info("Routing to: show_language_selection_from_profile")
             # Create an Update object from the query for proper routing
             mock_update = Update(update_id=0, callback_query=query)
             await show_language_selection_from_profile(mock_update, context)
@@ -5176,26 +5176,26 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 domain_name = parts[1]
                 await confirm_bundle_purchase(query, plan_id, domain_name)
         elif data == "admin_broadcast":
-            logger.info(f"Routing to: handle_admin_broadcast")
+            logger.info("Routing to: handle_admin_broadcast")
             await handle_admin_broadcast(query, context)
         elif data == "admin_credit_wallet":
-            logger.info(f"Routing to: handle_admin_credit_wallet")
+            logger.info("Routing to: handle_admin_credit_wallet")
             await handle_admin_credit_wallet(update, context)
         elif data == "admin_openprovider_accounts":
-            logger.info(f"Routing to: show_openprovider_accounts")
+            logger.info("Routing to: show_openprovider_accounts")
             await show_openprovider_accounts(query, context)
         elif data.startswith("admin_op_set_default:"):
             account_id = int(data.replace("admin_op_set_default:", ""))
             logger.info(f"Routing to: set_default_openprovider_account for {account_id}")
             await handle_set_default_openprovider_account(query, context, account_id)
         elif data == "admin_op_validate":
-            logger.info(f"Routing to: handle_validate_openprovider_credentials")
+            logger.info("Routing to: handle_validate_openprovider_credentials")
             await handle_validate_openprovider_credentials(query, context)
         elif data == "admin_openprovider":
-            logger.info(f"Routing to: show_openprovider_accounts (back)")
+            logger.info("Routing to: show_openprovider_accounts (back)")
             await show_openprovider_accounts(query, context)
         elif data == "admin_dns_sync":
-            logger.info(f"Routing to: handle_admin_dns_sync")
+            logger.info("Routing to: handle_admin_dns_sync")
             await handle_admin_dns_sync(query, context)
         elif data.startswith("admin_execute_credit:"):
             # Handle admin credit execution: admin_execute_credit:{user_id}:{amount}
@@ -5205,10 +5205,10 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 amount = float(parts[2])
                 await execute_admin_credit(query, target_user_id, amount)
         elif data == "cancel_broadcast":
-            logger.info(f"Routing to: handle_cancel_broadcast")
+            logger.info("Routing to: handle_cancel_broadcast")
             await handle_cancel_broadcast(query, context)
         elif data.startswith("maintenance:"):
-            logger.info(f"Routing to: maintenance handlers")
+            logger.info("Routing to: maintenance handlers")
             from admin_handlers import handle_maintenance_enable, handle_maintenance_disable, handle_maintenance_status
             if data == "maintenance:status":
                 await handle_maintenance_status(query, context)
@@ -5260,7 +5260,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     feedback_msg = f"₿ <b>Setting up {crypto_name} Payment...</b>\n\n"
                     feedback_msg += f"🌐 Domain: <code>{domain_name}</code>\n"
                     feedback_msg += f"💰 Amount: ${float(price):.2f}\n"
-                    feedback_msg += f"⏳ Generating payment address..."
+                    feedback_msg += "⏳ Generating payment address..."
                 
                 await safe_edit_message(query, feedback_msg, parse_mode='HTML')
                 
@@ -5285,7 +5285,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 try:
                     amount = float(amount_str)
                     if amount < 30:
-                        await safe_edit_message(query, f"❌ Minimum deposit is $30 USD")
+                        await safe_edit_message(query, "❌ Minimum deposit is $30 USD")
                     else:
                         await show_crypto_selection_for_deposit(query, amount)
                 except ValueError:
@@ -5302,7 +5302,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 try:
                     amount_usd = float(parts[1])
                     if amount_usd < 30:
-                        await safe_edit_message(query, f"❌ Minimum deposit is $30 USD")
+                        await safe_edit_message(query, "❌ Minimum deposit is $30 USD")
                     elif crypto_config.is_supported(crypto_code):
                         await process_wallet_crypto_deposit(query, crypto_code, amount_usd)
                     else:
@@ -5458,7 +5458,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await handle_ttl_selection(query, context, data)
         elif data.startswith("dns_wizard:"):
             # Handle DNS wizard callbacks: dns_wizard:{domain}:{type}:{field}:{value}
-            logger.info(f"Routing to: handle_dns_wizard_callback")
+            logger.info("Routing to: handle_dns_wizard_callback")
             await handle_dns_wizard_callback(query, context, data)
         elif data.startswith("setup_dns_"):
             # Handle DNS zone setup for domains missing Cloudflare zones
@@ -5473,28 +5473,28 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             clear_admin_states(context)
             await handle_dns_callback(query, context, f"dns:{domain_name}:view")
         elif data == "hosting_main":
-            logger.info(f"Routing to: show_hosting_interface")
+            logger.info("Routing to: show_hosting_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_hosting_interface(query, context)
         # RDP Server callbacks
         elif data == "rdp_main":
-            logger.info(f"Routing to: handle_rdp_main")
+            logger.info("Routing to: handle_rdp_main")
             await handle_rdp_main(query)
         elif data == "rdp_purchase_start":
-            logger.info(f"Routing to: handle_rdp_purchase_start")
+            logger.info("Routing to: handle_rdp_purchase_start")
             await handle_rdp_purchase_start(query, context)
         elif data == "rdp_quick_deploy":
-            logger.info(f"Routing to: handle_rdp_quick_deploy")
+            logger.info("Routing to: handle_rdp_quick_deploy")
             await handle_rdp_quick_deploy(query, context)
         elif data == "rdp_quick_confirm":
-            logger.info(f"Routing to: handle_rdp_quick_confirm")
+            logger.info("Routing to: handle_rdp_quick_confirm")
             await handle_rdp_quick_confirm(query, context)
         elif data == "rdp_customize_start":
-            logger.info(f"Routing to: handle_rdp_customize_start")
+            logger.info("Routing to: handle_rdp_customize_start")
             await handle_rdp_customize_start(query, context)
         elif data == "rdp_change_windows":
-            logger.info(f"Routing to: handle_rdp_change_windows")
+            logger.info("Routing to: handle_rdp_change_windows")
             await handle_rdp_change_windows(query, context)
         elif data.startswith("rdp_select_plan_"):
             plan_id = data.replace("rdp_select_plan_", "")
@@ -5505,7 +5505,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"Routing to: handle_rdp_set_template (template {template_id})")
             await handle_rdp_set_template(query, context, template_id)
         elif data == "rdp_region_smart":
-            logger.info(f"Routing to: handle_rdp_region_smart")
+            logger.info("Routing to: handle_rdp_region_smart")
             await handle_rdp_region_smart(query, context)
         elif data.startswith("rdp_change_billing_"):
             region_code = data.replace("rdp_change_billing_", "")
@@ -5516,10 +5516,10 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"Routing to: handle_rdp_set_region (region {region_code})")
             await handle_rdp_set_region(query, context, region_code)
         elif data == "rdp_regions_all":
-            logger.info(f"Routing to: handle_rdp_regions_all")
+            logger.info("Routing to: handle_rdp_regions_all")
             await handle_rdp_regions_all(query, context)
         elif data == "rdp_back_to_confirmation":
-            logger.info(f"Routing to: handle_rdp_back_to_confirmation")
+            logger.info("Routing to: handle_rdp_back_to_confirmation")
             wizard = context.user_data.get('rdp_wizard', {})
             confirmation_source = wizard.get('confirmation_source', 'customize')
             if confirmation_source == 'quick_deploy':
@@ -5547,16 +5547,16 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"Routing to: handle_rdp_billing_selection (cycle {billing_cycle})")
             await handle_rdp_billing_selection(query, context, billing_cycle)
         elif data == "rdp_confirm_and_create_order":
-            logger.info(f"Routing to: handle_rdp_confirm_and_create_order")
+            logger.info("Routing to: handle_rdp_confirm_and_create_order")
             await handle_rdp_confirm_and_create_order(query, context)
         elif data == "rdp_select_payment_method":
-            logger.info(f"Routing to: handle_rdp_select_payment_method")
+            logger.info("Routing to: handle_rdp_select_payment_method")
             await handle_rdp_select_payment_method(query, context)
         elif data == "rdp_pay_wallet":
-            logger.info(f"Routing to: handle_rdp_pay_wallet")
+            logger.info("Routing to: handle_rdp_pay_wallet")
             await handle_rdp_pay_wallet(query, context)
         elif data == "rdp_pay_crypto":
-            logger.info(f"Routing to: handle_rdp_pay_crypto")
+            logger.info("Routing to: handle_rdp_pay_crypto")
             await handle_rdp_pay_crypto(query, context)
         elif data.startswith("rdp_crypto_"):
             currency = data.replace("rdp_crypto_", "")
@@ -5576,7 +5576,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             logger.info(f"Routing to: handle_rdp_payment_back (order {order_uuid})")
             await handle_rdp_payment_back(query, context, order_uuid)
         elif data == "rdp_my_servers":
-            logger.info(f"Routing to: handle_rdp_my_servers")
+            logger.info("Routing to: handle_rdp_my_servers")
             await handle_rdp_my_servers(query, context)
         elif data.startswith("rdp_server_") and not data.startswith("rdp_servers"):
             server_id = data.replace("rdp_server_", "")
@@ -5612,7 +5612,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await handle_rdp_delete(query, context, server_id)
         elif data == "hosting_plans":
             # Legacy route - redirect to unified flow
-            logger.info(f"Redirecting legacy hosting_plans to unified flow")
+            logger.info("Redirecting legacy hosting_plans to unified flow")
             await unified_hosting_flow(query)
         elif data == "my_hosting":
             await show_my_hosting(query)
@@ -5740,7 +5740,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 await safe_edit_message(query, "❌ Invalid hosting data. Please try again.")
         elif data.startswith("retry_ns_update:"):
-            logger.info(f"Routing to: handle_retry_nameserver_update")
+            logger.info("Routing to: handle_retry_nameserver_update")
             await handle_retry_nameserver_update(query, context, data)
         elif data.startswith("recheck_ns_"):
             # Handle nameserver recheck for hosting: recheck_ns_{plan_id}:{domain_name}
@@ -7247,7 +7247,7 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
         # Calculate total based on checkout type
         if checkout_type == 'new' and domain_name:
             # 🎯 PROGRESS UPDATE: Show domain checking status
-            checking_msg = f"🔄 <b>Checking domain availability...</b>\n\n"
+            checking_msg = "🔄 <b>Checking domain availability...</b>\n\n"
             checking_msg += f"🌐 Analyzing: <code>{domain_name}</code>\n"
             checking_msg += f"📋 Plan: {plan_name}\n"
             checking_msg += "⏳ This may take a few seconds..."
@@ -7798,7 +7798,7 @@ async def process_intent_crypto_payment(query, intent_id: str, crypto: str, pric
         progress_msg = f"₿ <b>Setting up {crypto.upper()} Payment...</b>\n\n"
         progress_msg += f"🏠 Domain: <code>{domain_name}</code>\n"
         progress_msg += f"💰 Amount: ${amount:.2f}\n"
-        progress_msg += f"🔄 Connecting to payment provider...\n"
+        progress_msg += "🔄 Connecting to payment provider...\n"
         progress_msg += "⏳ This may take a few seconds..."
         await safe_edit_message(query, progress_msg, parse_mode='HTML')
         
@@ -7974,10 +7974,10 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
         query_adapter = HandlerQueryAdapter(query)
         
         # Show immediate processing message
-        processing_msg = f"🚀 <b>Processing your hosting order...</b>\n\n"
+        processing_msg = "🚀 <b>Processing your hosting order...</b>\n\n"
         processing_msg += f"✅ Payment processed: ${amount:.2f}\n"
-        processing_msg += f"🔄 Starting provisioning workflow...\n"
-        processing_msg += f"⏳ This may take 30-60 seconds..."
+        processing_msg += "🔄 Starting provisioning workflow...\n"
+        processing_msg += "⏳ This may take 30-60 seconds..."
         await safe_edit_message(query, processing_msg, parse_mode='HTML')
         
         # Get user language for error messages
@@ -8000,12 +8000,12 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
             # Handle orchestrator results
             if orchestrator_result.get('status') == 'already_processed':
                 logger.info(f"🚫 HANDLERS: Hosting bundle already processed for intent {intent_id}")
-                await safe_edit_message(query, f"ℹ️ Order Already Complete\n\nHosting order has already been processed.")
+                await safe_edit_message(query, "ℹ️ Order Already Complete\n\nHosting order has already been processed.")
                 return
             
             elif orchestrator_result.get('status') == 'duplicate_prevented':
                 logger.info(f"🚫 HANDLERS: Duplicate hosting bundle prevented for intent {intent_id}")
-                await safe_edit_message(query, f"ℹ️ Order In Progress\n\nHosting order is already being processed.")
+                await safe_edit_message(query, "ℹ️ Order In Progress\n\nHosting order is already being processed.")
                 return
             
             elif orchestrator_result.get('status') == 'error':
@@ -8018,7 +8018,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
                 # Orchestrator already sent success notification with buttons
             else:
                 logger.warning(f"⚠️ HANDLERS: Unexpected orchestrator result for intent {intent_id}: {orchestrator_result}")
-                await safe_edit_message(query, f"⚠️ Order Status Unknown\n\nPlease check your hosting dashboard.")
+                await safe_edit_message(query, "⚠️ Order Status Unknown\n\nPlease check your hosting dashboard.")
                 
         except Exception as orchestrator_error:
             logger.error(f"❌ HANDLERS: Error during orchestrated hosting provisioning for intent {intent_id}: {orchestrator_error}")
@@ -8046,7 +8046,7 @@ async def process_unified_crypto_payment(query, crypto_type: str, subscription_i
     processing_msg = f"₿ <b>Setting up {crypto_name} Payment...</b>\n\n"
     processing_msg += f"💰 Amount: ${float(price):.2f}\n"
     processing_msg += f"📋 Order: #{subscription_id}\n"
-    processing_msg += f"⏳ Generating payment address..."
+    processing_msg += "⏳ Generating payment address..."
     
     await safe_edit_message(query, processing_msg, parse_mode='HTML')
     
@@ -8295,7 +8295,7 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
         
         # Verify method availability
         if not hasattr(openprovider, 'register_domain'):
-            logger.error(f"❌ OpenProvider service missing register_domain method")
+            logger.error("❌ OpenProvider service missing register_domain method")
             logger.error(f"   Instance type: {type(openprovider)}")
             logger.error(f"   Available methods: {[method for method in dir(openprovider) if not method.startswith('_')]}")
             await update_intent_status(intent_id, 'failed')
@@ -9343,7 +9343,7 @@ async def start_domain_registration(query, domain_name):
         
     except Exception as e:
         logger.error(f"Error starting domain registration for {domain_name}: {e}")
-        await safe_edit_message(query, f"❌ Error\n\nAn error occurred. Please try again.")
+        await safe_edit_message(query, "❌ Error\n\nAn error occurred. Please try again.")
 
 async def show_payment_options(query, domain_name, price, currency):
     """Phase 3: Payment Processing - Show all payment options"""
@@ -9421,7 +9421,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
         progress_msg = f"₿ <b>Setting up {crypto_type.upper()} Payment...</b>\n\n"
         progress_msg += f"🌐 Domain: <code>{domain_name}</code>\n"
         progress_msg += f"💰 Amount: ${float(price):.2f}\n"
-        progress_msg += f"🔄 Connecting to payment provider...\n"
+        progress_msg += "🔄 Connecting to payment provider...\n"
         progress_msg += "⏳ This may take a few seconds..."
         
         await safe_edit_message(query, progress_msg, parse_mode='HTML')
@@ -9594,7 +9594,7 @@ async def process_domain_registration(query, domain_name, order):
         
         elif orchestrator_result.get('status') == 'error':
             logger.error(f"❌ HANDLERS: Orchestrator error for {domain_name}: {orchestrator_result.get('error', 'Unknown error')}")
-            await safe_edit_message(query, f"❌ Registration Error\n\nAn error occurred during registration.")
+            await safe_edit_message(query, "❌ Registration Error\n\nAn error occurred during registration.")
             # Trigger automatic refund if this was a wallet payment
             await handle_registration_failure(order)
             return
@@ -9604,11 +9604,11 @@ async def process_domain_registration(query, domain_name, order):
             # Orchestrator already sent success notification with buttons
         else:
             logger.warning(f"⚠️ HANDLERS: Unexpected orchestrator result for {domain_name}: {orchestrator_result}")
-            await safe_edit_message(query, f"⚠️ Registration Status Unknown\n\nPlease check your domains list.")
+            await safe_edit_message(query, "⚠️ Registration Status Unknown\n\nPlease check your domains list.")
         
     except Exception as e:
         logger.error(f"❌ HANDLERS: Error during orchestrated domain registration for {domain_name}: {e}")
-        await safe_edit_message(query, f"❌ Registration Error\n\nAn error occurred during registration.")
+        await safe_edit_message(query, "❌ Registration Error\n\nAn error occurred during registration.")
         
         # Update order status and trigger refund on exception
         try:
@@ -10123,7 +10123,7 @@ async def show_wallet_qr_code(query, order_id):
                 )
                 
                 if payment_intents:
-                    logger.info(f"✅ QR: Found payment intent via tracking ID lookup")
+                    logger.info("✅ QR: Found payment intent via tracking ID lookup")
                     await _show_domain_payment_qr(query, tracking_id, payment_intents[0])
                     return
                     
@@ -10182,7 +10182,6 @@ async def _show_wallet_deposit_qr(query, order_id, deposit):
     bio.seek(0)
     
     # Handle flexible amount display with proper HTML formatting for tap-and-copy
-    from message_utils import format_inline_code
     
     if usd_amount == 0:
         message = f"""📱 {crypto_currency} Payment
@@ -10323,7 +10322,6 @@ async def _show_domain_payment_qr(query, order_id, payment_intent):
             domain_name = parts[1]
     
     # Format message for domain payment
-    from message_utils import format_inline_code
     
     message = f"""📱 {crypto_currency.upper()} Payment QR Code
 
@@ -10433,7 +10431,6 @@ async def _show_rdp_payment_qr(query, order_id, rdp_order):
         billing_display = billing_cycle.capitalize()
     
     # Format message for RDP payment
-    from message_utils import format_inline_code
     
     message = f"""📱 {crypto_currency} Payment QR Code
 
@@ -12817,12 +12814,12 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             amount = float(text.replace('$', '').replace(',', '').strip())
             if amount < 30:
                 user_lang = await get_user_lang_fast(user, context)
-                await effective_message.reply_text(f"❌ Minimum deposit is $30 USD. Please enter a larger amount.")
+                await effective_message.reply_text("❌ Minimum deposit is $30 USD. Please enter a larger amount.")
                 if context.user_data is not None:
                     context.user_data['awaiting_deposit_amount'] = True  # Re-enable state
                 return
             if amount > 10000:
-                await effective_message.reply_text(f"❌ Maximum deposit is $10,000 USD. Please enter a smaller amount.")
+                await effective_message.reply_text("❌ Maximum deposit is $10,000 USD. Please enter a smaller amount.")
                 if context.user_data is not None:
                     context.user_data['awaiting_deposit_amount'] = True  # Re-enable state
                 return
@@ -12868,10 +12865,10 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         from admin_handlers import handle_admin_credit_text
         admin_handled = await handle_admin_credit_text(update, context)
         if admin_handled:
-            logger.info(f"✅ TEXT ROUTING: Admin credit handler processed message successfully")
+            logger.info("✅ TEXT ROUTING: Admin credit handler processed message successfully")
             return
         else:
-            logger.warning(f"⚠️ TEXT ROUTING: Admin credit handler declined message, continuing to generic handler")
+            logger.warning("⚠️ TEXT ROUTING: Admin credit handler declined message, continuing to generic handler")
     
     # Check for hosting domain input context
     hosting_flow = user_data.get('hosting_flow')
@@ -15258,7 +15255,7 @@ Enter the name/host for this A record.
                 ]
             elif 'ip' not in data:
                 # This shouldn't happen as we just set the IP, but safety check
-                message_text = f"✅ IP Address Set\n\nReturning to wizard menu..."
+                message_text = "✅ IP Address Set\n\nReturning to wizard menu..."
                 keyboard = [[InlineKeyboardButton(t("buttons.back_to_dns", user_lang), callback_data=f"dns:{domain}:view")]]
             elif 'ttl' not in data:
                 # Step 3: TTL
@@ -15322,7 +15319,7 @@ Confirm to create this DNS record?
                 ]
         else:
             # Fallback for other record types
-            message_text = f"✅ Data Updated\n\nReturning to wizard..."
+            message_text = "✅ Data Updated\n\nReturning to wizard..."
             keyboard = [[InlineKeyboardButton(t("buttons.back_to_dns", user_lang), callback_data=f"dns:{domain}:view")]]
         
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -16944,7 +16941,7 @@ async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name:
                 else:
                     formatted_names.append(f"{name}")
             
-            message = f"🔧 Auto-Enabled Cloudflare Proxy\n\n"
+            message = "🔧 Auto-Enabled Cloudflare Proxy\n\n"
             message += f"Enabled proxy for: {', '.join(formatted_names)}\n"
             message += f"_Required for {feature_name} to function properly._"
             
@@ -16973,7 +16970,7 @@ _This is required for {feature_name} to work properly. Your feature will be enab
             success_names = [r['name'] for r in modified_records]
             failed_names = [r['name'] for r in failed_records]
             
-            message = f"⚠️ Partial Proxy Success\n\n"
+            message = "⚠️ Partial Proxy Success\n\n"
             message += f"✅ Enabled: {', '.join(success_names)}\n"
             message += f"❌ Failed: {', '.join(failed_names)}\n\n"
             message += f"_Proceeding with {feature_name} for successfully proxied records._"
@@ -16991,8 +16988,8 @@ _This is required for {feature_name} to work properly. Your feature will be enab
             for failed in failed_records:
                 error_details.append(f"• {failed['name']}: {failed['error']}")
             
-            message = f"❌ Proxy Enablement Failed\n\n"
-            message += f"Could not enable proxy for any records:\n"
+            message = "❌ Proxy Enablement Failed\n\n"
+            message += "Could not enable proxy for any records:\n"
             message += "\n".join(error_details[:3])  # Limit to 3 errors for readability
             if len(error_details) > 3:
                 message += f"\n... and {len(error_details) - 3} more"
@@ -17072,7 +17069,7 @@ def format_proxy_notification(domain_name: str, feature_name: str, modified_reco
         else:
             record_names.append(f"{name}")
     
-    notification = f"🔧 Proxy Auto-Enabled\n\n"
+    notification = "🔧 Proxy Auto-Enabled\n\n"
     notification += f"Records: {', '.join(record_names)}\n"
     notification += f"Feature: {feature_name}\n\n"
     notification += "_Cloudflare proxy is now active for these records to enable the requested feature._"
@@ -17282,7 +17279,7 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
         subscription = subscription_result[0]
         user_id = user_record['id']
         
-        await safe_edit_message(query, f"💳 Processing wallet payment for hosting...")
+        await safe_edit_message(query, "💳 Processing wallet payment for hosting...")
         
         # 🔒 REVENUE PROTECTION: Reserve wallet balance instead of immediate debit
         from database import reserve_wallet_balance
@@ -18530,7 +18527,7 @@ async def handle_rdp_change_billing(query, context, region_code: str):
         plan_id = wizard.get('plan_id')
         
         if not plan_id:
-            logger.error(f"❌ No plan_id in wizard data")
+            logger.error("❌ No plan_id in wizard data")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -18793,7 +18790,7 @@ async def handle_rdp_quick_confirm(query, context):
         billing_cycle = wizard.get('billing_cycle', 'monthly')
         
         if not all([template_id, plan_id, region]):
-            logger.warning(f"❌ Incomplete RDP wizard data")
+            logger.warning("❌ Incomplete RDP wizard data")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -18805,7 +18802,7 @@ async def handle_rdp_quick_confirm(query, context):
         """, (plan_id,))
         
         if not plan or len(plan) == 0:
-            logger.error(f"❌ Plan not found")
+            logger.error("❌ Plan not found")
             await safe_edit_message(query, await t_for_user('rdp.errors.plan_not_found', user.id))
             return
         
@@ -19258,7 +19255,7 @@ async def handle_rdp_billing_selection(query, context, billing_cycle: str):
         
         # Wallet payment if sufficient balance
         if wallet_balance >= Decimal(str(total_price)):
-            keyboard.append([InlineKeyboardButton(wallet_button.format(price=f"{total_price:.2f}"), callback_data=f"rdp_pay_wallet")])
+            keyboard.append([InlineKeyboardButton(wallet_button.format(price=f"{total_price:.2f}"), callback_data="rdp_pay_wallet")])
         else:
             shortfall = Decimal(str(total_price)) - wallet_balance
             keyboard.append([InlineKeyboardButton(wallet_insufficient.format(shortfall=f"{float(shortfall):.2f}"), callback_data="rdp_wallet_insufficient")])
@@ -19880,7 +19877,7 @@ async def handle_rdp_pay_wallet(query, context):
         debit_success = await debit_wallet_balance(
             db_user_id,
             total_amount,
-            description=f"Windows RDP Server purchase"
+            description="Windows RDP Server purchase"
         )
         
         if not debit_success:
@@ -20656,7 +20653,7 @@ async def smart_auto_start_server(instance_id: str, server_id: Optional[int], is
         logger.info(f"🚀 Smart auto-start initiated for {'new' if is_new else 'reinstalled'} server {instance_id}")
         
         # Give Vultr 10 seconds to stabilize after provisioning/reinstall
-        logger.info(f"⏳ Waiting 10s for server stabilization...")
+        logger.info("⏳ Waiting 10s for server stabilization...")
         await asyncio.sleep(10)
         
         # Exponential backoff delays: 5s, 10s, 20s (total ~45s over 4 attempts)
@@ -20725,7 +20722,7 @@ async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance
             WHERE id = %s
         """, (encrypted_password, server_id))
         
-        logger.info(f"✅ Reinstalled server ready, launching auto-start")
+        logger.info("✅ Reinstalled server ready, launching auto-start")
         
         # Launch async auto-start with smart retry
         asyncio.create_task(smart_auto_start_server(instance_id, server_id=server_id, is_new=False))

@@ -10591,7 +10591,6 @@ You can start a new deposit anytime from your wallet.
 
 async def back_to_wallet_payment(query, order_id):
     """Return to wallet payment details from QR code"""
-    user = query.from_user
     
     try:
         # Simply redirect to crypto selection instead of showing payment details

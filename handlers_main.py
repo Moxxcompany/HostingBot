@@ -14501,7 +14501,6 @@ async def handle_custom_subdomain_txt_input(update, context, subdomain_name, cus
         
         subdomain_name = subdomain_name.strip().lower()
         wizard_state = custom_input['wizard_state']
-        domain = custom_input['domain']
         
         # Validate subdomain format
         if not subdomain_name:

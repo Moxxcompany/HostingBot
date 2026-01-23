@@ -10165,7 +10165,7 @@ Address: {format_inline_code(payment_address)}
     
     try:
         # Send QR code image with timeout protection
-        qr_message = await asyncio.wait_for(
+        await asyncio.wait_for(
             query.message.reply_photo(
                 photo=bio,
                 caption=message,

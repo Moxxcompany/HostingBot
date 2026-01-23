@@ -93,6 +93,46 @@ from unified_user_id_handlers import (
     get_wallet_balance_by_telegram_id
 )
 
+# ============================================================================
+# PERFORMANCE HELPER: Fast user language resolution with context caching
+# ============================================================================
+
+async def get_user_lang_fast(user, context: ContextTypes.DEFAULT_TYPE = None) -> str:
+    """
+    Fast user language resolution with context-level caching.
+    
+    This is a convenience wrapper that handles the common patterns:
+    - From callback query user object
+    - From update user object
+    - With or without context caching
+    
+    Falls back to resolve_user_language if context is not available.
+    """
+    if not user:
+        return 'en'
+    
+    user_id = user.id
+    telegram_lang = getattr(user, 'language_code', None)
+    
+    # If context available, use caching
+    if context and context.user_data is not None:
+        cached = context.user_data.get('_cached_user_lang')
+        cached_ts = context.user_data.get('_cached_user_lang_ts', 0)
+        
+        # Use cache if valid (1 hour TTL)
+        if cached and (time.time() - cached_ts) < 3600:
+            return cached
+        
+        # Resolve and cache
+        user_lang = await resolve_user_language(user_id, telegram_lang)
+        context.user_data['_cached_user_lang'] = user_lang
+        context.user_data['_cached_user_lang_ts'] = time.time()
+        return user_lang
+    
+    # No context - use direct resolution
+    return await resolve_user_language(user_id, telegram_lang)
+
+
 # Region mapping cache
 _region_cache = {}
 

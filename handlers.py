@@ -11980,7 +11980,9 @@ Type your subdomain:
         await show_a_record_confirmation(query, wizard_state)
         return
     
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # Create reply_markup only if not already set by cached keyboard
+    if 'reply_markup' not in dir() or reply_markup is None:
+        reply_markup = InlineKeyboardMarkup(keyboard)
     
     # Prevent "Message is not modified" errors by checking current content
     try:

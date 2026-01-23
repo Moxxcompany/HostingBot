@@ -15324,10 +15324,8 @@ async def show_nameserver_management(query, domain_name, context):
         # Provider status and recommendations
         if provider_type == "cloudflare":
             status_icon = "🟢"
-            recommendation = "✅ Optimal Configuration\nYour domain is using Cloudflare's nameservers for best performance and security."
         else:
             status_icon = "🔶"
-            recommendation = "Consider switching to Cloudflare nameservers for better performance and DNS management."
         
         message = f"""
 📡 NS: {domain_name}

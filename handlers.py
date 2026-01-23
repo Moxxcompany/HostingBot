@@ -5897,6 +5897,11 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
         # Set user preference (marked as manually selected)
         success = await set_user_language_preference(user.id, lang_code, manually_selected=True)
         
+        # Invalidate language cache to force refresh with new language
+        if context.user_data:
+            context.user_data.pop('_cached_user_lang', None)
+            context.user_data.pop('_cached_user_lang_ts', None)
+        
         if success:
             # Get localized confirmation message
             lang_names = {

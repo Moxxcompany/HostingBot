@@ -295,9 +295,9 @@ class AutoApplySession:
                 import hashlib
                 content_str = str(sorted(normalized_data.items()))
                 self.original_etag = hashlib.md5(content_str.encode()).hexdigest()
-                logger.debug("📝 New DNS version tracking: %s etag:%s...", self.record_id, self.original_etag[)
+                logger.debug(f"📝 New DNS version tracking: {self.record_id} etag:{self.original_etag[:8]}...")
         except Exception as e:
-            logger.warning("Failed to load DNS version for %s: %s", self.record_id, e)
+            logger.warning(f"Failed to load DNS version for {self.record_id}: {e}")
             # Fall back to content-based etag
             import hashlib
             content_str = str(sorted(normalized_data.items()))
@@ -540,25 +540,25 @@ class AutoApplySession:
                         if updated_record:
                             from database import update_single_dns_record_in_db
                             await update_single_dns_record_in_db(self.domain, updated_record)
-                            logger.debug("✅ DNS record updated in database: %s", self.record_id)
+                            logger.debug(f"✅ DNS record updated in database: {self.record_id}")
                         else:
-                            logger.warning("Could not fetch updated DNS record %s for database sync", self.record_id)
+                            logger.warning(f"Could not fetch updated DNS record {self.record_id} for database sync")
                     except Exception as db_err:
-                        logger.warning("Failed to sync updated DNS record to database: %s", db_err)
+                        logger.warning(f"Failed to sync updated DNS record to database: {db_err}")
                         # Don't fail the operation - Cloudflare update succeeded
                     
                     if cas_result.get('success'):
-                        logger.debug("✅ DNS version CAS SUCCESS: %s -> %s...", self.record_id, new_etag[)
+                        logger.debug(f"✅ DNS version CAS SUCCESS: {self.record_id} -> {new_etag[:8]}...")
                     elif cas_result.get('conflict'):
                         # CRITICAL: CAS CONFLICT after Cloudflare update!
                         # Cloudflare succeeded but version tracking conflicted.
                         # Since we KNOW Cloudflare has the correct state, force reconcile the database.
                         current_etag = cas_result.get('current_etag')
-                        logger.warning("🔄 POST-APPLY CAS CONFLICT: %s", self.record_id)
+                        logger.warning(f"🔄 POST-APPLY CAS CONFLICT: {self.record_id}")
                         logger.warning(f"   Expected: {self.original_etag[:8] if self.original_etag else 'None'}...")
                         logger.warning(f"   Current:  {current_etag[:8] if current_etag else 'None'}...")
-                        logger.warning("   New:      %s...", new_etag[)
-                        logger.warning("   🔧 Forcing reconciliation since Cloudflare update succeeded")
+                        logger.warning(f"   New:      {new_etag[:8]}...")
+                        logger.warning(f"   🔧 Forcing reconciliation since Cloudflare update succeeded")
                         
                         # Force reconciliation: override version tracking to match Cloudflare state
                         try:
@@ -573,7 +573,7 @@ class AutoApplySession:
                             
                             if force_result.get('success'):
                                 # Forced reconciliation succeeded - update session state
-                                logger.info("✅ RECONCILIATION SUCCESS: %s - database now matches Cloudflare state", self.record_id)
+                                logger.info(f"✅ RECONCILIATION SUCCESS: {self.record_id} - database now matches Cloudflare state")
                                 self.original_state.update(self.draft_state)
                                 self.original_etag = new_etag
                                 self.dirty_fields.clear()
@@ -590,8 +590,8 @@ class AutoApplySession:
                             else:
                                 # Force reconciliation failed - this is serious
                                 force_error = force_result.get('error', 'Unknown error')
-                                logger.error("🚨 RECONCILIATION FAILED: %s: %s", self.record_id, force_error)
-                                logger.error("   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
+                                logger.error(f"🚨 RECONCILIATION FAILED: {self.record_id}: {force_error}")
+                                logger.error(f"   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
                                 
                                 self.has_version_conflict = True
                                 self.conflict_resolution_needed = True
@@ -612,8 +612,8 @@ class AutoApplySession:
                                     }
                                 }
                         except Exception as force_error:
-                            logger.error("🚨 RECONCILIATION EXCEPTION: %s: %s", self.record_id, force_error)
-                            logger.error("   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
+                            logger.error(f"🚨 RECONCILIATION EXCEPTION: {self.record_id}: {force_error}")
+                            logger.error(f"   ⚠️ CRITICAL: Cloudflare and database are now out of sync!")
                             
                             self.has_version_conflict = True
                             self.conflict_resolution_needed = True
@@ -630,11 +630,11 @@ class AutoApplySession:
                     else:
                         # CAS failed for other reasons
                         error_msg = cas_result.get('error', 'Unknown CAS error')
-                        logger.error("🚫 DNS version CAS ERROR: %s: %s", self.record_id, error_msg)
+                        logger.error(f"🚫 DNS version CAS ERROR: {self.record_id}: {error_msg}")
                         # Continue - don't fail the entire operation for version tracking issues
                         
                 except Exception as version_error:
-                    logger.error("🚫 DNS version tracking exception: %s: %s", self.record_id, version_error)
+                    logger.error(f"🚫 DNS version tracking exception: {self.record_id}: {version_error}")
                     # Continue - don't fail the entire operation for version tracking issues
                 
                 # ONLY update original state if CAS was successful (no conflicts)
@@ -672,7 +672,7 @@ class AutoApplySession:
                 }
                 
         except Exception as e:
-            logger.error("Auto-apply error for %s record %s: %s", self.record_type, self.record_id, e)
+            logger.error(f"Auto-apply error for {self.record_type} record {self.record_id}: {e}")
             return {
                 'success': False,
                 'error': f'Unexpected error: {str(e)}'
@@ -744,21 +744,21 @@ class AutoApplySession:
             # Validate before applying
             validation = self.validate_current_state()
             if validation['valid'] and validation['has_changes']:
-                logger.info("Auto-applying changes for %s record %s", self.record_type, self.record_id)
+                logger.info(f"Auto-applying changes for {self.record_type} record {self.record_id}")
                 result = await self.auto_apply_changes(None)
                 
                 if result and result.get('success'):
-                    logger.info("Auto-apply successful for %s record %s", self.record_type, self.record_id)
+                    logger.info(f"Auto-apply successful for {self.record_type} record {self.record_id}")
                 else:
                     error_msg = result.get('error', 'Unknown error') if result else 'No result returned'
-                    logger.warning("Auto-apply failed for %s record %s: %s", self.record_type, self.record_id, error_msg)
+                    logger.warning(f"Auto-apply failed for {self.record_type} record {self.record_id}: {error_msg}")
             else:
-                logger.debug("Skipping auto-apply for %s record %s: validation failed or no changes", self.record_type, self.record_id)
+                logger.debug(f"Skipping auto-apply for {self.record_type} record {self.record_id}: validation failed or no changes")
                 
         except asyncio.CancelledError:
-            logger.debug("Auto-apply cancelled for %s record %s", self.record_type, self.record_id)
+            logger.debug(f"Auto-apply cancelled for {self.record_type} record {self.record_id}")
         except Exception as e:
-            logger.error("Error in auto-apply scheduling for %s record %s: %s", self.record_type, self.record_id, e)
+            logger.error(f"Error in auto-apply scheduling for {self.record_type} record {self.record_id}: {e}")
     
     def _prepare_record_data(self) -> Dict:
         """Prepare record data for API call based on record type"""
@@ -923,7 +923,7 @@ async def auto_apply_with_feedback(query, context, session: AutoApplySession):
         result = await session.auto_apply_changes(context)
         
         if result['success']:
-            logger.info("Auto-applied DNS changes for %s record %s", session.record_type, session.record_id)
+            logger.info(f"Auto-applied DNS changes for {session.record_type} record {session.record_id}")
             
             # Get current wizard state to refresh the UI
             wizard_state = context.user_data.get('dns_wizard')
@@ -963,10 +963,10 @@ Changes have been reverted. You can modify the record and it will auto-apply whe
             try:
                 await safe_edit_message(query, error_message, reply_markup=reply_markup)
             except Exception as e:
-                logger.error("Error showing auto-apply feedback: %s", e)
+                logger.error(f"Error showing auto-apply feedback: {e}")
                 
     except Exception as e:
-        logger.error("Error in auto_apply_with_feedback: %s", e)
+        logger.error(f"Error in auto_apply_with_feedback: {e}")
 
 # ====================================================================
 # END AUTO-APPLY SYSTEM
@@ -1087,7 +1087,7 @@ async def get_available_names_for_record_type(domain, record_type, zone_id):
         return available_names
         
     except Exception as e:
-        logger.error("Error getting available names: %s", e)
+        logger.error(f"Error getting available names: {e}")
         # Fallback to basic options
         return [{'name': 'www', 'display': 'www', 'description': f'www.{domain}'}]
 
@@ -1351,7 +1351,7 @@ async def analyze_domain_nameservers(domain_name: str) -> dict:
                         nameservers = [ns.strip().rstrip('.') for ns in stdout_text.split('\n') if ns.strip()]
                         
             except (asyncio.TimeoutError, OSError, UnicodeDecodeError) as e:
-                logger.warning("dig command failed for %s: %s", domain_name, e)
+                logger.warning(f"dig command failed for {domain_name}: {e}")
                 nameservers = []
         else:
             # Fallback: dig not available, use dedicated DNS resolver service
@@ -1359,9 +1359,9 @@ async def analyze_domain_nameservers(domain_name: str) -> dict:
                 from services.dns_resolver import dns_resolver
                 nameservers = await dns_resolver.get_nameservers(domain_name)
                 if nameservers:
-                    logger.debug("✅ DNS resolver found %s nameservers for %s", len(nameservers), domain_name)
+                    logger.debug(f"✅ DNS resolver found {len(nameservers)} nameservers for {domain_name}")
             except Exception as e:
-                logger.warning("DNS resolver service failed for %s: %s", domain_name, e)
+                logger.warning(f"DNS resolver service failed for {domain_name}: {e}")
                 nameservers = []
         
         # Final fallback to stored nameservers if all methods fail
@@ -1369,7 +1369,7 @@ async def analyze_domain_nameservers(domain_name: str) -> dict:
             try:
                 nameservers = await get_domain_nameservers(domain_name) or []
             except Exception as e:
-                logger.warning("Database nameserver lookup failed for %s: %s", domain_name, e)
+                logger.warning(f"Database nameserver lookup failed for {domain_name}: {e}")
                 nameservers = []
         
         # Detect provider and get analysis
@@ -1396,7 +1396,7 @@ async def analyze_domain_nameservers(domain_name: str) -> dict:
         }
         
     except Exception as e:
-        logger.error("Error analyzing nameservers for %s: %s", domain_name, e)
+        logger.error(f"Error analyzing nameservers for {domain_name}: {e}")
         return {
             'domain': domain_name,
             'current_nameservers': [],
@@ -1416,10 +1416,10 @@ def get_hosting_nameservers() -> list:
     try:
         config = get_config()
         nameservers = config.services.hosting_nameservers
-        logger.info("Using configured nameservers: %s", nameservers)
+        logger.info(f"Using configured nameservers: {nameservers}")
         return nameservers
     except Exception as e:
-        logger.warning("Failed to get nameservers from config, using fallback: %s", e)
+        logger.warning(f"Failed to get nameservers from config, using fallback: {e}")
         
         # Emergency fallback
         return [
@@ -1463,7 +1463,7 @@ async def generate_hosting_nameserver_guidance(domain_name: str, analysis: dict,
                 provider_instructions=provider_instructions)
         
     except Exception as e:
-        logger.error("Error generating nameserver guidance: %s", e)
+        logger.error(f"Error generating nameserver guidance: {e}")
         ns_list = chr(10).join(f"• {escape_html(ns)}" for ns in get_hosting_nameservers())
         return t('hosting.nameserver.error_fallback', user_lang, nameservers=ns_list)
 
@@ -1588,7 +1588,7 @@ async def show_hosting_management(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing hosting management: %s", e)
+        logger.error(f"Error showing hosting management: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
@@ -1650,7 +1650,7 @@ async def show_hosting_details(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing hosting details: %s", e)
+        logger.error(f"Error showing hosting details: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
@@ -1703,7 +1703,7 @@ async def show_cpanel_login(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing cPanel login: %s", e)
+        logger.error(f"Error showing cPanel login: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
@@ -1758,7 +1758,7 @@ async def show_hosting_usage(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing hosting usage: %s", e)
+        logger.error(f"Error showing hosting usage: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
@@ -1846,7 +1846,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing renewal options: %s", e)
+        logger.error(f"Error showing renewal options: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         await safe_edit_message(query, f"❌ {t('errors.general', user_lang)}")
 
@@ -1891,7 +1891,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
             await safe_edit_message(query, f"❌ {t('renewal.renewal_error_title', user_lang)}: {reason}")
             
     except Exception as e:
-        logger.error("Error processing manual renewal: %s", e)
+        logger.error(f"Error processing manual renewal: {e}")
         await safe_edit_message(query, f"❌ {t('errors.general', user_lang)}")
 
 
@@ -2042,7 +2042,7 @@ async def handle_manual_renewal(query, subscription_id: str):
             await safe_edit_message(query, message, parse_mode='HTML')
             
     except Exception as e:
-        logger.error("Error in handle_manual_renewal: %s", e)
+        logger.error(f"Error in handle_manual_renewal: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         await safe_edit_message(query, f"❌ <b>{t('renewal.error_processing', user_lang)}</b>\n\n{t('renewal.unexpected_error', user_lang)}", parse_mode='HTML')
 
@@ -2092,7 +2092,7 @@ async def show_insufficient_funds_message(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing insufficient funds message: %s", e)
+        logger.error(f"Error showing insufficient funds message: {e}")
         await safe_edit_message(query, f"❌ {t('errors.general', user_lang)}")
 
 def get_hosting_status_description(status: str, user_lang: str) -> str:
@@ -2155,7 +2155,7 @@ async def suspend_hosting_account(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing suspension confirmation: %s", e)
+        logger.error(f"Error showing suspension confirmation: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
@@ -2190,7 +2190,7 @@ async def confirm_hosting_suspension(query, subscription_id: str):
             try:
                 suspension_success = await cpanel.suspend_account(cpanel_username)
             except Exception as e:
-                logger.error("Error suspending cPanel account %s: %s", cpanel_username, e)
+                logger.error(f"Error suspending cPanel account {cpanel_username}: {e}")
         
         # Update database status regardless of cPanel API result
         await update_hosting_subscription_status(int(subscription_id), 'suspended')
@@ -2228,7 +2228,7 @@ async def confirm_hosting_suspension(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error confirming hosting suspension: %s", e)
+        logger.error(f"Error confirming hosting suspension: {e}")
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def unsuspend_hosting_account(query, subscription_id: str):
@@ -2262,7 +2262,7 @@ async def unsuspend_hosting_account(query, subscription_id: str):
             try:
                 unsuspension_success = await cpanel.unsuspend_account(cpanel_username)
             except Exception as e:
-                logger.error("Error unsuspending cPanel account %s: %s", cpanel_username, e)
+                logger.error(f"Error unsuspending cPanel account {cpanel_username}: {e}")
         
         # Update database status regardless of cPanel API result
         await update_hosting_subscription_status(int(subscription_id), 'active')
@@ -2300,7 +2300,7 @@ async def unsuspend_hosting_account(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error unsuspending hosting account: %s", e)
+        logger.error(f"Error unsuspending hosting account: {e}")
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def restart_hosting_services(query, subscription_id: str):
@@ -2334,7 +2334,7 @@ async def restart_hosting_services(query, subscription_id: str):
             try:
                 restart_success = await cpanel.restart_services(cpanel_username)
             except Exception as e:
-                logger.error("Error restarting services for cPanel account %s: %s", cpanel_username, e)
+                logger.error(f"Error restarting services for cPanel account {cpanel_username}: {e}")
         
         # Show result message
         if restart_success:
@@ -2372,7 +2372,7 @@ async def restart_hosting_services(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error restarting hosting services: %s", e)
+        logger.error(f"Error restarting hosting services: {e}")
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def check_hosting_status(query, subscription_id: str):
@@ -2412,7 +2412,7 @@ async def check_hosting_status(query, subscription_id: str):
                     live_status = status_result.get('status')
                     status_details = status_result.get('details', {})
             except Exception as e:
-                logger.error("Error checking cPanel account status %s: %s", cpanel_username, e)
+                logger.error(f"Error checking cPanel account status {cpanel_username}: {e}")
         
         # Format status display
         if live_status == 'active':
@@ -2473,7 +2473,7 @@ async def check_hosting_status(query, subscription_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error checking hosting status: %s", e)
+        logger.error(f"Error checking hosting status: {e}")
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def recheck_hosting_nameservers(query, plan_id: str, domain_name: str):
@@ -2517,7 +2517,7 @@ async def recheck_hosting_nameservers(query, plan_id: str, domain_name: str):
         await safe_edit_message(query, message_text, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error rechecking hosting nameservers: %s", e)
+        logger.error(f"Error rechecking hosting nameservers: {e}")
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 def format_nameserver_display(nameservers, max_display=2):
@@ -2607,7 +2607,7 @@ async def store_callback_token(user_id: int, callback_data: str) -> str:
         (token, user_id, callback_data, expires_at)
     )
     
-    logger.info("Stored callback token: %s chars -> c:%s", len(callback_data), token)
+    logger.info(f"Stored callback token: {len(callback_data)} chars -> c:{token}")
     return f"c:{token}"
 
 async def compress_callback(callback_data: str, context) -> str:
@@ -2627,10 +2627,10 @@ async def compress_callback(callback_data: str, context) -> str:
     # Always use database storage for reliability
     try:
         token = await store_callback_token(user_id, callback_data)
-        logger.info("Compressed callback: %s chars -> %s", len(callback_data), token)
+        logger.info(f"Compressed callback: {len(callback_data)} chars -> {token}")
         return token
     except Exception as e:
-        logger.error("Error storing callback token: %s", e)
+        logger.error(f"Error storing callback token: {e}")
         # Fallback to truncation
         return callback_data[:60]
 
@@ -2646,9 +2646,9 @@ async def cleanup_expired_tokens():
             (current_time,)
         )
         if result > 0:
-            logger.info("Cleaned up %s expired callback tokens", result)
+            logger.info(f"Cleaned up {result} expired callback tokens")
     except Exception as e:
-        logger.error("Error cleaning up expired tokens: %s", e)
+        logger.error(f"Error cleaning up expired tokens: {e}")
 
 async def retrieve_callback_token(user_id: int, token: str) -> Optional[str]:
     """Retrieve callback data from database by token"""
@@ -2668,7 +2668,7 @@ async def retrieve_callback_token(user_id: int, token: str) -> Optional[str]:
         )
         return result[0]['callback_data']
     else:
-        logger.error("Callback token not found or expired: %s", token)
+        logger.error(f"Callback token not found or expired: {token}")
         return None
 
 async def decompress_callback(callback_data: Optional[str], context) -> str:
@@ -2688,10 +2688,10 @@ async def decompress_callback(callback_data: Optional[str], context) -> str:
         try:
             result = await retrieve_callback_token(user_id, token)
             if result:
-                logger.info("Decompressed callback from database: %s -> %s chars", callback_data, len(result))
+                logger.info(f"Decompressed callback from database: {callback_data} -> {len(result)} chars")
                 return result
         except Exception as e:
-            logger.error("Error retrieving callback from database: %s", e)
+            logger.error(f"Error retrieving callback from database: {e}")
     
     # Fallback to context storage (for backward compatibility)
     callback_states = context.user_data.get('callback_states', {})
@@ -2702,7 +2702,7 @@ async def decompress_callback(callback_data: Optional[str], context) -> str:
             # Check expiration
             if stored.get('expires', 0) > time.time():
                 original = stored['data']
-                logger.info("Decompressed callback from context: %s -> %s chars", callback_data, len(original))
+                logger.info(f"Decompressed callback from context: {callback_data} -> {len(original)} chars")
                 return original
             else:
                 # Remove expired token
@@ -2710,11 +2710,11 @@ async def decompress_callback(callback_data: Optional[str], context) -> str:
         else:
             # Old format
             original = stored
-            logger.info("Decompressed callback (legacy): %s -> %s chars", callback_data, len(original))
+            logger.info(f"Decompressed callback (legacy): {callback_data} -> {len(original)} chars")
             return original
     
     # Final fallback
-    logger.error("Callback token not found: %s", callback_data)
+    logger.error(f"Callback token not found: {callback_data}")
     return "error:token_not_found"
 
 # Global dictionary to store content hashes per message
@@ -2738,7 +2738,7 @@ async def safe_edit_message(query, message, reply_markup=None, parse_mode='HTML'
         last_hash = _message_content_hashes.get(message_key)
         
         if last_hash == content_hash:
-            logger.info("Prevented duplicate message edit for message %s", message_key)
+            logger.info(f"Prevented duplicate message edit for message {message_key}")
             return True
         
         # Attempt the edit with timeout protection to prevent event loop issues
@@ -2833,7 +2833,7 @@ async def require_user_onboarding(update: Update, context: ContextTypes.DEFAULT_
         return True
         
     except Exception as e:
-        logger.error("Error in authentication check for user %s: %s", user.id, e)
+        logger.error(f"Error in authentication check for user {user.id}: {e}")
         
         # Get user_lang for error message
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
@@ -2868,7 +2868,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /start command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /start command from non-admin user {user.id}")
         return
     
     try:
@@ -2931,7 +2931,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 return  # Wait for user to select language
             else:
                 # Robust fallback to English if language selection fails
-                logger.warning("Language selection failed for user %s, using English fallback", user.id)
+                logger.warning(f"Language selection failed for user {user.id}, using English fallback")
                 await set_user_language_preference(user.id, 'en', manually_selected=False)
         elif terms_accepted and stored_language is None:
             # EXISTING USER FIX: Auto-assign language for existing users who accepted terms before language selection was implemented
@@ -2944,19 +2944,19 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         current_lang = await get_user_language_preference(user.id)
         
         terms_accepted = user_data['terms_accepted_bool']
-        logger.info("🔍 TERMS CHECK: User %s (%s) terms_accepted = %s", user.id, user.username, terms_accepted)
+        logger.info(f"🔍 TERMS CHECK: User {user.id} ({user.username}) terms_accepted = {terms_accepted}")
         
         if terms_accepted:
             # User has already accepted terms, show dashboard directly
             await show_dashboard(update, context, user_data)
-            logger.info("✅ DASHBOARD: User %s started bot - showing dashboard (terms already accepted)", user.id)
+            logger.info(f"✅ DASHBOARD: User {user.id} started bot - showing dashboard (terms already accepted)")
         else:
             # User has not accepted terms, show terms acceptance screen
             await show_terms_acceptance(update, context)
-            logger.info("📋 TERMS: User %s started bot - showing terms acceptance", user.id)
+            logger.info(f"📋 TERMS: User {user.id} started bot - showing terms acceptance")
             
     except Exception as e:
-        logger.error("Error in start command: %s", e)
+        logger.error(f"Error in start command: {e}")
         
         # Get user_lang for error fallback
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
@@ -2973,7 +2973,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             await message.reply_text(welcome_message, reply_markup=reply_markup)
         except Exception as fallback_error:
-            logger.error("Error in start command fallback: %s", fallback_error)
+            logger.error(f"Error in start command fallback: {fallback_error}")
 
 async def show_terms_acceptance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """OPTIMIZED: Show terms and conditions acceptance screen (text only)"""
@@ -3012,10 +3012,10 @@ async def show_terms_acceptance(update: Update, context: ContextTypes.DEFAULT_TY
             reply_markup=reply_markup
         )
         elapsed = (time.perf_counter() - start_time) * 1000
-        logger.info("⚡ TERMS SENT: User %s in %sms", user.id, elapsed)
+        logger.info(f"⚡ TERMS SENT: User {user.id} in {elapsed:.1f}ms")
         
     except Exception as e:
-        logger.error("Error sending terms message: %s", e)
+        logger.error(f"Error sending terms message: {e}")
         # Final fallback with no formatting
         try:
             terms_title = t_fmt('terms.title', user_lang, platform_name=platform_name)
@@ -3028,7 +3028,7 @@ async def show_terms_acceptance(update: Update, context: ContextTypes.DEFAULT_TY
                 reply_markup=reply_markup
             )
         except Exception as fallback_error:
-            logger.error("Error in terms fallback: %s", fallback_error)
+            logger.error(f"Error in terms fallback: {fallback_error}")
 
 async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle terms acceptance/decline callbacks"""
@@ -3048,7 +3048,7 @@ async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TY
             
             if already_accepted:
                 # Duplicate callback - user already accepted terms, just show dashboard
-                logger.info("User %s - duplicate terms:accept callback ignored (already accepted)", user.id)
+                logger.info(f"User {user.id} - duplicate terms:accept callback ignored (already accepted)")
                 await show_dashboard(update, context)
                 return
             
@@ -3073,7 +3073,7 @@ async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TY
                         text=success_message
                     )
                 except Exception as edit_error:
-                    logger.warning("Could not edit message, sending new one: %s", edit_error)
+                    logger.warning(f"Could not edit message, sending new one: {edit_error}")
                     # Fallback to sending new message if edit fails
                     await context.bot.send_message(
                         chat_id=user.id,
@@ -3084,14 +3084,14 @@ async def handle_terms_callback(update: Update, context: ContextTypes.DEFAULT_TY
                 await asyncio.sleep(1.5)
                 await show_dashboard(update, context)
                 
-                logger.info("User %s accepted terms successfully", user.id)
+                logger.info(f"User {user.id} accepted terms successfully")
             else:
                 try:
                     await query.edit_message_text(
                         text=t('errors.terms_acceptance_failed', 'en')
                     )
                 except Exception as edit_error:
-                    logger.warning("Could not edit message, sending new one: %s", edit_error)
+                    logger.warning(f"Could not edit message, sending new one: {edit_error}")
                     # Fallback to sending new message if edit fails
                     await context.bot.send_message(
                         chat_id=user.id,
@@ -3110,7 +3110,7 @@ You can restart anytime with /start to accept terms."""
                     text=decline_message
                 )
             except Exception as edit_error:
-                logger.warning("Could not edit message, sending new one: %s", edit_error)
+                logger.warning(f"Could not edit message, sending new one: {edit_error}")
                 # Fallback to sending new message if edit fails
                 await context.bot.send_message(
                     chat_id=user.id,
@@ -3136,7 +3136,7 @@ You can restart anytime with /start to accept terms."""
                     reply_markup=reply_markup
                 )
             except Exception as edit_error:
-                logger.warning("Could not edit message, sending new one: %s", edit_error)
+                logger.warning(f"Could not edit message, sending new one: {edit_error}")
                 # Fallback to sending new message if edit fails
                 await context.bot.send_message(
                     chat_id=user.id,
@@ -3145,7 +3145,7 @@ You can restart anytime with /start to accept terms."""
                 )
             
     except Exception as e:
-        logger.error("Error in handle_terms_callback: %s", e)
+        logger.error(f"Error in handle_terms_callback: {e}")
 
 async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, user_data: Optional[Dict] = None):
     """Show main dashboard with wallet balance and menu options - Production-ready with event loop protection"""
@@ -3210,16 +3210,16 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                     ('hosting_price', results[2]), ('rdp_price', results[3])
                 ]):
                     if isinstance(result, Exception):
-                        logger.warning("Dashboard query %s failed for user %s: %s", name, user.id, result)
+                        logger.warning(f"Dashboard query {name} failed for user {user.id}: {result}")
                 
             except asyncio.TimeoutError:
-                logger.warning("Dashboard parallel queries timeout for user %s, using fallbacks", user.id)
+                logger.warning(f"Dashboard parallel queries timeout for user {user.id}, using fallbacks")
                 db_user = {'id': user.id}
                 wallet_balance = 0.0
                 min_hosting_price = 40
                 min_rdp_price = 60
             except Exception as db_error:
-                logger.warning("Dashboard database error for user %s: %s, using fallbacks", user.id, db_error)
+                logger.warning(f"Dashboard database error for user {user.id}: {db_error}, using fallbacks")
                 db_user = {'id': user.id}
                 wallet_balance = 0.0
                 min_hosting_price = 40
@@ -3299,7 +3299,7 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                     timeout=15.0  # 15 second timeout for Telegram operations
                 )
             except asyncio.TimeoutError:
-                logger.warning("Telegram edit timeout for user %s, trying fallback", user.id)
+                logger.warning(f"Telegram edit timeout for user {user.id}, trying fallback")
                 # Fallback to sending new message if edit times out
                 await asyncio.wait_for(
                     context.bot.send_message(
@@ -3329,19 +3329,19 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                     timeout=15.0
                 )
         
-        logger.info("Dashboard shown to user %s with balance %s", user.id, balance_display)
+        logger.info(f"Dashboard shown to user {user.id} with balance {balance_display}")
     
     try:
         # PRODUCTION FIX: Run the entire operation with overall timeout protection
         await asyncio.wait_for(_safe_dashboard_operation(), timeout=30.0)
         
     except asyncio.TimeoutError:
-        logger.error("⚠️ PRODUCTION: Dashboard operation timed out for user %s - using emergency fallback", user.id)
+        logger.error(f"⚠️ PRODUCTION: Dashboard operation timed out for user {user.id} - using emergency fallback")
         # Emergency fallback for total timeout
         await _emergency_dashboard_fallback(update, context, user)
         
     except Exception as e:
-        logger.error("⚠️ PRODUCTION: Dashboard error for user %s: %s - using emergency fallback", user.id, e)
+        logger.error(f"⚠️ PRODUCTION: Dashboard error for user {user.id}: {e} - using emergency fallback")
         # Emergency fallback for any other error
         await _emergency_dashboard_fallback(update, context, user)
 
@@ -3408,10 +3408,10 @@ async def _emergency_dashboard_fallback(update: Update, context: ContextTypes.DE
                 timeout=10.0
             )
         
-        logger.info("✅ PRODUCTION: Emergency dashboard fallback successful for user %s", user.id)
+        logger.info(f"✅ PRODUCTION: Emergency dashboard fallback successful for user {user.id}")
         
     except Exception as fallback_error:
-        logger.error("❌ CRITICAL: Emergency dashboard fallback failed for user %s: %s", user.id, fallback_error)
+        logger.error(f"❌ CRITICAL: Emergency dashboard fallback failed for user {user.id}: {fallback_error}")
         try:
             await asyncio.wait_for(
                 context.bot.send_message(
@@ -3421,7 +3421,7 @@ async def _emergency_dashboard_fallback(update: Update, context: ContextTypes.DE
                 timeout=5.0
             )
         except Exception as final_error:
-            logger.error("❌ CRITICAL: Final emergency message failed for user %s: %s", user.id, final_error)
+            logger.error(f"❌ CRITICAL: Final emergency message failed for user {user.id}: {final_error}")
 
 async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /domain command - show user's domains"""
@@ -3440,7 +3440,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-            logger.info("🔧 MAINTENANCE: Blocked /domain command from non-admin user %s", user.id)
+            logger.info(f"🔧 MAINTENANCE: Blocked /domain command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -3489,7 +3489,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await effective_message.reply_text(message, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
         
     except Exception as e:
-        logger.error("Error in domain command: %s", e)
+        logger.error(f"Error in domain command: {e}")
         effective_message = update.effective_message
         if effective_message:
             user_lang = await resolve_user_language(user.id, user.language_code)
@@ -3514,7 +3514,7 @@ async def dns_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /dns command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /dns command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -3548,7 +3548,7 @@ async def wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-            logger.info("🔧 MAINTENANCE: Blocked /wallet command from non-admin user %s", user.id)
+            logger.info(f"🔧 MAINTENANCE: Blocked /wallet command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -3628,7 +3628,7 @@ async def show_wallet_interface_message(update: Update):
         await effective_message.reply_text(message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing wallet interface: %s", e)
+        logger.error(f"Error showing wallet interface: {e}")
         if effective_message:
             # Get user_lang for error message
             user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
@@ -3647,7 +3647,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
     if not is_admin_user(user.id):
         user_lang = await resolve_user_language(user.id, user.language_code)
         await message.reply_text(t('admin.access.denied', user_lang))
-        logger.error("🚫 SECURITY: Non-admin user %s attempted to use credit_wallet command", user.id)
+        logger.error(f"🚫 SECURITY: Non-admin user {user.id} attempted to use credit_wallet command")
         return
     
     # Resolve admin user's language for all messages
@@ -3669,14 +3669,14 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
                 "❌ Invalid Input\n\n"
                 "User ID must be a number and amount must be a valid decimal."
             )
-            logger.warning("🚫 ADMIN VALIDATION: Invalid input in credit_wallet by admin %s: %s", user.id, context.args)
+            logger.warning(f"🚫 ADMIN VALIDATION: Invalid input in credit_wallet by admin {user.id}: {context.args}")
             return
         
         # CRITICAL: Administrative safety bounds
         if amount <= 0:
             user_lang = await resolve_user_language(user.id, user.language_code)
             await message.reply_text(f"❌ {t('errors.general', user_lang)}\n\n{t('errors.amount_must_positive', user_lang)}")
-            logger.warning("🚫 ADMIN VALIDATION: Non-positive amount attempted by admin %s: %s", user.id, amount)
+            logger.warning(f"🚫 ADMIN VALIDATION: Non-positive amount attempted by admin {user.id}: {amount}")
             return
         
         if amount > 10000.00:  # $10,000 limit for safety
@@ -3685,7 +3685,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
                 "Maximum credit amount is $10,000.00 per operation.\n"
                 "For larger amounts, use multiple operations."
             )
-            logger.error("🚫 ADMIN VALIDATION: Excessive amount attempted by admin %s: $%s", user.id, amount)
+            logger.error(f"🚫 ADMIN VALIDATION: Excessive amount attempted by admin {user.id}: ${amount}")
             return
         
         # Get and validate target user
@@ -3693,7 +3693,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
         if not user_record:
             user_lang = await resolve_user_language(user.id, user.language_code)
             await message.reply_text(f"❌ {t('errors.not_found', user_lang)}\n\n{t('errors.user_record_failed', user_lang)}")
-            logger.error("🚫 ADMIN ERROR: Failed to get user record for %s", target_user_id)
+            logger.error(f"🚫 ADMIN ERROR: Failed to get user record for {target_user_id}")
             return
         
         # Check current balance to prevent excessive accumulation
@@ -3706,7 +3706,7 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
                 f"Would Result In: {format_money(current_balance + Decimal(str(amount)), 'USD', include_currency=True)}\n\n"
                 f"Maximum wallet balance is $50,000.00"
             )
-            logger.warning("🚫 ADMIN VALIDATION: Credit would exceed balance limit for user %s: $%s", target_user_id, current_balance + Decimal(str(amount)))
+            logger.warning(f"🚫 ADMIN VALIDATION: Credit would exceed balance limit for user {target_user_id}: ${current_balance + Decimal(str(amount))}")
             return
         
         # Perform atomic credit operation
@@ -3732,16 +3732,16 @@ async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TY
                 f"🔒 Admin: {user.id}\n"
                 f"🕐 Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}"
             )
-            logger.info("✅ ADMIN CREDIT: $%s credited to user %s by admin %s. New balance: $%s", amount, target_user_id, user.id, new_balance)
+            logger.info(f"✅ ADMIN CREDIT: ${amount:.2f} credited to user {target_user_id} by admin {user.id}. New balance: ${new_balance:.2f}")
         else:
             await message.reply_text(
                 "❌ Credit Failed\n\n"
                 "Could not credit wallet. Check logs for details."
             )
-            logger.error("🚫 ADMIN ERROR: Failed to credit $%s to user %s by admin %s", amount, target_user_id, user.id)
+            logger.error(f"🚫 ADMIN ERROR: Failed to credit ${amount:.2f} to user {target_user_id} by admin {user.id}")
             
     except Exception as e:
-        logger.error("🚫 ADMIN ERROR: Exception in credit_wallet_command by admin %s: %s", user.id, e)
+        logger.error(f"🚫 ADMIN ERROR: Exception in credit_wallet_command by admin {user.id}: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         await message.reply_text(t('errors.system_error', user_lang))
 
@@ -3826,7 +3826,7 @@ async def send_broadcast(broadcast_message: str, update: Update, context: Contex
         batch_sent = 0
         batch_failed = 0
         
-        logger.info("📢 BROADCAST: Processing batch %s with %s users", batch_number, len(batch_users))
+        logger.info(f"📢 BROADCAST: Processing batch {batch_number} with {len(batch_users)} users")
         
         # Send to each user in batch with retry logic
         for user_telegram_id in batch_users:
@@ -3841,18 +3841,18 @@ async def send_broadcast(broadcast_message: str, update: Update, context: Contex
                     )
                     batch_sent += 1
                     sent_successfully = True
-                    logger.debug("📢 BROADCAST: Message sent to user %s", user_telegram_id)
+                    logger.debug(f"📢 BROADCAST: Message sent to user {user_telegram_id}")
                     
                 except Exception as e:
                     retry_count += 1
-                    logger.warning("📢 BROADCAST: Failed to send to user %s (attempt %s/%s): %s", user_telegram_id, retry_count, max_retries, e)
+                    logger.warning(f"📢 BROADCAST: Failed to send to user {user_telegram_id} (attempt {retry_count}/{max_retries}): {e}")
                     
                     if retry_count < max_retries:
                         await asyncio.sleep(0.1)  # Brief pause before retry
             
             if not sent_successfully:
                 batch_failed += 1
-                logger.error("📢 BROADCAST: Failed to send to user %s after %s attempts", user_telegram_id, max_retries)
+                logger.error(f"📢 BROADCAST: Failed to send to user {user_telegram_id} after {max_retries} attempts")
         
         total_sent += batch_sent
         total_failed += batch_failed
@@ -3875,7 +3875,7 @@ async def send_broadcast(broadcast_message: str, update: Update, context: Contex
         
         # Delay between batches (except for last batch)
         if i + batch_size < total_users:
-            logger.info("📢 BROADCAST: Waiting %ss before next batch...", delay_between_batches)
+            logger.info(f"📢 BROADCAST: Waiting {delay_between_batches}s before next batch...")
             await asyncio.sleep(delay_between_batches)
     
     # Final status
@@ -3911,7 +3911,7 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_admin_user(user.id):
         user_lang = await resolve_user_language(user.id, user.language_code)
         await message.reply_text(t('admin.access.denied', user_lang))
-        logger.error("🚫 SECURITY: Non-admin user %s attempted to use broadcast command", user.id)
+        logger.error(f"🚫 SECURITY: Non-admin user {user.id} attempted to use broadcast command")
         return
     
     try:
@@ -3931,7 +3931,7 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await message.reply_text(result['message'])
         
     except Exception as e:
-        logger.error("🚫 ADMIN ERROR: Exception in broadcast_command by admin %s: %s", user.id, e)
+        logger.error(f"🚫 ADMIN ERROR: Exception in broadcast_command by admin {user.id}: {e}")
         await message.reply_text(
             "❌ Broadcast Failed\n\nCritical error occurred. Check logs for details."
         )
@@ -3951,7 +3951,7 @@ async def cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await message.reply_text(
                 "🚫 Access Denied\n\nOnly admin can use this command."
             )
-            logger.warning("🚫 SECURITY: Non-admin user %s attempted to use /cancel command", user.id)
+            logger.warning(f"🚫 SECURITY: Non-admin user {user.id} attempted to use /cancel command")
             return
         
         # Check if awaiting broadcast
@@ -3962,15 +3962,15 @@ async def cancel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await message.reply_text(
                 "🚫 Broadcast Cancelled\n\nBroadcast mode deactivated.\n\nYou can start a new broadcast anytime from the admin panel."
             )
-            logger.info("📢 ADMIN: User %s cancelled broadcast mode via /cancel command", user.id)
+            logger.info(f"📢 ADMIN: User {user.id} cancelled broadcast mode via /cancel command")
         else:
             await message.reply_text(
                 "ℹ️ No Active Operation\n\nThere is no active operation to cancel."
             )
-            logger.info("📢 ADMIN: User %s used /cancel but no active broadcast mode", user.id)
+            logger.info(f"📢 ADMIN: User {user.id} used /cancel but no active broadcast mode")
             
     except Exception as e:
-        logger.error("Error in cancel_command: %s", e)
+        logger.error(f"Error in cancel_command: {e}")
         await message.reply_text(
             "❌ Error\n\nCould not process cancel command."
         )
@@ -4048,7 +4048,7 @@ async def show_openprovider_accounts(query, context):
         )
         
     except Exception as e:
-        logger.error("Error showing OpenProvider accounts: %s", e)
+        logger.error(f"Error showing OpenProvider accounts: {e}")
         await query.answer("Error loading accounts", show_alert=True)
 
 
@@ -4106,10 +4106,10 @@ async def handle_validate_openprovider_credentials(query, context):
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
         
-        logger.info("🏢 ADMIN: User %s validated OpenProvider credentials", user.id)
+        logger.info(f"🏢 ADMIN: User {user.id} validated OpenProvider credentials")
         
     except Exception as e:
-        logger.error("Error validating OpenProvider credentials: %s", e)
+        logger.error(f"Error validating OpenProvider credentials: {e}")
         await query.answer("Error validating credentials", show_alert=True)
 
 
@@ -4145,7 +4145,7 @@ async def handle_set_default_openprovider_account(query, context, account_id: in
             await query.answer("Failed to set default account", show_alert=True)
             
     except Exception as e:
-        logger.error("Error setting default OpenProvider account: %s", e)
+        logger.error(f"Error setting default OpenProvider account: {e}")
         await query.answer("Error updating account", show_alert=True)
 
 
@@ -4200,7 +4200,7 @@ async def handle_admin_dns_sync(query, context):
         logger.info(f"🔄 ADMIN: User {user.id} ran DNS sync - {result.get('total_orphans_deleted', 0)} orphans cleaned")
         
     except Exception as e:
-        logger.error("Error running DNS sync: %s", e)
+        logger.error(f"Error running DNS sync: {e}")
         await query.answer("Error running DNS sync", show_alert=True)
 
 
@@ -4223,7 +4223,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /search command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /search command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -4236,7 +4236,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
     
     if not args:
-        logger.info("🔍 USER_ACTIVITY: /search command with no query from user %s", user.id)
+        logger.info(f"🔍 USER_ACTIVITY: /search command with no query from user {user.id}")
         user_lang = await resolve_user_language(user.id, user.language_code)
         
         help_text = t('search.help_title', user_lang) + "\n\n"
@@ -4399,7 +4399,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await searching_msg.edit_text(response_text, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error searching domain %s: %s", domain_name, e)
+        logger.error(f"Error searching domain {domain_name}: {e}")
         if searching_msg:
             await searching_msg.edit_text(t('errors.domain_search_failed', user_lang))
 
@@ -4419,7 +4419,7 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /profile command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /profile command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -4510,10 +4510,10 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = InlineKeyboardMarkup(keyboard)
         
         await message.reply_text(profile_info, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
-        logger.info("✅ Profile command completed for user %s in language %s", user.id, user_lang)
+        logger.info(f"✅ Profile command completed for user {user.id} in language {user_lang}")
         
     except Exception as e:
-        logger.error("Error in profile command for user %s: %s", user.id, e)
+        logger.error(f"Error in profile command for user {user.id}: {e}")
         # Get user_lang for error message
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         # Fallback error message
@@ -4540,7 +4540,7 @@ async def hosting_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
             maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
             await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-            logger.info("🔧 MAINTENANCE: Blocked /hosting command from non-admin user %s", user.id)
+            logger.info(f"🔧 MAINTENANCE: Blocked /hosting command from non-admin user {user.id}")
             return
     
     # Check if user has completed onboarding
@@ -4580,7 +4580,7 @@ async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /language command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /language command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -4599,10 +4599,10 @@ async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 InlineKeyboardButton(t("buttons.back", current_lang), callback_data="main_menu")
             ]])
         )
-        logger.info("✅ Language selection shown to user %s", user.id)
+        logger.info(f"✅ Language selection shown to user {user.id}")
         
     except Exception as e:
-        logger.error("Error in language command for user %s: %s", user.id, e)
+        logger.error(f"Error in language command for user {user.id}: {e}")
         
         # Get user_lang for error message
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
@@ -4631,7 +4631,7 @@ async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await effective_message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
-        logger.info("🔧 MAINTENANCE: Blocked /link command from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked /link command from non-admin user {user.id}")
         return
     
     # Check if user has completed onboarding
@@ -4649,7 +4649,7 @@ async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE
         await show_domain_linking_intro(user, effective_message, user_lang)
         
     except Exception as e:
-        logger.error("Error in link domain command for user %s: %s", user.id, e)
+        logger.error(f"Error in link domain command for user {user.id}: {e}")
         
         # Get user_lang for error message
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
@@ -4701,7 +4701,7 @@ async def show_domain_linking_intro(user, message, user_lang: str):
         await message.reply_text(intro_text, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing domain linking intro: %s", e)
+        logger.error(f"Error showing domain linking intro: {e}")
         await message.reply_text(
             t('errors.domain_linking_load_failed', user_lang),
             reply_markup=InlineKeyboardMarkup([[
@@ -4734,12 +4734,12 @@ async def handle_domain_linking_callback(query, callback_data: str, context, use
             await safe_edit_message(query, t('domain_linking.analysis_coming_soon', user_lang))
             
         else:
-            logger.warning("Unknown domain linking action: %s", action)
+            logger.warning(f"Unknown domain linking action: {action}")
             # Note: query.answer() already called by main callback router
             await safe_edit_message(query, t('errors.unknown_action', user_lang))
             
     except Exception as e:
-        logger.error("Error in domain linking callback: %s", e)
+        logger.error(f"Error in domain linking callback: {e}")
         # Note: query.answer() already called by main callback router
         await safe_edit_message(query, t('errors.general_retry', user_lang))
 
@@ -4762,7 +4762,7 @@ async def start_domain_linking_flow(query, context, user_lang: str):
         await safe_edit_message(query, message_text, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error starting domain linking flow: %s", e)
+        logger.error(f"Error starting domain linking flow: {e}")
         # Note: query.answer() already called by main callback router
         await safe_edit_message(query, t('errors.process_start_failed', user_lang))
 
@@ -4798,7 +4798,7 @@ async def show_domain_linking_help(query, user_lang: str):
         await safe_edit_message(query, help_text, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing domain linking help: %s", e)
+        logger.error(f"Error showing domain linking help: {e}")
         # Note: query.answer() already called by main callback router
         await safe_edit_message(query, t('errors.help_load_failed', user_lang))
 
@@ -4842,7 +4842,7 @@ async def handle_domain_linking_text_input(update: Update, context: ContextTypes
         await initiate_domain_linking_process(user, message, domain_name, context, user_lang)
         
     except Exception as e:
-        logger.error("Error handling domain linking text input: %s", e)
+        logger.error(f"Error handling domain linking text input: {e}")
         # Get user_lang for error message
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         await message.reply_text(
@@ -4943,7 +4943,7 @@ async def initiate_domain_linking_process(user, message, domain_name: str, conte
             await processing_msg.edit_text(error_msg, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error initiating domain linking process: %s", e)
+        logger.error(f"Error initiating domain linking process: {e}")
         await message.reply_text(
             t('errors.domain_linking_process_failed', user_lang),
             reply_markup=InlineKeyboardMarkup([[
@@ -4982,7 +4982,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await query.message.edit_text(maintenance_message, parse_mode=ParseMode.HTML)
             except:
                 pass
-        logger.info("🔧 MAINTENANCE: Blocked callback from non-admin user %s", user.id)
+        logger.info(f"🔧 MAINTENANCE: Blocked callback from non-admin user {user.id}")
         return
     
     # Answer callback query with error handling for expired queries
@@ -4991,9 +4991,9 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         # Silently handle expired/old callback queries (common after bot restart)
         if "too old" in str(e).lower() or "timeout" in str(e).lower() or "invalid" in str(e).lower():
-            logger.debug("Handled expired callback query: %s", e)
+            logger.debug(f"Handled expired callback query: {e}")
         else:
-            logger.warning("Callback answer error: %s", e)
+            logger.warning(f"Callback answer error: {e}")
         # Continue processing the callback even if answer fails
     
     # Decompress callback data if it's compressed
@@ -5001,107 +5001,107 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Log callback resolution if needed
     if query.data != data or data.startswith("error:"):
-        logger.info("Callback data resolved: %s -> %s", query.data, data)
+        logger.info(f"Callback data resolved: {query.data} -> {data}")
     
     try:
         # Terms acceptance callbacks
         if data.startswith("terms:") or data in ["accept_terms", "decline_terms", "full_terms"]:
-            logger.info("Routing to: handle_terms_callback")
+            logger.info(f"Routing to: handle_terms_callback")
             await handle_terms_callback(update, context)
         elif data == "main_menu":
-            logger.info("Routing to: show_personalized_dashboard")
+            logger.info(f"Routing to: show_personalized_dashboard")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_personalized_dashboard(query)
         elif data == "search_domains":
-            logger.info("Routing to: show_search_interface")
+            logger.info(f"Routing to: show_search_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_search_interface(query)
         elif data == "my_domains":
-            logger.info("Routing to: show_user_domains_complete")
+            logger.info(f"Routing to: show_user_domains_complete")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_user_domains_complete(query, context)
         elif data == "wallet_main":
-            logger.info("Routing to: show_wallet_interface")
+            logger.info(f"Routing to: show_wallet_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_wallet_interface(query, context)
         elif data == "profile_main":
-            logger.info("Routing to: show_profile_interface")
+            logger.info(f"Routing to: show_profile_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_profile_interface(query)
         elif data == "reseller_program":
-            logger.info("Routing to: show_reseller_info")
+            logger.info(f"Routing to: show_reseller_info")
             await show_reseller_info(query)
         elif data == "contact_support":
-            logger.info("Routing to: show_contact_support")
+            logger.info(f"Routing to: show_contact_support")
             await show_contact_support(query)
         
         # API Management routes
         elif data == "api_management_main":
-            logger.info("Routing to: show_api_management_dashboard")
+            logger.info(f"Routing to: show_api_management_dashboard")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_api_management_dashboard(update, context)
         elif data == "api_create_start":
-            logger.info("Routing to: start_api_key_creation")
+            logger.info(f"Routing to: start_api_key_creation")
             await start_api_key_creation(update, context)
         elif data.startswith("api_env_"):
-            logger.info("Routing to: toggle_environment")
+            logger.info(f"Routing to: toggle_environment")
             await toggle_environment(update, context)
         elif data == "api_create_environment":
-            logger.info("Routing to: show_environment_selector (back)")
+            logger.info(f"Routing to: show_environment_selector (back)")
             await show_environment_selector(update, context)
         elif data == "api_create_security":
-            logger.info("Routing to: show_security_settings")
+            logger.info(f"Routing to: show_security_settings")
             await show_security_settings(update, context)
         elif data == "api_create_generate":
-            logger.info("Routing to: generate_and_show_api_key")
+            logger.info(f"Routing to: generate_and_show_api_key")
             await generate_and_show_api_key(update, context)
         elif data.startswith("api_manage_"):
-            logger.info("Routing to: show_api_key_management")
+            logger.info(f"Routing to: show_api_key_management")
             await show_api_key_management(update, context)
         elif data.startswith("api_stats_"):
-            logger.info("Routing to: show_api_key_stats")
+            logger.info(f"Routing to: show_api_key_stats")
             await show_api_key_stats(update, context)
         elif data.startswith("api_revoke_confirm_"):
-            logger.info("Routing to: revoke_api_key")
+            logger.info(f"Routing to: revoke_api_key")
             await revoke_api_key(update, context)
         elif data.startswith("api_revoke_"):
-            logger.info("Routing to: confirm_api_key_revoke")
+            logger.info(f"Routing to: confirm_api_key_revoke")
             await confirm_api_key_revoke(update, context)
         elif data == "api_docs_main":
-            logger.info("Routing to: show_api_documentation")
+            logger.info(f"Routing to: show_api_documentation")
             await show_api_documentation(update, context)
         
         elif data.startswith("domain_linking_"):
-            logger.info("Routing to: handle_domain_linking_callback")
+            logger.info(f"Routing to: handle_domain_linking_callback")
             user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code)
             await handle_domain_linking_callback(query, data, context, user_lang)
         elif data == "language_selection":
-            logger.info("Routing to: show_language_selection")
+            logger.info(f"Routing to: show_language_selection")
             # Create an Update object from the query for proper routing
             mock_update = Update(update_id=0, callback_query=query)
             await show_language_selection(mock_update, context)
         elif data == "language_selection_from_profile":
-            logger.info("Routing to: show_language_selection_from_profile")
+            logger.info(f"Routing to: show_language_selection_from_profile")
             # Create an Update object from the query for proper routing
             mock_update = Update(update_id=0, callback_query=query)
             await show_language_selection_from_profile(mock_update, context)
         elif data.startswith("language_select_from_profile_"):
             # Handle language selection from profile: language_select_from_profile_{lang_code}
             lang_code = data.replace("language_select_from_profile_", "")
-            logger.info("Routing to: handle_language_selection_from_profile for %s", lang_code)
+            logger.info(f"Routing to: handle_language_selection_from_profile for {lang_code}")
             # Create an Update object from the query for the new handler
             mock_update = Update(update_id=0, callback_query=query)
             await handle_language_selection_from_profile(mock_update, context)
         elif data.startswith("language_select_"):
             # Handle language selection: language_select_{lang_code}
             lang_code = data.replace("language_select_", "")
-            logger.info("Routing to: handle_language_selection for %s", lang_code)
+            logger.info(f"Routing to: handle_language_selection for {lang_code}")
             # Create an Update object from the query for the new handler
             mock_update = Update(update_id=0, callback_query=query)
             await handle_language_selection(mock_update, context)
@@ -5120,26 +5120,26 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 domain_name = parts[1]
                 await confirm_bundle_purchase(query, plan_id, domain_name)
         elif data == "admin_broadcast":
-            logger.info("Routing to: handle_admin_broadcast")
+            logger.info(f"Routing to: handle_admin_broadcast")
             await handle_admin_broadcast(query, context)
         elif data == "admin_credit_wallet":
-            logger.info("Routing to: handle_admin_credit_wallet")
+            logger.info(f"Routing to: handle_admin_credit_wallet")
             await handle_admin_credit_wallet(update, context)
         elif data == "admin_openprovider_accounts":
-            logger.info("Routing to: show_openprovider_accounts")
+            logger.info(f"Routing to: show_openprovider_accounts")
             await show_openprovider_accounts(query, context)
         elif data.startswith("admin_op_set_default:"):
             account_id = int(data.replace("admin_op_set_default:", ""))
-            logger.info("Routing to: set_default_openprovider_account for %s", account_id)
+            logger.info(f"Routing to: set_default_openprovider_account for {account_id}")
             await handle_set_default_openprovider_account(query, context, account_id)
         elif data == "admin_op_validate":
-            logger.info("Routing to: handle_validate_openprovider_credentials")
+            logger.info(f"Routing to: handle_validate_openprovider_credentials")
             await handle_validate_openprovider_credentials(query, context)
         elif data == "admin_openprovider":
-            logger.info("Routing to: show_openprovider_accounts (back)")
+            logger.info(f"Routing to: show_openprovider_accounts (back)")
             await show_openprovider_accounts(query, context)
         elif data == "admin_dns_sync":
-            logger.info("Routing to: handle_admin_dns_sync")
+            logger.info(f"Routing to: handle_admin_dns_sync")
             await handle_admin_dns_sync(query, context)
         elif data.startswith("admin_execute_credit:"):
             # Handle admin credit execution: admin_execute_credit:{user_id}:{amount}
@@ -5149,10 +5149,10 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 amount = float(parts[2])
                 await execute_admin_credit(query, target_user_id, amount)
         elif data == "cancel_broadcast":
-            logger.info("Routing to: handle_cancel_broadcast")
+            logger.info(f"Routing to: handle_cancel_broadcast")
             await handle_cancel_broadcast(query, context)
         elif data.startswith("maintenance:"):
-            logger.info("Routing to: maintenance handlers")
+            logger.info(f"Routing to: maintenance handlers")
             from admin_handlers import handle_maintenance_enable, handle_maintenance_disable, handle_maintenance_status
             if data == "maintenance:status":
                 await handle_maintenance_status(query, context)
@@ -5170,7 +5170,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 plan_id = context.user_data.get('unified_plan_id')
                 if unified_flow == 'awaiting_new_domain' and plan_id:
                     # Route to hosting+domain bundle flow
-                    logger.info("🔄 Redirecting register_%s to unified hosting bundle for plan %s", domain_name, plan_id)
+                    logger.info(f"🔄 Redirecting register_{domain_name} to unified hosting bundle for plan {plan_id}")
                     await unified_checkout(query, 'new', plan_id, domain_name)
                     return
             # Default to domain-only registration
@@ -5402,68 +5402,68 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await handle_ttl_selection(query, context, data)
         elif data.startswith("dns_wizard:"):
             # Handle DNS wizard callbacks: dns_wizard:{domain}:{type}:{field}:{value}
-            logger.info("Routing to: handle_dns_wizard_callback")
+            logger.info(f"Routing to: handle_dns_wizard_callback")
             await handle_dns_wizard_callback(query, context, data)
         elif data.startswith("setup_dns_"):
             # Handle DNS zone setup for domains missing Cloudflare zones
             domain_name = data.replace("setup_dns_", "")
-            logger.info("Routing to: handle_setup_dns_zone (domain: %s)", domain_name)
+            logger.info(f"Routing to: handle_setup_dns_zone (domain: {domain_name})")
             await handle_setup_dns_zone(query, context, domain_name)
         elif data.startswith("dns_") and ":" not in data:
             # Legacy DNS callback - redirect to new system (only for plain domain names)
             domain_name = data.replace("dns_", "")
-            logger.info("Converting dns_ callback: %s -> dns:%s:view", data, domain_name)
+            logger.info(f"Converting dns_ callback: {data} -> dns:{domain_name}:view")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await handle_dns_callback(query, context, f"dns:{domain_name}:view")
         elif data == "hosting_main":
-            logger.info("Routing to: show_hosting_interface")
+            logger.info(f"Routing to: show_hosting_interface")
             from admin_handlers import clear_admin_states
             clear_admin_states(context)
             await show_hosting_interface(query, context)
         # RDP Server callbacks
         elif data == "rdp_main":
-            logger.info("Routing to: handle_rdp_main")
+            logger.info(f"Routing to: handle_rdp_main")
             await handle_rdp_main(query)
         elif data == "rdp_purchase_start":
-            logger.info("Routing to: handle_rdp_purchase_start")
+            logger.info(f"Routing to: handle_rdp_purchase_start")
             await handle_rdp_purchase_start(query, context)
         elif data == "rdp_quick_deploy":
-            logger.info("Routing to: handle_rdp_quick_deploy")
+            logger.info(f"Routing to: handle_rdp_quick_deploy")
             await handle_rdp_quick_deploy(query, context)
         elif data == "rdp_quick_confirm":
-            logger.info("Routing to: handle_rdp_quick_confirm")
+            logger.info(f"Routing to: handle_rdp_quick_confirm")
             await handle_rdp_quick_confirm(query, context)
         elif data == "rdp_customize_start":
-            logger.info("Routing to: handle_rdp_customize_start")
+            logger.info(f"Routing to: handle_rdp_customize_start")
             await handle_rdp_customize_start(query, context)
         elif data == "rdp_change_windows":
-            logger.info("Routing to: handle_rdp_change_windows")
+            logger.info(f"Routing to: handle_rdp_change_windows")
             await handle_rdp_change_windows(query, context)
         elif data.startswith("rdp_select_plan_"):
             plan_id = data.replace("rdp_select_plan_", "")
-            logger.info("Routing to: handle_rdp_select_plan (plan %s)", plan_id)
+            logger.info(f"Routing to: handle_rdp_select_plan (plan {plan_id})")
             await handle_rdp_select_plan(query, context, plan_id)
         elif data.startswith("rdp_set_template_"):
             template_id = data.replace("rdp_set_template_", "")
-            logger.info("Routing to: handle_rdp_set_template (template %s)", template_id)
+            logger.info(f"Routing to: handle_rdp_set_template (template {template_id})")
             await handle_rdp_set_template(query, context, template_id)
         elif data == "rdp_region_smart":
-            logger.info("Routing to: handle_rdp_region_smart")
+            logger.info(f"Routing to: handle_rdp_region_smart")
             await handle_rdp_region_smart(query, context)
         elif data.startswith("rdp_change_billing_"):
             region_code = data.replace("rdp_change_billing_", "")
-            logger.info("Routing to: handle_rdp_change_billing (region %s)", region_code)
+            logger.info(f"Routing to: handle_rdp_change_billing (region {region_code})")
             await handle_rdp_change_billing(query, context, region_code)
         elif data.startswith("rdp_set_region_"):
             region_code = data.replace("rdp_set_region_", "")
-            logger.info("Routing to: handle_rdp_set_region (region %s)", region_code)
+            logger.info(f"Routing to: handle_rdp_set_region (region {region_code})")
             await handle_rdp_set_region(query, context, region_code)
         elif data == "rdp_regions_all":
-            logger.info("Routing to: handle_rdp_regions_all")
+            logger.info(f"Routing to: handle_rdp_regions_all")
             await handle_rdp_regions_all(query, context)
         elif data == "rdp_back_to_confirmation":
-            logger.info("Routing to: handle_rdp_back_to_confirmation")
+            logger.info(f"Routing to: handle_rdp_back_to_confirmation")
             wizard = context.user_data.get('rdp_wizard', {})
             confirmation_source = wizard.get('confirmation_source', 'customize')
             if confirmation_source == 'quick_deploy':
@@ -5472,108 +5472,108 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await handle_rdp_compact_confirmation(query, context)
         elif data.startswith("rdp_template_"):
             template_id = data.replace("rdp_template_", "")
-            logger.info("Routing to: handle_rdp_template_selection (template %s)", template_id)
+            logger.info(f"Routing to: handle_rdp_template_selection (template {template_id})")
             await handle_rdp_template_selection(query, context, template_id)
         elif data.startswith("rdp_plan_"):
             plan_id = data.replace("rdp_plan_", "")
-            logger.info("Routing to: handle_rdp_plan_selection (plan %s)", plan_id)
+            logger.info(f"Routing to: handle_rdp_plan_selection (plan {plan_id})")
             await handle_rdp_plan_selection(query, context, plan_id)
         elif data.startswith("rdp_region_"):
             region_id = data.replace("rdp_region_", "")
-            logger.info("Routing to: handle_rdp_region_selection (region %s)", region_id)
+            logger.info(f"Routing to: handle_rdp_region_selection (region {region_id})")
             await handle_rdp_region_selection(query, context, region_id)
         elif data.startswith("rdp_billing_") and data.endswith("_confirm"):
             billing_cycle = data.replace("rdp_billing_", "").replace("_confirm", "")
-            logger.info("Routing to: handle_rdp_billing_confirm (cycle %s)", billing_cycle)
+            logger.info(f"Routing to: handle_rdp_billing_confirm (cycle {billing_cycle})")
             await handle_rdp_billing_confirm(query, context, billing_cycle)
         elif data.startswith("rdp_billing_"):
             billing_cycle = data.replace("rdp_billing_", "")
-            logger.info("Routing to: handle_rdp_billing_selection (cycle %s)", billing_cycle)
+            logger.info(f"Routing to: handle_rdp_billing_selection (cycle {billing_cycle})")
             await handle_rdp_billing_selection(query, context, billing_cycle)
         elif data == "rdp_confirm_and_create_order":
-            logger.info("Routing to: handle_rdp_confirm_and_create_order")
+            logger.info(f"Routing to: handle_rdp_confirm_and_create_order")
             await handle_rdp_confirm_and_create_order(query, context)
         elif data == "rdp_select_payment_method":
-            logger.info("Routing to: handle_rdp_select_payment_method")
+            logger.info(f"Routing to: handle_rdp_select_payment_method")
             await handle_rdp_select_payment_method(query, context)
         elif data == "rdp_pay_wallet":
-            logger.info("Routing to: handle_rdp_pay_wallet")
+            logger.info(f"Routing to: handle_rdp_pay_wallet")
             await handle_rdp_pay_wallet(query, context)
         elif data == "rdp_pay_crypto":
-            logger.info("Routing to: handle_rdp_pay_crypto")
+            logger.info(f"Routing to: handle_rdp_pay_crypto")
             await handle_rdp_pay_crypto(query, context)
         elif data.startswith("rdp_crypto_"):
             currency = data.replace("rdp_crypto_", "")
-            logger.info("Routing to: handle_rdp_crypto_currency (currency: %s)", currency)
+            logger.info(f"Routing to: handle_rdp_crypto_currency (currency: {currency})")
             await handle_rdp_crypto_currency(query, context, currency)
         elif data.startswith("rdp_cancel_order:"):
             order_uuid = data.replace("rdp_cancel_order:", "")
-            logger.info("Routing to: handle_rdp_cancel_order (order %s)", order_uuid)
+            logger.info(f"Routing to: handle_rdp_cancel_order (order {order_uuid})")
             await handle_rdp_cancel_order(query, context, order_uuid)
         elif data.startswith("rdp_crypto_from_qr:"):
             # Handle return to RDP crypto selection from QR code photo
             order_uuid = data.replace("rdp_crypto_from_qr:", "")
-            logger.info("Routing to: handle_rdp_crypto_from_qr (order %s)", order_uuid)
+            logger.info(f"Routing to: handle_rdp_crypto_from_qr (order {order_uuid})")
             await handle_rdp_crypto_from_qr(query, context, order_uuid)
         elif data.startswith("rdp_payment_back:"):
             order_uuid = data.replace("rdp_payment_back:", "")
-            logger.info("Routing to: handle_rdp_payment_back (order %s)", order_uuid)
+            logger.info(f"Routing to: handle_rdp_payment_back (order {order_uuid})")
             await handle_rdp_payment_back(query, context, order_uuid)
         elif data == "rdp_my_servers":
-            logger.info("Routing to: handle_rdp_my_servers")
+            logger.info(f"Routing to: handle_rdp_my_servers")
             await handle_rdp_my_servers(query, context)
         elif data.startswith("rdp_server_") and not data.startswith("rdp_servers"):
             server_id = data.replace("rdp_server_", "")
-            logger.info("Routing to: handle_rdp_server_details (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_server_details (server {server_id})")
             await handle_rdp_server_details(query, context, server_id)
         elif data.startswith("rdp_start_"):
             server_id = data.replace("rdp_start_", "")
-            logger.info("Routing to: handle_rdp_start_server (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_start_server (server {server_id})")
             await handle_rdp_start_server(query, context, server_id)
         elif data.startswith("rdp_stop_"):
             server_id = data.replace("rdp_stop_", "")
-            logger.info("Routing to: handle_rdp_stop_server (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_stop_server (server {server_id})")
             await handle_rdp_stop_server(query, context, server_id)
         elif data.startswith("rdp_restart_"):
             server_id = data.replace("rdp_restart_", "")
-            logger.info("Routing to: handle_rdp_restart_server (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_restart_server (server {server_id})")
             await handle_rdp_restart_server(query, context, server_id)
         elif data.startswith("rdp_reinstall_confirm_"):
             server_id = data.replace("rdp_reinstall_confirm_", "")
-            logger.info("Routing to: handle_rdp_reinstall_confirm (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_reinstall_confirm (server {server_id})")
             await handle_rdp_reinstall_confirm(query, context, server_id)
         elif data.startswith("rdp_reinstall_"):
             server_id = data.replace("rdp_reinstall_", "")
-            logger.info("Routing to: handle_rdp_reinstall (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_reinstall (server {server_id})")
             await handle_rdp_reinstall(query, context, server_id)
         elif data.startswith("rdp_delete_confirm_"):
             server_id = data.replace("rdp_delete_confirm_", "")
-            logger.info("Routing to: handle_rdp_delete_confirm (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_delete_confirm (server {server_id})")
             await handle_rdp_delete_confirm(query, context, server_id)
         elif data.startswith("rdp_delete_"):
             server_id = data.replace("rdp_delete_", "")
-            logger.info("Routing to: handle_rdp_delete (server %s)", server_id)
+            logger.info(f"Routing to: handle_rdp_delete (server {server_id})")
             await handle_rdp_delete(query, context, server_id)
         elif data == "hosting_plans":
             # Legacy route - redirect to unified flow
-            logger.info("Redirecting legacy hosting_plans to unified flow")
+            logger.info(f"Redirecting legacy hosting_plans to unified flow")
             await unified_hosting_flow(query)
         elif data == "my_hosting":
             await show_my_hosting(query)
         elif data.startswith("select_plan_"):
             # Legacy route - redirect to unified plan selection
             plan_id = data.replace("select_plan_", "")
-            logger.info("Redirecting legacy select_plan_%s to unified flow", plan_id)
+            logger.info(f"Redirecting legacy select_plan_{plan_id} to unified flow")
             await handle_unified_plan_selection(query, context, plan_id)
         elif data.startswith("purchase_plan_"):
             # Legacy route - redirect to unified plan selection
             plan_id = data.replace("purchase_plan_", "")
-            logger.info("Redirecting legacy purchase_plan_%s to unified flow", plan_id)
+            logger.info(f"Redirecting legacy purchase_plan_{plan_id} to unified flow")
             await handle_unified_plan_selection(query, context, plan_id)
         elif data.startswith("confirm_purchase_"):
             # Legacy route - redirect to unified plan selection
             plan_id = data.replace("confirm_purchase_", "")
-            logger.info("Redirecting legacy confirm_purchase_%s to unified flow", plan_id)
+            logger.info(f"Redirecting legacy confirm_purchase_{plan_id} to unified flow")
             await handle_unified_plan_selection(query, context, plan_id)
         # UNIFIED HOSTING FLOW CALLBACKS
         elif data == "unified_hosting_plans":
@@ -5684,7 +5684,7 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 await safe_edit_message(query, "❌ Invalid hosting data. Please try again.")
         elif data.startswith("retry_ns_update:"):
-            logger.info("Routing to: handle_retry_nameserver_update")
+            logger.info(f"Routing to: handle_retry_nameserver_update")
             await handle_retry_nameserver_update(query, context, data)
         elif data.startswith("recheck_ns_"):
             # Handle nameserver recheck for hosting: recheck_ns_{plan_id}:{domain_name}
@@ -5813,7 +5813,7 @@ async def show_language_selection(update: Update, context: ContextTypes.DEFAULT_
         return True
         
     except Exception as e:
-        logger.error("Error showing language selection: %s", e)
+        logger.error(f"Error showing language selection: {e}")
         return False
 
 async def handle_language_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -5869,7 +5869,7 @@ async def handle_language_selection(update: Update, context: ContextTypes.DEFAUL
             await query.edit_message_text("❌ Error setting language. Please try again.")
             
     except Exception as e:
-        logger.error("Error handling language selection: %s", e)
+        logger.error(f"Error handling language selection: {e}")
         await query.edit_message_text("❌ Error processing language selection. Please try again.")
 
 async def handle_language_selection_callback(query, lang_code: str, context: ContextTypes.DEFAULT_TYPE):
@@ -5915,7 +5915,7 @@ async def handle_language_selection_callback(query, lang_code: str, context: Con
             reply_markup = InlineKeyboardMarkup(keyboard)
             
             await safe_edit_message(query, confirmation_text, reply_markup=reply_markup)
-            logger.info("✅ Language updated to %s for user %s", lang_code, user.id)
+            logger.info(f"✅ Language updated to {lang_code} for user {user.id}")
         else:
             await safe_edit_message(
                 query,
@@ -5926,7 +5926,7 @@ async def handle_language_selection_callback(query, lang_code: str, context: Con
             )
             
     except Exception as e:
-        logger.error("Error handling language selection callback: %s", e)
+        logger.error(f"Error handling language selection callback: {e}")
         await safe_edit_message(
             query,
             "❌ Error processing language selection. Please try again.",
@@ -5952,7 +5952,7 @@ async def show_terms_or_dashboard(update: Update, context: ContextTypes.DEFAULT_
             await show_dashboard(update, context, user_data)
             
     except Exception as e:
-        logger.error("Error in show_terms_or_dashboard: %s", e)
+        logger.error(f"Error in show_terms_or_dashboard: {e}")
         # Fallback to terms acceptance
         await show_terms_acceptance(update, context)
 
@@ -5980,12 +5980,12 @@ async def show_personalized_dashboard(query):
                 timeout=10.0  # 10 second timeout
             )
         except asyncio.TimeoutError:
-            logger.warning("Database timeout for user %s, using fallback", user.id)
+            logger.warning(f"Database timeout for user {user.id}, using fallback")
             # Use fallback values if database is slow/unavailable
             db_user = {'id': user.id}
             wallet_balance = 0.0
         except Exception as db_error:
-            logger.warning("Database error for user %s: %s, using fallback", user.id, db_error)
+            logger.warning(f"Database error for user {user.id}: {db_error}, using fallback")
             # Use fallback values if database error
             db_user = {'id': user.id}
             wallet_balance = 0.0
@@ -6011,7 +6011,7 @@ async def show_personalized_dashboard(query):
             )
             min_hosting_price = int(min_price_result[0]['min_price']) if min_price_result and min_price_result[0]['min_price'] else 40
         except Exception as db_error:
-            logger.warning("Failed to get minimum hosting price, using fallback: %s", db_error)
+            logger.warning(f"Failed to get minimum hosting price, using fallback: {db_error}")
             min_hosting_price = 40  # Fallback to current minimum (Pro 7 Days)
         
         # Get minimum RDP price dynamically from database
@@ -6021,7 +6021,7 @@ async def show_personalized_dashboard(query):
             )
             min_rdp_price = int(min_rdp_result[0]['min_price']) if min_rdp_result and min_rdp_result[0]['min_price'] else 10
         except Exception as db_error:
-            logger.warning("Failed to get minimum RDP price, using fallback: %s", db_error)
+            logger.warning(f"Failed to get minimum RDP price, using fallback: {db_error}")
             min_rdp_price = 60  # Fallback to Starter plan markup price
         
         keyboard = [
@@ -6052,7 +6052,7 @@ async def show_personalized_dashboard(query):
                 timeout=15.0  # 15 second timeout for Telegram operations
             )
         except asyncio.TimeoutError:
-            logger.warning("Telegram edit timeout for user %s, trying fallback", user.id)
+            logger.warning(f"Telegram edit timeout for user {user.id}, trying fallback")
             # Fallback to sending new message if edit times out
             await asyncio.wait_for(
                 query.bot.send_message(
@@ -6063,10 +6063,10 @@ async def show_personalized_dashboard(query):
                 timeout=15.0
             )
         
-        logger.info("✅ Personalized dashboard shown to user %s with balance %s", user.id, balance_display)
+        logger.info(f"✅ Personalized dashboard shown to user {user.id} with balance {balance_display}")
         
     except Exception as e:
-        logger.error("Error showing personalized dashboard for user %s: %s", user.id, e)
+        logger.error(f"Error showing personalized dashboard for user {user.id}: {e}")
         # Fallback to basic dashboard
         await show_main_menu(query)
 
@@ -6125,10 +6125,10 @@ Quick Actions:
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         
-        logger.info("✅ Main menu shown to user %s in language: %s", user.id, user_lang)
+        logger.info(f"✅ Main menu shown to user {user.id} in language: {user_lang}")
         
     except Exception as e:
-        logger.error("Error localizing main menu for user %s: %s", user.id, e)
+        logger.error(f"Error localizing main menu for user {user.id}: {e}")
         # Get user_lang for fallback
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         # Fallback to original hardcoded version
@@ -6193,10 +6193,10 @@ We'll help you get started!"""
         reply_markup = InlineKeyboardMarkup(keyboard)
         
         await safe_edit_message(query, reseller_message, reply_markup=reply_markup)
-        logger.info("✅ Reseller info shown to user %s in language: %s", user.id, user_lang)
+        logger.info(f"✅ Reseller info shown to user {user.id} in language: {user_lang}")
         
     except Exception as e:
-        logger.error("Error showing reseller info for user %s: %s", user.id, e)
+        logger.error(f"Error showing reseller info for user {user.id}: {e}")
         # Get user_lang for fallback
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         fallback_message = format_branded_message("""🤝 <b>Reseller Program</b>
@@ -6300,7 +6300,7 @@ async def show_user_domains_complete(query, context=None):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing domains interface: %s", e)
+        logger.error(f"Error showing domains interface: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not load domains.")
 
 async def show_wallet_interface(query, context=None):
@@ -6369,7 +6369,7 @@ async def show_wallet_interface(query, context=None):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing wallet interface: %s", e)
+        logger.error(f"Error showing wallet interface: {e}")
         user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code if hasattr(query.from_user, 'language_code') else None)
         await safe_edit_message(query, t('errors.wallet_load_failed', user_lang))
 
@@ -6498,7 +6498,7 @@ async def show_language_selection_from_profile(update: Update, context: ContextT
         return True
         
     except Exception as e:
-        logger.error("Error showing language selection from profile: %s", e)
+        logger.error(f"Error showing language selection from profile: {e}")
         return False
 
 async def handle_language_selection_from_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -6555,7 +6555,7 @@ async def handle_language_selection_from_profile(update: Update, context: Contex
             await query.edit_message_text("❌ Error setting language. Please try again.")
             
     except Exception as e:
-        logger.error("Error handling language selection from profile: %s", e)
+        logger.error(f"Error handling language selection from profile: {e}")
         await query.edit_message_text("❌ Error processing language selection. Please try again.")
 
 # UNIFIED HOSTING FLOW - Single Entry Point System
@@ -6609,10 +6609,10 @@ async def smart_domain_handler(query, context, plan_id: str, domain_text: Option
             
             # Non-hosting context - proceed with regular routing (should not happen in hosting flows)
             if domain_status['exists']:
-                logger.info("🔄 Domain %s exists - regular domain flow (NOT hosting bundle)", domain_name)
+                logger.info(f"🔄 Domain {domain_name} exists - regular domain flow (NOT hosting bundle)")
                 await handle_existing_domain_hosting(query, context, plan_id, domain_name, domain_status)
             else:
-                logger.info("🆕 Domain %s available - regular domain flow (NOT hosting bundle)", domain_name)
+                logger.info(f"🆕 Domain {domain_name} available - regular domain flow (NOT hosting bundle)")
                 await handle_new_domain_hosting(query, context, plan_id, domain_name, plan)
                 
         else:
@@ -6620,7 +6620,7 @@ async def smart_domain_handler(query, context, plan_id: str, domain_text: Option
             await show_smart_domain_options(query, context, plan_id, plan)
             
     except Exception as e:
-        logger.error("Error in smart domain handler: %s", e)
+        logger.error(f"Error in smart domain handler: {e}")
         await safe_edit_message(query, "❌ Error processing domain. Please try again.")
 
 def _get_estimated_domain_price(tld: str) -> float:
@@ -6683,7 +6683,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                     service_type = hosting_intent.get('service_type', '')
                     hosting_bundle_context = is_hosting_bundle_service_type(service_type)
                     if hosting_bundle_context:
-                        logger.info("🏠 HOSTING BUNDLE CONTEXT: Domain %s analysis in hosting context (service_type: %s)", domain_name, service_type)
+                        logger.info(f"🏠 HOSTING BUNDLE CONTEXT: Domain {domain_name} analysis in hosting context (service_type: {service_type})")
         
         # Check ownership state (NOT just existence in domains table)
         ownership_state = await check_domain_ownership_state(domain_name)
@@ -6720,7 +6720,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
             return search_result
         else:
             # No ownership state - check OpenProvider for availability and log search
-            logger.info("🔍 Checking domain availability: %s", domain_name)
+            logger.info(f"🔍 Checking domain availability: {domain_name}")
             
             # Check domain availability via OpenProvider
             openprovider = OpenProviderService()
@@ -6736,13 +6736,13 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                     # Use provider pricing (already marked up)
                     registration_price = provider_price
                     base_price = price_info.get('base_price_usd', provider_price)
-                    logger.info("✅ Domain pricing from provider: $%s → $%s", base_price, registration_price)
+                    logger.info(f"✅ Domain pricing from provider: ${base_price:.2f} → ${registration_price:.2f}")
                 else:
                     # Fallback: Use estimated pricing based on TLD
                     tld = domain_name.split('.')[-1] if '.' in domain_name else 'com'
                     estimated_price = _get_estimated_domain_price(tld)
                     registration_price = calculate_marked_up_price(Decimal(str(estimated_price)), 'USD', tld=tld)['final_price']
-                    logger.warning("⚠️ No pricing from provider for %s, using estimated $%s → $%s", domain_name, estimated_price, registration_price)
+                    logger.warning(f"⚠️ No pricing from provider for {domain_name}, using estimated ${estimated_price:.2f} → ${registration_price:.2f}")
                 
                 search_result = {
                     'exists': False,
@@ -6767,7 +6767,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                 return search_result
             else:
                 # Domain exists externally - check real nameservers and DNS status
-                logger.info("🌐 Domain %s exists externally, checking DNS configuration...", domain_name)
+                logger.info(f"🌐 Domain {domain_name} exists externally, checking DNS configuration...")
                 
                 # Get real nameservers for external domain
                 actual_nameservers = await _get_real_nameservers(domain_name)
@@ -6784,7 +6784,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                         if zone:
                             cf_zone = zone
                     except Exception as e:
-                        logger.debug("Cloudflare zone check failed: %s", e)
+                        logger.debug(f"Cloudflare zone check failed: {e}")
                 
                 # Determine auto-configuration possibility
                 auto_dns_possible = is_using_cloudflare and bool(cf_zone)
@@ -6813,7 +6813,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                 return search_result
                     
     except Exception as e:
-        logger.error("Error analyzing domain status for %s: %s", domain_name, e)
+        logger.error(f"Error analyzing domain status for {domain_name}: {e}")
         
         # CRITICAL: Preserve hosting bundle context even in exception case
         hosting_bundle_context = False
@@ -6826,9 +6826,9 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
                     if hosting_intent:
                         service_type = hosting_intent.get('service_type', '')
                         hosting_bundle_context = is_hosting_bundle_service_type(service_type)
-                        logger.info("🏠 EXCEPTION RECOVERY: Preserved hosting bundle context for %s (service_type: %s)", domain_name, service_type)
+                        logger.info(f"🏠 EXCEPTION RECOVERY: Preserved hosting bundle context for {domain_name} (service_type: {service_type})")
             except Exception as context_error:
-                logger.error("Failed to preserve hosting context in exception handler: %s", context_error)
+                logger.error(f"Failed to preserve hosting context in exception handler: {context_error}")
                 hosting_bundle_context = False  # Safe fallback
         
         # Return safe fallback status with preserved hosting context
@@ -6852,7 +6852,7 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
             try:
                 await log_domain_search(user_id, domain_name, {**fallback_result, 'error': str(e)})
             except Exception as log_error:
-                logger.error("Failed to log error search for %s: %s", domain_name, log_error)
+                logger.error(f"Failed to log error search for {domain_name}: {log_error}")
         
         return fallback_result
 
@@ -6869,7 +6869,7 @@ async def _get_real_nameservers(domain_name: str) -> List[str]:
             if ns_list:
                 nameservers.extend(ns_list)
         except Exception as e:
-            logger.debug("DNS resolver service failed: %s", e)
+            logger.debug(f"DNS resolver service failed: {e}")
         
         # Method 2: Try direct DNS query if dnspython is available
         if not nameservers:
@@ -6880,7 +6880,7 @@ async def _get_real_nameservers(domain_name: str) -> List[str]:
             except ImportError:
                 logger.debug("dnspython not available for NS lookup")
             except Exception as e:
-                logger.debug("DNS resolver failed: %s", e)
+                logger.debug(f"DNS resolver failed: {e}")
         
         # Clean and validate nameservers
         clean_ns = []
@@ -6895,11 +6895,11 @@ async def _get_real_nameservers(domain_name: str) -> List[str]:
             if ns not in unique_ns:
                 unique_ns.append(ns)
         
-        logger.info("🔍 Found nameservers for %s: %s", domain_name, unique_ns)
+        logger.info(f"🔍 Found nameservers for {domain_name}: {unique_ns}")
         return unique_ns
         
     except Exception as e:
-        logger.warning("Failed to get nameservers for %s: %s", domain_name, e)
+        logger.warning(f"Failed to get nameservers for {domain_name}: {e}")
         return []
 
 def _check_cloudflare_nameservers(nameservers: List[str]) -> bool:
@@ -6926,9 +6926,9 @@ def _check_cloudflare_nameservers(nameservers: List[str]) -> bool:
     is_cloudflare = cf_count >= len(nameservers) / 2
     
     if is_cloudflare:
-        logger.info("✅ Domain uses Cloudflare nameservers: %s", nameservers)
+        logger.info(f"✅ Domain uses Cloudflare nameservers: {nameservers}")
     else:
-        logger.info("ℹ️ Domain uses external nameservers: %s", nameservers)
+        logger.info(f"ℹ️ Domain uses external nameservers: {nameservers}")
     
     return is_cloudflare
 
@@ -6975,19 +6975,19 @@ async def handle_new_domain_hosting(query, context, plan_id: str, domain_name: s
     
     # CRITICAL: Check hosting bundle context first to prevent misrouting
     if domain_status.get('hosting_bundle_context', False):
-        logger.info("🏠 HOSTING CONTEXT: Domain %s processing in hosting bundle context - staying in hosting flow", domain_name)
+        logger.info(f"🏠 HOSTING CONTEXT: Domain {domain_name} processing in hosting bundle context - staying in hosting flow")
     
     # Check if domain is already managed in our system
     if domain_status.get('in_our_system', False):
         # Domain already exists in system
         if domain_status.get('hosting_bundle_context', False):
             # In hosting bundle context - continue with existing domain hosting flow
-            logger.info("🏠 Domain %s already managed - continuing in hosting bundle context", domain_name)
+            logger.info(f"🏠 Domain {domain_name} already managed - continuing in hosting bundle context")
             await handle_existing_domain_hosting(query, context, plan_id, domain_name, domain_status)
             return
         else:
             # Not in hosting context - show regular ownership message
-            logger.info("🔄 Domain %s already managed - showing ownership message", domain_name)
+            logger.info(f"🔄 Domain {domain_name} already managed - showing ownership message")
             message_text, parse_mode = t_html('search.domain_already_owned', await resolve_user_language(query.from_user.id), domain=domain_name)
             await safe_edit_message(query, message_text, parse_mode=parse_mode)
             return
@@ -7031,10 +7031,10 @@ async def handle_existing_domain_hosting(query, context, plan_id: str, domain_na
     
     # CRITICAL: Enforce hosting bundle context first - MANDATORY ROUTING ENFORCEMENT
     if domain_status.get('hosting_bundle_context', False):
-        logger.info("🏠 HOSTING CONTEXT ENFORCED: Domain %s existing domain handler MUST stay in hosting bundle context", domain_name)
+        logger.info(f"🏠 HOSTING CONTEXT ENFORCED: Domain {domain_name} existing domain handler MUST stay in hosting bundle context")
     else:
         # Log warning if called without hosting context (should not happen in properly routed flows)
-        logger.warning("⚠️ ROUTING ANOMALY: handle_existing_domain_hosting called for %s without hosting bundle context", domain_name)
+        logger.warning(f"⚠️ ROUTING ANOMALY: handle_existing_domain_hosting called for {domain_name} without hosting bundle context")
     
     plans = cpanel.get_hosting_plans()
     plan = next((p for p in plans if str(p.get('id')) == str(plan_id)), None)
@@ -7132,7 +7132,7 @@ async def unified_hosting_flow(query):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in unified hosting flow: %s", e)
+        logger.error(f"Error in unified hosting flow: {e}")
         await safe_edit_message(query, "❌ Error loading hosting options. Please try again.")
 
 # UNIFIED CHECKOUT SYSTEM
@@ -7182,12 +7182,12 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
             
             # CRITICAL: Ensure we stay in hosting bundle context
             if domain_status.get('hosting_bundle_context', False):
-                logger.info("🏠 HOSTING CONTEXT: Domain %s checkout in hosting bundle context", domain_name)
+                logger.info(f"🏠 HOSTING CONTEXT: Domain {domain_name} checkout in hosting bundle context")
             
             # Check if domain is already managed in our system
             if domain_status.get('in_our_system', False):
                 # Domain already exists in system - stay in hosting context
-                logger.info("🏠 Domain %s already managed - continuing hosting bundle flow", domain_name)
+                logger.info(f"🏠 Domain {domain_name} already managed - continuing hosting bundle flow")
                 await safe_edit_message(query, f"✅ {domain_name} is already in your account! Connecting to hosting...")
                 # Continue as existing domain connection in hosting context
                 total_price = plan_price
@@ -7239,7 +7239,7 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
         if existing_intent:
             # Use existing intent
             intent_id = existing_intent['id']
-            logger.info("⚠️ Using existing hosting intent %s for %s", intent_id, domain_name)
+            logger.info(f"⚠️ Using existing hosting intent {intent_id} for {domain_name}")
         else:
             # Create new hosting provision intent
             intent_id = await create_hosting_intent(
@@ -7267,7 +7267,7 @@ async def unified_checkout(query, checkout_type: str, plan_id: str, domain_name:
         )
         
     except Exception as e:
-        logger.error("Error in unified checkout: %s", e)
+        logger.error(f"Error in unified checkout: {e}")
         await safe_edit_message(query, "❌ Error processing checkout. Please try again.")
 
 async def show_unified_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str, items: List[str], service_type: str):
@@ -7287,7 +7287,7 @@ async def show_unified_payment_options(query, subscription_id: int, price: float
         if not has_sufficient_balance:
             wallet_text += " ⚠️"
     except Exception as e:
-        logger.warning("Could not retrieve wallet balance: %s", e)
+        logger.warning(f"Could not retrieve wallet balance: {e}")
         price_display = format_money(Decimal(str(price)), include_currency=False)
         wallet_text = f"💰 Pay with Wallet ({price_display})"
         has_sufficient_balance = False
@@ -7343,7 +7343,7 @@ async def show_unified_payment_options_with_intent(query, intent_id: int, price:
         if not has_sufficient_balance:
             wallet_text += " ⚠️"
     except Exception as e:
-        logger.warning("Could not retrieve wallet balance: %s", e)
+        logger.warning(f"Could not retrieve wallet balance: {e}")
         price_display = format_money(Decimal(str(price)), include_currency=False)
         wallet_text = f"💰 Pay with Wallet ({price_display})"
         has_sufficient_balance = False
@@ -7434,10 +7434,10 @@ Enter domain name to register:
         
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
-        logger.info("User %s starting unified new domain search for plan %s", query.from_user.id, plan_id)
+        logger.info(f"User {query.from_user.id} starting unified new domain search for plan {plan_id}")
         
     except Exception as e:
-        logger.error("Error handling unified new domain: %s", e)
+        logger.error(f"Error handling unified new domain: {e}")
         await safe_edit_message(query, "❌ Error processing domain search. Please try again.")
 
 async def handle_unified_existing_domain(query, context, plan_id: str):
@@ -7482,10 +7482,10 @@ async def handle_unified_existing_domain(query, context, plan_id: str):
         
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
-        logger.info("User %s starting unified existing domain flow for plan %s", query.from_user.id, plan_id)
+        logger.info(f"User {query.from_user.id} starting unified existing domain flow for plan {plan_id}")
         
     except Exception as e:
-        logger.error("Error handling unified existing domain: %s", e)
+        logger.error(f"Error handling unified existing domain: {e}")
         await safe_edit_message(query, t('errors.existing_domain_processing_failed', user_lang))
 
 async def handle_unified_hosting_only(query, context, plan_id: str):
@@ -7525,7 +7525,7 @@ async def handle_unified_hosting_only(query, context, plan_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error handling unified hosting only: %s", e)
+        logger.error(f"Error handling unified hosting only: {e}")
         await safe_edit_message(query, "❌ Error processing hosting-only option. Please try again.")
 
 async def process_unified_wallet_payment(query, subscription_id: str, price: str):
@@ -7549,11 +7549,11 @@ async def process_unified_wallet_payment(query, subscription_id: str, price: str
             amount
         )
         if not safety_check:
-            logger.error("🚫 Financial safety check failed for user %s payment $%s", user.id, amount)
+            logger.error(f"🚫 Financial safety check failed for user {user.id} payment ${amount:.2f}")
             await safe_edit_message(query, "❌ Payment system temporarily unavailable. Please try again later.")
             return
         
-        logger.info("✅ Financial safety check passed for unified wallet payment: User %s, $%s", user.id, amount)
+        logger.info(f"✅ Financial safety check passed for unified wallet payment: User {user.id}, ${amount:.2f}")
         
         # Get user wallet balance (use telegram_id, not internal user_id)
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -7575,7 +7575,7 @@ Please add funds to your wallet first.
             ]
         else:
             # 🔒 REVENUE PROTECTION: Reserve wallet balance instead of immediate debit
-            logger.info("💳 Processing unified hosting payment: User %s, Amount $%s, Subscription #%s", user.id, amount, subscription_id)
+            logger.info(f"💳 Processing unified hosting payment: User {user.id}, Amount ${amount:.2f}, Subscription #{subscription_id}")
             
             from database import reserve_wallet_balance, finalize_wallet_reservation
             
@@ -7607,19 +7607,19 @@ There was an error reserving funds from your wallet. Please try again or contact
                     # Create hosting account with hold protection
                     await create_unified_hosting_account_after_payment(int(subscription_id))
                     hosting_success = True
-                    logger.info("✅ Unified hosting account created successfully for subscription %s", subscription_id)
+                    logger.info(f"✅ Unified hosting account created successfully for subscription {subscription_id}")
                     
                 except Exception as hosting_exc:
                     hosting_success = False
                     hosting_error = str(hosting_exc)
-                    logger.error("❌ Unified hosting account creation failed for subscription %s: %s", subscription_id, hosting_error)
+                    logger.error(f"❌ Unified hosting account creation failed for subscription {subscription_id}: {hosting_error}")
                 
                 # 🔒 CRITICAL: Finalize wallet payment based on hosting outcome
                 finalization_success = await finalize_wallet_reservation(hold_id, success=hosting_success)
                 
                 if hosting_success and finalization_success:
                     # Success path - both hosting and payment worked
-                    logger.info("✅ REVENUE PROTECTION: Unified hosting subscription %s completed with successful wallet charge", subscription_id)
+                    logger.info(f"✅ REVENUE PROTECTION: Unified hosting subscription {subscription_id} completed with successful wallet charge")
                     
                     message = f"""
 {t('hosting.wallet_payment.success_title', user_lang)}
@@ -7637,10 +7637,10 @@ There was an error reserving funds from your wallet. Please try again or contact
                     
                 elif hosting_success and not finalization_success:
                     # CRITICAL: Hosting created but wallet charge failed
-                    logger.error("🚨 REVENUE PROTECTION: Unified hosting created but wallet settlement failed for subscription %s", subscription_id)
+                    logger.error(f"🚨 REVENUE PROTECTION: Unified hosting created but wallet settlement failed for subscription {subscription_id}")
                     
                     # TODO: Send critical alert to admins when alert system is implemented
-                    logger.error("ADMIN ALERT: UnifiedHostingWalletSettlementFailure - subscription %s needs manual intervention", subscription_id)
+                    logger.error(f"ADMIN ALERT: UnifiedHostingWalletSettlementFailure - subscription {subscription_id} needs manual intervention")
                     logger.error(f"Settlement failure context: subscription_id={subscription_id}, user_id={db_user['id']}, telegram_id={user.id}")
                     
                     message = f"""
@@ -7658,7 +7658,7 @@ There was an error reserving funds from your wallet. Please try again or contact
                     
                 else:
                     # Hosting creation failed - wallet hold refunded
-                    logger.info("💰 REVENUE PROTECTION: Unified hosting creation failed, wallet refunded for subscription %s", subscription_id)
+                    logger.info(f"💰 REVENUE PROTECTION: Unified hosting creation failed, wallet refunded for subscription {subscription_id}")
                     
                     message = f"""
 {t('hosting.wallet_payment.creation_failed_title', user_lang)}
@@ -7678,7 +7678,7 @@ There was an error reserving funds from your wallet. Please try again or contact
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error processing unified wallet payment: %s", e)
+        logger.error(f"Error processing unified wallet payment: {e}")
         await safe_edit_message(query, "❌ Error processing payment. Please try again.")
 
 async def process_intent_crypto_payment(query, intent_id: str, crypto: str, price: str):
@@ -7709,7 +7709,7 @@ async def process_intent_crypto_payment(query, intent_id: str, crypto: str, pric
         
         amount = float(intent.get('quote_price', price))
         if amount <= 0:
-            logger.error("🚫 Security: Invalid intent price for %s: %s", intent_id, amount)
+            logger.error(f"🚫 Security: Invalid intent price for {intent_id}: {amount}")
             await safe_edit_message(query, "❌ Invalid order pricing. Please try again.")
             return
         
@@ -7758,7 +7758,7 @@ async def process_intent_crypto_payment(query, intent_id: str, crypto: str, pric
             await safe_edit_message(query, "❌ Error creating order. Please try again.")
             return
         
-        logger.info("✅ Created hosting_orders entry %s for intent %s with expected_amount=$%s", hosting_order_id, intent_id, amount)
+        logger.info(f"✅ Created hosting_orders entry {hosting_order_id} for intent {intent_id} with expected_amount=${amount:.2f}")
         
         crypto_amount_display = payment_result.get('crypto_amount', 'TBD')
         payment_message, copy_keyboard = render_crypto_payment(
@@ -7782,10 +7782,10 @@ async def process_intent_crypto_payment(query, intent_id: str, crypto: str, pric
         
         await safe_edit_message(query, payment_message, reply_markup=final_keyboard, parse_mode='HTML')
         
-        logger.info("🏠 Hosting crypto payment generated: %s for intent %s, order %s", crypto.upper(), intent_id, hosting_order_id)
+        logger.info(f"🏠 Hosting crypto payment generated: {crypto.upper()} for intent {intent_id}, order {hosting_order_id}")
         
     except Exception as e:
-        logger.error("Error processing intent crypto payment: %s", e)
+        logger.error(f"Error processing intent crypto payment: {e}")
         await safe_edit_message(query, "❌ Error processing payment. Please try again.")
 
 async def process_intent_wallet_payment(query, intent_id: str, price: str):
@@ -7828,19 +7828,19 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
         payable_statuses = {'pending_payment', 'pending', 'awaiting_payment', 'draft', 'pending_checkout'}
         current_status = intent.get('status')
         if current_status not in payable_statuses:
-            logger.error("🚫 Security: Intent %s is not in payable state: %s", intent_id, current_status)
+            logger.error(f"🚫 Security: Intent {intent_id} is not in payable state: {current_status}")
             await safe_edit_message(query, "❌ This order is no longer available for payment.")
             return
         
         # Auto-upgrade legacy status to standard pending_payment
         if current_status in {'pending', 'awaiting_payment', 'draft', 'pending_checkout'}:
-            logger.info("🔄 Auto-upgrading intent %s status: %s → pending_payment", intent_id, current_status)
+            logger.info(f"🔄 Auto-upgrading intent {intent_id} status: {current_status} → pending_payment")
             await update_hosting_intent_status(intent_id_int, 'pending_payment')
         
         # SECURITY: Use ONLY server-side authoritative price - ignore client input completely
         amount = float(intent.get('quote_price', 0))
         if amount <= 0:
-            logger.error("🚫 Security: Invalid intent price for %s: %s", intent_id, amount)
+            logger.error(f"🚫 Security: Invalid intent price for {intent_id}: {amount}")
             await safe_edit_message(query, "❌ Invalid order pricing. Please try again.")
             return
         
@@ -7850,11 +7850,11 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
             amount
         )
         if not safety_check:
-            logger.error("🚫 Financial safety check failed for user %s intent payment $%s", user.id, amount)
+            logger.error(f"🚫 Financial safety check failed for user {user.id} intent payment ${amount:.2f}")
             await safe_edit_message(query, "❌ Payment system temporarily unavailable. Please try again later.")
             return
         
-        logger.info("✅ Financial safety check passed for intent wallet payment: User %s, $%s", user.id, amount)
+        logger.info(f"✅ Financial safety check passed for intent wallet payment: User {user.id}, ${amount:.2f}")
         
         # Check wallet balance against authoritative amount
         balance = await get_user_wallet_balance(user.id)
@@ -7873,7 +7873,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
             await safe_edit_message(query, "❌ Payment processing failed. Please try again.")
             return
         
-        logger.info("✅ Wallet payment successful: User %s paid $%s for intent %s", user.id, amount, intent_id)
+        logger.info(f"✅ Wallet payment successful: User {user.id} paid ${amount:.2f} for intent {intent_id}")
         
         # Create payment details for wallet payments to show correct amount in success message (matching registration fix)
         wallet_payment_details = {
@@ -7920,12 +7920,12 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
             
             # Handle orchestrator results
             if orchestrator_result.get('status') == 'already_processed':
-                logger.info("🚫 HANDLERS: Hosting bundle already processed for intent %s", intent_id)
+                logger.info(f"🚫 HANDLERS: Hosting bundle already processed for intent {intent_id}")
                 await safe_edit_message(query, f"ℹ️ Order Already Complete\n\nHosting order has already been processed.")
                 return
             
             elif orchestrator_result.get('status') == 'duplicate_prevented':
-                logger.info("🚫 HANDLERS: Duplicate hosting bundle prevented for intent %s", intent_id)
+                logger.info(f"🚫 HANDLERS: Duplicate hosting bundle prevented for intent {intent_id}")
                 await safe_edit_message(query, f"ℹ️ Order In Progress\n\nHosting order is already being processed.")
                 return
             
@@ -7935,18 +7935,18 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
                 return
             
             elif orchestrator_result.get('success'):
-                logger.info("✅ HANDLERS: Hosting bundle completed via orchestrator: intent %s", intent_id)
+                logger.info(f"✅ HANDLERS: Hosting bundle completed via orchestrator: intent {intent_id}")
                 # Orchestrator already sent success notification with buttons
             else:
-                logger.warning("⚠️ HANDLERS: Unexpected orchestrator result for intent %s: %s", intent_id, orchestrator_result)
+                logger.warning(f"⚠️ HANDLERS: Unexpected orchestrator result for intent {intent_id}: {orchestrator_result}")
                 await safe_edit_message(query, f"⚠️ Order Status Unknown\n\nPlease check your hosting dashboard.")
                 
         except Exception as orchestrator_error:
-            logger.error("❌ HANDLERS: Error during orchestrated hosting provisioning for intent %s: %s", intent_id, orchestrator_error)
+            logger.error(f"❌ HANDLERS: Error during orchestrated hosting provisioning for intent {intent_id}: {orchestrator_error}")
             await safe_edit_message(query, f"{t('hosting.errors.provisioning_error_title', user_lang)}\n\n{t('hosting.errors.provisioning_error_contact', user_lang)}")
             
     except Exception as e:
-        logger.error("Error in intent wallet payment: %s", e)
+        logger.error(f"Error in intent wallet payment: {e}")
         # Try to rollback intent status if possible
         try:
             # Only try to rollback if intent_id_int was successfully defined
@@ -7984,11 +7984,11 @@ async def process_unified_crypto_payment(query, crypto_type: str, subscription_i
             amount
         )
         if not safety_check:
-            logger.error("🚫 Financial safety check failed for user %s crypto payment $%s (%s)", user.id, amount, crypto_type)
+            logger.error(f"🚫 Financial safety check failed for user {user.id} crypto payment ${amount:.2f} ({crypto_type})")
             await safe_edit_message(query, "❌ Payment system temporarily unavailable. Please try again later.")
             return
         
-        logger.info("✅ Financial safety check passed for unified crypto payment: User %s, $%s (%s)", user.id, amount, crypto_type)
+        logger.info(f"✅ Financial safety check passed for unified crypto payment: User {user.id}, ${amount:.2f} ({crypto_type})")
         
         # Get user record for database ID
         from database import get_or_create_user
@@ -8003,7 +8003,7 @@ async def process_unified_crypto_payment(query, crypto_type: str, subscription_i
             buffered_amount = original_amount * Decimal('1.10')  # 10% buffer for volatile cryptos
         
         # Generate payment address
-        logger.info("💰 Generating %s payment address for unified hosting: User %s, Amount $%s (buffered: $%s), Subscription #%s", crypto_type.upper(), user.id, amount, buffered_amount, subscription_id)
+        logger.info(f"💰 Generating {crypto_type.upper()} payment address for unified hosting: User {user.id}, Amount ${amount:.2f} (buffered: ${buffered_amount:.2f}), Subscription #{subscription_id}")
         payment_result = await create_payment_address(
             currency=crypto_type,
             order_id=f"UH{subscription_id}",
@@ -8071,7 +8071,7 @@ Payment confirms automatically.
         await safe_edit_message(query, "💰 Crypto payment initiated. Check the QR code below ⬇️")
         
     except Exception as e:
-        logger.error("Error processing unified crypto payment: %s", e)
+        logger.error(f"Error processing unified crypto payment: {e}")
         await safe_edit_message(query, "❌ Error processing crypto payment. Please try again.")
 
 async def create_unified_hosting_account_after_payment(subscription_id: int):
@@ -8082,7 +8082,7 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
         
         subscription = await get_hosting_subscription_details_admin(subscription_id)  # Admin context
         if not subscription:
-            logger.error("Subscription %s not found for account creation", subscription_id)
+            logger.error(f"Subscription {subscription_id} not found for account creation")
             return
         
         domain_name = subscription.get('domain_name', '')
@@ -8090,17 +8090,17 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
         service_type = subscription.get('service_type', 'hosting_only')
         user_id = subscription.get('user_id')
         
-        logger.info("🚀 Starting unified provisioning for subscription %s: %s, domain: %s", subscription_id, service_type, domain_name)
+        logger.info(f"🚀 Starting unified provisioning for subscription {subscription_id}: {service_type}, domain: {domain_name}")
         
         # Step 1: Handle domain registration for new domain bundles
         domain_registration_success = True
         if service_type == 'hosting_domain_bundle' and domain_name and '.' in domain_name:
             if not user_id:
-                logger.error("❌ Missing user_id for subscription %s, cannot register domain %s", subscription_id, domain_name)
+                logger.error(f"❌ Missing user_id for subscription {subscription_id}, cannot register domain {domain_name}")
                 await update_hosting_subscription_status(subscription_id, 'failed')
                 return
                 
-            logger.info("📝 Registering new domain: %s", domain_name)
+            logger.info(f"📝 Registering new domain: {domain_name}")
             domain_registration_success = await register_unified_domain(
                 domain_name=domain_name,
                 user_id=user_id,
@@ -8108,7 +8108,7 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
             )
             
             if not domain_registration_success:
-                logger.error("❌ Domain registration failed for %s, aborting provisioning", domain_name)
+                logger.error(f"❌ Domain registration failed for {domain_name}, aborting provisioning")
                 await update_hosting_subscription_status(subscription_id, 'failed')
                 return
         
@@ -8117,7 +8117,7 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
         cpanel = CPanelService()
         from utils.email_config import get_admin_email_for_domain
         
-        logger.info("🏠 Creating hosting account for domain: %s", domain_name)
+        logger.info(f"🏠 Creating hosting account for domain: {domain_name}")
         account_details = await cpanel.create_hosting_account(
             domain=domain_name,
             plan=plan_name,
@@ -8138,9 +8138,9 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
             # Step 4: Configure DNS for domains to point to hosting server
             if domain_name and '.' in domain_name:
                 if not user_id:
-                    logger.error("❌ Missing user_id for subscription %s, cannot configure DNS for domain %s", subscription_id, domain_name)
+                    logger.error(f"❌ Missing user_id for subscription {subscription_id}, cannot configure DNS for domain {domain_name}")
                 else:
-                    logger.info("🌐 Configuring DNS for domain: %s", domain_name)
+                    logger.info(f"🌐 Configuring DNS for domain: {domain_name}")
                     await configure_unified_domain_dns(domain_name, account_details, user_id)
             
             # Step 5: Update subscription status
@@ -8150,13 +8150,13 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
             # Step 6: Send notification to user
             await send_unified_hosting_notification(subscription, account_details, service_type)
             
-            logger.info("✅ Unified provisioning completed successfully for subscription %s", subscription_id)
+            logger.info(f"✅ Unified provisioning completed successfully for subscription {subscription_id}")
         else:
-            logger.error("❌ Failed to create hosting account for subscription %s", subscription_id)
+            logger.error(f"❌ Failed to create hosting account for subscription {subscription_id}")
             await update_hosting_subscription_status(subscription_id, 'failed')
             
     except Exception as e:
-        logger.error("Error in unified provisioning for subscription %s: %s", subscription_id, e)
+        logger.error(f"Error in unified provisioning for subscription {subscription_id}: {e}")
         # Update status to failed
         try:
             from database import update_hosting_subscription_status
@@ -8167,7 +8167,7 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
 async def register_unified_domain(domain_name: str, user_id: int, subscription_id: int) -> bool:
     """Register a new domain as part of unified hosting provisioning - FIXED: Create Cloudflare zone FIRST for nameservers"""
     try:
-        logger.info("🌐 Starting domain registration: %s for user %s", domain_name, user_id)
+        logger.info(f"🌐 Starting domain registration: {domain_name} for user {user_id}")
         
         # Step 1: Create Cloudflare DNS zone FIRST to get nameservers
         cloudflare = CloudflareService()
@@ -8182,16 +8182,16 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
         )
         
         if not intent_id:
-            logger.error("❌ Failed to create registration intent: %s", domain_name)
+            logger.error(f"❌ Failed to create registration intent: {domain_name}")
             return False
         
-        logger.info("🌐 Creating Cloudflare zone first to obtain nameservers for %s", domain_name)
+        logger.info(f"🌐 Creating Cloudflare zone first to obtain nameservers for {domain_name}")
         zone_result = await cloudflare.create_zone(domain_name, standalone=True)
         
         nameservers = None
         if zone_result and zone_result.get('success'):
             nameservers = zone_result['result'].get('name_servers', [])
-            logger.info("✅ Cloudflare zone created with nameservers: %s", nameservers)
+            logger.info(f"✅ Cloudflare zone created with nameservers: {nameservers}")
             
             # Save Cloudflare zone to database
             from database import save_cloudflare_zone
@@ -8202,7 +8202,7 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
                 status='active'
             )
         else:
-            logger.error("❌ Failed to create Cloudflare zone for %s", domain_name)
+            logger.error(f"❌ Failed to create Cloudflare zone for {domain_name}")
             # Clean up intent and return failure
             await update_intent_status(intent_id, 'failed')
             return False
@@ -8216,21 +8216,21 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
         
         # Verify method availability
         if not hasattr(openprovider, 'register_domain'):
-            logger.error("❌ OpenProvider service missing register_domain method")
-            logger.error("   Instance type: %s", type(openprovider))
+            logger.error(f"❌ OpenProvider service missing register_domain method")
+            logger.error(f"   Instance type: {type(openprovider)}")
             logger.error(f"   Available methods: {[method for method in dir(openprovider) if not method.startswith('_')]}")
             await update_intent_status(intent_id, 'failed')
             return False
         
-        logger.info("🌐 Registering domain %s with nameservers: %s (account: %s)", domain_name, nameservers, provider_account_id)
+        logger.info(f"🌐 Registering domain {domain_name} with nameservers: {nameservers} (account: {provider_account_id})")
         
         # Get or create a valid contact handle
         contact_handle = await openprovider.get_or_create_contact_handle()
         if not contact_handle:
-            logger.error("❌ Failed to get valid contact handle for domain registration: %s", domain_name)
+            logger.error(f"❌ Failed to get valid contact handle for domain registration: {domain_name}")
             return False
         
-        logger.info("✅ Using contact handle: %s", contact_handle)
+        logger.info(f"✅ Using contact handle: {contact_handle}")
         registration_result = await openprovider.register_domain(
             domain_name=domain_name,
             contact_handle=contact_handle,
@@ -8238,7 +8238,7 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
         )
         
         if not registration_result or not registration_result.get('success'):
-            logger.error("❌ Domain registration failed via OpenProvider: %s", domain_name)
+            logger.error(f"❌ Domain registration failed via OpenProvider: {domain_name}")
             await update_intent_status(intent_id, 'failed')
             return False
         
@@ -8255,25 +8255,25 @@ async def register_unified_domain(domain_name: str, user_id: int, subscription_i
             )
             
             if not domain_saved:
-                logger.error("❌ Failed to finalize domain registration: %s", domain_name)
+                logger.error(f"❌ Failed to finalize domain registration: {domain_name}")
                 await update_intent_status(intent_id, 'failed')
                 return False
         else:
-            logger.error("❌ No provider domain ID returned for %s", domain_name)
+            logger.error(f"❌ No provider domain ID returned for {domain_name}")
             await update_intent_status(intent_id, 'failed')
             return False
         
-        logger.info("✅ Domain registration completed successfully: %s with proper nameservers", domain_name)
+        logger.info(f"✅ Domain registration completed successfully: {domain_name} with proper nameservers")
         return True
         
     except Exception as e:
-        logger.error("❌ Error registering unified domain %s: %s", domain_name, e)
+        logger.error(f"❌ Error registering unified domain {domain_name}: {e}")
         return False
 
 async def configure_unified_domain_dns(domain_name: str, account_details: Dict, user_id: int):
     """Configure DNS for domains to point to our hosting server"""
     try:
-        logger.info("🔧 Configuring DNS for domain: %s", domain_name)
+        logger.info(f"🔧 Configuring DNS for domain: {domain_name}")
         
         # Check if domain uses Cloudflare and is accessible
         domain_status = await analyze_domain_status(domain_name, user_id)
@@ -8317,7 +8317,7 @@ async def configure_unified_domain_dns(domain_name: str, account_details: Dict, 
                         )
                         if result.get('success'):
                             old_ip = root_record.get('content', 'unknown')
-                            logger.info("✅ Updated root A record: %s -> %s", old_ip, server_ip)
+                            logger.info(f"✅ Updated root A record: {old_ip} -> {server_ip}")
                             records_updated += 1
                         else:
                             logger.warning(f"⚠️ Failed to update root A record: {result.get('errors', [])}")
@@ -8331,7 +8331,7 @@ async def configure_unified_domain_dns(domain_name: str, account_details: Dict, 
                             ttl=300
                         )
                         if result.get('success'):
-                            logger.info("✅ Created root A record -> %s", server_ip)
+                            logger.info(f"✅ Created root A record -> {server_ip}")
                             records_updated += 1
                         else:
                             logger.warning(f"⚠️ Failed to create root A record: {result.get('errors', [])}")
@@ -8349,7 +8349,7 @@ async def configure_unified_domain_dns(domain_name: str, account_details: Dict, 
                         )
                         if result.get('success'):
                             old_ip = www_record.get('content', 'unknown')
-                            logger.info("✅ Updated www A record: %s -> %s", old_ip, server_ip)
+                            logger.info(f"✅ Updated www A record: {old_ip} -> {server_ip}")
                             records_updated += 1
                         else:
                             logger.warning(f"⚠️ Failed to update www A record: {result.get('errors', [])}")
@@ -8363,12 +8363,12 @@ async def configure_unified_domain_dns(domain_name: str, account_details: Dict, 
                             ttl=300
                         )
                         if result.get('success'):
-                            logger.info("✅ Created www A record -> %s", server_ip)
+                            logger.info(f"✅ Created www A record -> {server_ip}")
                             records_updated += 1
                         else:
                             logger.warning(f"⚠️ Failed to create www A record: {result.get('errors', [])}")
                     
-                    logger.info("✅ DNS configuration completed for %s: %s A records updated/created -> %s", domain_name, records_updated, server_ip)
+                    logger.info(f"✅ DNS configuration completed for {domain_name}: {records_updated} A records updated/created -> {server_ip}")
                     
                     # CRITICAL: Sync all DNS records to database for dashboard display
                     try:
@@ -8376,18 +8376,18 @@ async def configure_unified_domain_dns(domain_name: str, account_details: Dict, 
                         all_records = await cloudflare.list_dns_records(zone_id)
                         if all_records:
                             await save_dns_records_to_db(domain_name, all_records)
-                            logger.info("💾 Synced %s DNS records to database for %s", len(all_records), domain_name)
+                            logger.info(f"💾 Synced {len(all_records)} DNS records to database for {domain_name}")
                     except Exception as sync_error:
-                        logger.warning("⚠️ DNS sync to database failed (non-blocking): %s", sync_error)
+                        logger.warning(f"⚠️ DNS sync to database failed (non-blocking): {sync_error}")
                 else:
-                    logger.warning("⚠️ No server IP available for DNS configuration of %s", domain_name)
+                    logger.warning(f"⚠️ No server IP available for DNS configuration of {domain_name}")
             else:
-                logger.warning("⚠️ Cloudflare zone not found for %s", domain_name)
+                logger.warning(f"⚠️ Cloudflare zone not found for {domain_name}")
         else:
-            logger.info("ℹ️ Domain %s requires manual DNS configuration (not using Cloudflare or not accessible)", domain_name)
+            logger.info(f"ℹ️ Domain {domain_name} requires manual DNS configuration (not using Cloudflare or not accessible)")
         
     except Exception as e:
-        logger.error("❌ Error configuring DNS for %s: %s", domain_name, e)
+        logger.error(f"❌ Error configuring DNS for {domain_name}: {e}")
 
 async def send_unified_hosting_notification(subscription: Dict, account_details: Dict, service_type: str = 'hosting_only'):
     """Send hosting account notification for unified flow"""
@@ -8405,7 +8405,7 @@ async def send_unified_hosting_notification(subscription: Dict, account_details:
         user_records = await execute_query("SELECT telegram_id FROM users WHERE id = %s", (user_id,))
         
         if not user_records:
-            logger.error("User %s not found for notification", user_id)
+            logger.error(f"User {user_id} not found for notification")
             return
         
         telegram_id = user_records[0]['telegram_id']
@@ -8452,10 +8452,10 @@ Welcome to professional hosting! 🏠"""
             parse_mode='HTML'
         )
         
-        logger.info("✅ Hosting notification sent to user %s", telegram_id)
+        logger.info(f"✅ Hosting notification sent to user {telegram_id}")
         
     except Exception as e:
-        logger.error("Error sending unified hosting notification: %s", e)
+        logger.error(f"Error sending unified hosting notification: {e}")
 
 # HOSTING BUNDLE CONTEXT UTILITIES
 # ================================================================
@@ -8487,7 +8487,7 @@ async def is_hosting_bundle_context(user_id: int, domain_name: str) -> bool:
         return False
         
     except Exception as e:
-        logger.error("❌ Error checking hosting bundle context for %s: %s", domain_name, e)
+        logger.error(f"❌ Error checking hosting bundle context for {domain_name}: {e}")
         return False
 
 # TEXT INPUT HANDLING FOR UNIFIED FLOW
@@ -8567,7 +8567,7 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
                         estimated_price=plan.get('period_price', 0),
                         service_type=HOSTING_SERVICE_TYPES['DOMAIN_BUNDLE']  # Database-backed context
                     )
-                    logger.info("🏠 Created hosting bundle intent %s for %s", intent_id, domain_name)
+                    logger.info(f"🏠 Created hosting bundle intent {intent_id} for {domain_name}")
                 
                 # Use the DummyQuery class defined at function scope
                 dummy_query = DummyQuery(user, message)
@@ -8600,11 +8600,11 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
                     estimated_price=plan.get('period_price', 0),
                     service_type=HOSTING_SERVICE_TYPES['EXISTING_DOMAIN']  # Database-backed context
                 )
-                logger.info("🏠 Created existing domain hosting intent %s for %s", intent_id, domain_name)
+                logger.info(f"🏠 Created existing domain hosting intent {intent_id} for {domain_name}")
             
             # CRITICAL FIX: Skip OpenProvider domain analysis for existing domain hosting
             # For existing domains, we don't need to check availability - go directly to hosting
-            logger.info("🏠 HOSTING CONTEXT: Skipping domain availability check for existing domain: %s", domain_name)
+            logger.info(f"🏠 HOSTING CONTEXT: Skipping domain availability check for existing domain: {domain_name}")
             
             # Create complete domain status for existing domain hosting (no OpenProvider call)
             domain_status = {
@@ -8632,10 +8632,10 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
             context.user_data.pop('unified_flow', None)
             context.user_data.pop('unified_plan_id', None)
         
-        logger.info("Unified flow text input processed: %s for plan %s", domain_name, plan_id)
+        logger.info(f"Unified flow text input processed: {domain_name} for plan {plan_id}")
         
     except Exception as e:
-        logger.error("Error handling unified text input: %s", e)
+        logger.error(f"Error handling unified text input: {e}")
         user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
         await message.reply_text(f"❌ {t('errors.domain_processing_error', user_lang)}")
 
@@ -8737,7 +8737,7 @@ async def show_my_hosting(query):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing user hosting: %s", e)
+        logger.error(f"Error showing user hosting: {e}")
         await safe_edit_message(query, "❌ Error loading hosting information. Please try again.")
 
 async def show_plan_details(query, plan_id):
@@ -8767,7 +8767,7 @@ async def show_plan_details(query, plan_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing plan details: %s", e)
+        logger.error(f"Error showing plan details: {e}")
         await safe_edit_message(query, "❌ Error loading plan details. Please try again.")
 
 async def start_hosting_purchase(query, plan_id):
@@ -8809,7 +8809,7 @@ Next: Choose your domain option
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error starting hosting purchase: %s", e)
+        logger.error(f"Error starting hosting purchase: {e}")
         await safe_edit_message(query, "❌ Error processing purchase. Please try again.")
 
 async def collect_hosting_domain(query, context, plan_id):
@@ -8859,7 +8859,7 @@ Plan: {plan_name} (${monthly_price}/month)
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error collecting hosting domain: %s", e)
+        logger.error(f"Error collecting hosting domain: {e}")
         await safe_edit_message(query, "❌ Error processing domain selection. Please try again.")
 
 async def start_hosting_domain_search(query, context, plan_id):
@@ -8905,10 +8905,10 @@ Enter domain name to search:
         
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
-        logger.info("User %s starting domain search for hosting plan %s - awaiting text input", query.from_user.id, plan_id)
+        logger.info(f"User {query.from_user.id} starting domain search for hosting plan {plan_id} - awaiting text input")
         
     except Exception as e:
-        logger.error("Error starting hosting domain search: %s", e)
+        logger.error(f"Error starting hosting domain search: {e}")
         await safe_edit_message(query, "❌ Error starting domain search. Please try again.")
 
 async def request_existing_domain(query, context, plan_id):
@@ -8955,10 +8955,10 @@ Enter your existing domain name:
         
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
-        logger.info("User %s requesting existing domain for hosting plan %s - awaiting text input", query.from_user.id, plan_id)
+        logger.info(f"User {query.from_user.id} requesting existing domain for hosting plan {plan_id} - awaiting text input")
         
     except Exception as e:
-        logger.error("Error requesting existing domain: %s", e)
+        logger.error(f"Error requesting existing domain: {e}")
         await safe_edit_message(query, "❌ Error processing existing domain request. Please try again.")
 
 async def handle_hosting_domain_input(update: Update, context: ContextTypes.DEFAULT_TYPE, domain_text: str):
@@ -9005,7 +9005,7 @@ async def handle_hosting_domain_input(update: Update, context: ContextTypes.DEFA
             context.user_data.pop('plan_price', None)
         
     except Exception as e:
-        logger.error("Error handling hosting domain input: %s", e)
+        logger.error(f"Error handling hosting domain input: {e}")
         if message:
             user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
             await message.reply_text(f"❌ {t('errors.domain_input_error', user_lang)}")
@@ -9069,7 +9069,7 @@ Ready to proceed?
             await searching_msg.edit_text(t('hosting.domain_unavailable', user_lang, domain=domain_name))
     
     except Exception as e:
-        logger.error("Error handling new domain with hosting: %s", e)
+        logger.error(f"Error handling new domain with hosting: {e}")
         if message:
             await message.reply_text(t('errors.domain_availability_check_failed', user_lang))
 
@@ -9114,7 +9114,7 @@ async def handle_existing_domain_with_hosting(update: Update, context: ContextTy
             await checking_msg.edit_text(message_text, reply_markup=reply_markup)
     
     except Exception as e:
-        logger.error("Error handling existing domain with hosting: %s", e)
+        logger.error(f"Error handling existing domain with hosting: {e}")
         if message:
             await message.reply_text(t('errors.existing_domain_processing_failed', user_lang))
 
@@ -9167,7 +9167,7 @@ async def confirm_hosting_purchase(query, plan_id, domain_name=None):
         if intent_id:
             # Show payment options for the new intent
             await show_hosting_payment_options_with_intent(query, intent_id, monthly_price, plan_name, hosting_domain)
-            logger.info("✅ Hosting provision intent %s created: User %s, Plan %s, Domain %s", intent_id, user.id, plan_name, hosting_domain)
+            logger.info(f"✅ Hosting provision intent {intent_id} created: User {user.id}, Plan {plan_name}, Domain {hosting_domain}")
             return
         else:
             # Intent creation failed
@@ -9181,12 +9181,12 @@ async def confirm_hosting_purchase(query, plan_id, domain_name=None):
                 [InlineKeyboardButton(t("buttons.back_to_plans", user_lang), callback_data="hosting_plans")]
             ]
             
-            logger.error("❌ Failed to create hosting provision intent: User %s, Plan %s, Domain %s", user.id, plan_name, hosting_domain)
+            logger.error(f"❌ Failed to create hosting provision intent: User {user.id}, Plan {plan_name}, Domain {hosting_domain}")
             reply_markup = InlineKeyboardMarkup(keyboard)
             await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error confirming hosting purchase: %s", e)
+        logger.error(f"Error confirming hosting purchase: {e}")
         await safe_edit_message(query, t('errors.purchase_confirmation_failed', user_lang))
 
 async def handle_notify_ready(query, plan_id):
@@ -9216,10 +9216,10 @@ async def handle_notify_ready(query, plan_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
         # Log notification request
-        logger.info("📧 Notification requested: User %s for plan %s", user.id, plan_name)
+        logger.info(f"📧 Notification requested: User {user.id} for plan {plan_name}")
         
     except Exception as e:
-        logger.error("Error handling notify ready: %s", e)
+        logger.error(f"Error handling notify ready: {e}")
         await safe_edit_message(query, "❌ Error registering notification. Please try again.")
 
 # Placeholder functions for missing handlers
@@ -9263,7 +9263,7 @@ async def start_domain_registration(query, domain_name):
         await show_payment_options(query, domain_name, create_price, currency)
         
     except Exception as e:
-        logger.error("Error starting domain registration for %s: %s", domain_name, e)
+        logger.error(f"Error starting domain registration for {domain_name}: {e}")
         await safe_edit_message(query, f"❌ Error\n\nAn error occurred. Please try again.")
 
 async def show_payment_options(query, domain_name, price, currency):
@@ -9309,7 +9309,7 @@ Choose your payment method:
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing payment options: %s", e)
+        logger.error(f"Error showing payment options: {e}")
         
         # Enhanced error handling for network timeouts vs other errors
         if "ReadError" in str(e) or "NetworkError" in str(e) or "httpx" in str(e):
@@ -9329,7 +9329,7 @@ Payment options available. Retrying...
                 await safe_edit_message(query, simplified_message, reply_markup=reply_markup)
                 return
             except Exception as retry_error:
-                logger.debug("Retry also failed: %s", retry_error)
+                logger.debug(f"Retry also failed: {retry_error}")
         
         await safe_edit_message(query, "Error\n\nCould not load payment options.\n\nPlease try again.")
 
@@ -9407,7 +9407,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
             await safe_edit_message(query, "Order Error\n\nCould not create domain order. Please try again.")
             return
         
-        logger.info("✅ Created domain order with ID: %s in domain_orders table (tracking ID: %s)", integer_order_id, order_id)
+        logger.info(f"✅ Created domain order with ID: {integer_order_id} in domain_orders table (tracking ID: {order_id})")
         
         # Step 3: Update intent status to payment_pending
         await update_intent_status(intent_id, 'payment_pending', {
@@ -9461,7 +9461,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
         logger.info(f"Payment invoice generated for {domain_name}: {payment_result['address']}")
         
     except Exception as e:
-        logger.error("Error processing crypto payment: %s", e)
+        logger.error(f"Error processing crypto payment: {e}")
         await safe_edit_message(query, "Payment Error\n\nCould not process payment. Please try again.")
 
 # Removed check_payment_status function - payments are now processed automatically via webhooks
@@ -9469,7 +9469,7 @@ async def process_crypto_payment(query, crypto_type, domain_name, price, currenc
 async def process_domain_registration(query, domain_name, order):
     """Phase 5-7: Complete domain registration after payment confirmation - ORCHESTRATOR VERSION"""
     try:
-        logger.info("🎯 HANDLERS: Routing domain registration through orchestrator for %s", domain_name)
+        logger.info(f"🎯 HANDLERS: Routing domain registration through orchestrator for {domain_name}")
         
         # Get user record for orchestrator
         user_record = await get_or_create_user(query.from_user.id)
@@ -9504,12 +9504,12 @@ async def process_domain_registration(query, domain_name, order):
         
         # Handle orchestrator results
         if orchestrator_result.get('status') == 'already_processed':
-            logger.info("🚫 HANDLERS: Domain registration already processed for %s", domain_name)
+            logger.info(f"🚫 HANDLERS: Domain registration already processed for {domain_name}")
             await safe_edit_message(query, f"ℹ️ Registration Already Complete\n\nDomain {domain_name} has already been processed.")
             return
         
         elif orchestrator_result.get('status') == 'duplicate_prevented':
-            logger.info("🚫 HANDLERS: Duplicate domain registration prevented for %s", domain_name)
+            logger.info(f"🚫 HANDLERS: Duplicate domain registration prevented for {domain_name}")
             await safe_edit_message(query, f"ℹ️ Registration In Progress\n\nDomain {domain_name} is already being processed.")
             return
         
@@ -9521,14 +9521,14 @@ async def process_domain_registration(query, domain_name, order):
             return
         
         elif orchestrator_result.get('success'):
-            logger.info("✅ HANDLERS: Domain registration completed via orchestrator: %s", domain_name)
+            logger.info(f"✅ HANDLERS: Domain registration completed via orchestrator: {domain_name}")
             # Orchestrator already sent success notification with buttons
         else:
-            logger.warning("⚠️ HANDLERS: Unexpected orchestrator result for %s: %s", domain_name, orchestrator_result)
+            logger.warning(f"⚠️ HANDLERS: Unexpected orchestrator result for {domain_name}: {orchestrator_result}")
             await safe_edit_message(query, f"⚠️ Registration Status Unknown\n\nPlease check your domains list.")
         
     except Exception as e:
-        logger.error("❌ HANDLERS: Error during orchestrated domain registration for %s: %s", domain_name, e)
+        logger.error(f"❌ HANDLERS: Error during orchestrated domain registration for {domain_name}: {e}")
         await safe_edit_message(query, f"❌ Registration Error\n\nAn error occurred during registration.")
         
         # Update order status and trigger refund on exception
@@ -9536,7 +9536,7 @@ async def process_domain_registration(query, domain_name, order):
             await execute_update("UPDATE domain_orders SET status = 'failed' WHERE id = %s", (order['id'],))
             await handle_registration_failure(order)
         except Exception as cleanup_error:
-            logger.error("❌ HANDLERS: Error during cleanup for %s: %s", domain_name, cleanup_error)
+            logger.error(f"❌ HANDLERS: Error during cleanup for {domain_name}: {cleanup_error}")
 
 async def handle_registration_failure(order):
     """Handle automatic refund for failed domain registrations"""
@@ -9554,7 +9554,7 @@ async def handle_registration_failure(order):
             logger.info(f"ℹ️ No wallet payment to refund for order: {order['domain_name']}")
             
     except Exception as e:
-        logger.error("Error handling registration failure refund: %s", e)
+        logger.error(f"Error handling registration failure refund: {e}")
 
 async def process_wallet_payment(query, domain_name, price, currency):
     """Process payment using wallet balance - OPTIMIZED with parallel DB queries"""
@@ -9635,7 +9635,7 @@ async def process_wallet_payment(query, domain_name, price, currency):
             await finalize_wallet_reservation(hold_transaction_id, success=False)
         
     except Exception as e:
-        logger.error("Error processing wallet payment: %s", e)
+        logger.error(f"Error processing wallet payment: {e}")
         await safe_edit_message(query, 
             "❌ Payment Error\n\nAn error occurred processing your payment. Please try again."
         )
@@ -9752,7 +9752,7 @@ async def show_wallet_transaction_history(query):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing transaction history: %s", e)
+        logger.error(f"Error showing transaction history: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not load transaction history.")
 
 async def process_wallet_crypto_deposit(query, crypto_type, amount_usd=None):
@@ -9897,10 +9897,10 @@ Address: {format_inline_code(payment_result['address'])}
         
         await safe_edit_message(query, payment_message, reply_markup=final_keyboard, parse_mode='HTML')
         
-        logger.info("💰 Wallet deposit payment generated for user %s: $%s USD = %s (with buffer)", user.id, deposit_amount, crypto_display)
+        logger.info(f"💰 Wallet deposit payment generated for user {user.id}: ${deposit_amount} USD = {crypto_display} (with buffer)")
         
     except Exception as e:
-        logger.error("Error processing wallet crypto deposit: %s", e)
+        logger.error(f"Error processing wallet crypto deposit: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not process deposit request.")
 
 
@@ -10002,13 +10002,13 @@ async def show_wallet_qr_code(query, order_id):
             WHERE o.uuid_id = %s AND o.user_id = %s
         """, (order_id, user_record['id']))
         
-        logger.info("🔍 QR: RDP query returned %s orders for UUID: %s", len(rdp_orders) if rdp_orders else 0, order_id)
+        logger.info(f"🔍 QR: RDP query returned {len(rdp_orders) if rdp_orders else 0} orders for UUID: {order_id}")
         if rdp_orders:
             logger.info(f"🔍 QR: RDP order details - payment_address: {rdp_orders[0].get('payment_address')}, has crypto_currency: {bool(rdp_orders[0].get('crypto_currency'))}")
         
         if rdp_orders and rdp_orders[0].get('payment_address'):
             # Handle RDP payment QR code (only if payment address exists)
-            logger.info("✅ QR: Found RDP order with payment address for UUID: %s", order_id)
+            logger.info(f"✅ QR: Found RDP order with payment address for UUID: {order_id}")
             await _show_rdp_payment_qr(query, order_id, rdp_orders[0])
             return
         
@@ -10035,7 +10035,7 @@ async def show_wallet_qr_code(query, order_id):
             
             if domain_orders:
                 tracking_id = domain_orders[0]['blockbee_order_id']
-                logger.info("🔍 QR: Looking up payment intent using tracking ID: %s", tracking_id)
+                logger.info(f"🔍 QR: Looking up payment intent using tracking ID: {tracking_id}")
                 
                 # Try to find payment intent using the tracking ID
                 payment_intents = await execute_query(
@@ -10044,7 +10044,7 @@ async def show_wallet_qr_code(query, order_id):
                 )
                 
                 if payment_intents:
-                    logger.info("✅ QR: Found payment intent via tracking ID lookup")
+                    logger.info(f"✅ QR: Found payment intent via tracking ID lookup")
                     await _show_domain_payment_qr(query, tracking_id, payment_intents[0])
                     return
                     
@@ -10056,7 +10056,7 @@ async def show_wallet_qr_code(query, order_id):
         await safe_edit_message(query, "❌ Payment Not Found\n\nPayment order not found.")
         
     except Exception as e:
-        logger.error("Error showing QR code: %s", e)
+        logger.error(f"Error showing QR code: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not generate QR code.")
 
 async def _show_wallet_deposit_qr(query, order_id, deposit):
@@ -10090,7 +10090,7 @@ async def _show_wallet_deposit_qr(query, order_id, deposit):
             else:
                 crypto_display = f"{crypto_amount:.8f} {crypto_currency}"
         except Exception as e:
-            logger.warning("Could not calculate crypto amount for QR: %s", e)
+            logger.warning(f"Could not calculate crypto amount for QR: {e}")
     
     # Generate QR code for the payment address
     qr = QRCode(version=1, box_size=10, border=5)
@@ -10150,11 +10150,11 @@ Address: {format_inline_code(payment_address)}
         try:
             await query.message.delete()
         except Exception as delete_error:
-            logger.warning("Could not delete original wallet QR message: %s", delete_error)
+            logger.warning(f"Could not delete original wallet QR message: {delete_error}")
             # Continue - QR was sent successfully, deletion failure is not critical
             
     except asyncio.TimeoutError:
-        logger.warning("Wallet QR code upload timed out for order %s", order_id)
+        logger.warning(f"Wallet QR code upload timed out for order {order_id}")
         # Fallback: Edit original message with text-only payment info
         if usd_amount == 0:
             fallback_message = f"""⚠️ QR Code Loading...
@@ -10194,7 +10194,7 @@ QR code generation timed out, but you can still copy the address above."""
         await safe_edit_message(query, fallback_message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error generating wallet QR code for order %s: %s", order_id, e)
+        logger.error(f"Error generating wallet QR code for order {order_id}: {e}")
         # Fallback: Edit original message with text-only payment info
         if usd_amount == 0:
             fallback_message = f"""❌ QR Code Unavailable
@@ -10286,11 +10286,11 @@ async def _show_domain_payment_qr(query, order_id, payment_intent):
         try:
             await query.message.delete()
         except Exception as delete_error:
-            logger.warning("Could not delete original QR message: %s", delete_error)
+            logger.warning(f"Could not delete original QR message: {delete_error}")
             # Continue - QR was sent successfully, deletion failure is not critical
             
     except asyncio.TimeoutError:
-        logger.warning("QR code upload timed out for order %s", order_id)
+        logger.warning(f"QR code upload timed out for order {order_id}")
         # Fallback: Edit original message with text-only payment info
         fallback_message = f"""⚠️ QR Code Loading...
 
@@ -10308,7 +10308,7 @@ QR code generation timed out, but you can still copy the address above."""
         await safe_edit_message(query, fallback_message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error generating QR code for order %s: %s", order_id, e)
+        logger.error(f"Error generating QR code for order {order_id}: {e}")
         # Fallback: Edit original message with text-only payment info
         fallback_message = f"""❌ QR Code Unavailable
 
@@ -10399,11 +10399,11 @@ async def _show_rdp_payment_qr(query, order_id, rdp_order):
         try:
             await query.message.delete()
         except Exception as delete_error:
-            logger.warning("Could not delete original RDP QR message: %s", delete_error)
+            logger.warning(f"Could not delete original RDP QR message: {delete_error}")
             # Continue - QR was sent successfully, deletion failure is not critical
             
     except asyncio.TimeoutError:
-        logger.warning("RDP QR code upload timed out for order %s", order_id)
+        logger.warning(f"RDP QR code upload timed out for order {order_id}")
         # Fallback: Edit original message with text-only payment info
         fallback_message = f"""⚠️ QR Code Loading...
 
@@ -10422,7 +10422,7 @@ QR code generation timed out, but you can still copy the address above."""
         await safe_edit_message(query, fallback_message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error generating RDP QR code for order %s: %s", order_id, e)
+        logger.error(f"Error generating RDP QR code for order {order_id}: {e}")
         # Fallback: Edit original message with text-only payment info
         fallback_message = f"""❌ QR Code Unavailable
 
@@ -10469,10 +10469,10 @@ You can start a new deposit anytime from your wallet.
         
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
-        logger.info("💰 Wallet deposit cancelled by user %s: %s", user.id, order_id)
+        logger.info(f"💰 Wallet deposit cancelled by user {user.id}: {order_id}")
         
     except Exception as e:
-        logger.error("Error cancelling wallet deposit: %s", e)
+        logger.error(f"Error cancelling wallet deposit: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not cancel deposit.")
 
 async def handle_wallet_deposit_from_qr(query):
@@ -10512,7 +10512,7 @@ Select deposit amount:
         await query.message.reply_text(message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error handling wallet deposit from QR: %s", e)
+        logger.error(f"Error handling wallet deposit from QR: {e}")
         # Fallback: just send a simple message
         await query.message.reply_text("❌ Error loading deposit options. Please try again.")
 
@@ -10557,10 +10557,10 @@ You can start a new deposit anytime from your wallet.
         # Send new message instead of editing
         await query.message.reply_text(message, reply_markup=reply_markup)
         
-        logger.info("💰 Wallet deposit cancelled by user %s: %s", user.id, order_id)
+        logger.info(f"💰 Wallet deposit cancelled by user {user.id}: {order_id}")
         
     except Exception as e:
-        logger.error("Error cancelling wallet deposit from QR: %s", e)
+        logger.error(f"Error cancelling wallet deposit from QR: {e}")
         # Fallback: just send a simple message
         user_lang = await resolve_user_language(user.id, user.language_code) if user else 'en'
         await query.message.reply_text(f"❌ {t('errors.deposit_cancel_error', user_lang)}")
@@ -10578,7 +10578,7 @@ async def back_to_wallet_payment(query, order_id):
         await show_wallet_deposit_options(query)
         
     except Exception as e:
-        logger.error("Error returning to wallet payment: %s", e)
+        logger.error(f"Error returning to wallet payment: {e}")
         # Delete QR and show crypto selection on error too
         try:
             await query.message.delete()
@@ -10620,13 +10620,13 @@ async def handle_qr_back_to_payment(query, domain_name):
                 )
                 return
         except Exception as intent_error:
-            logger.warning("Could not check hosting intent for %s: %s", domain_name, intent_error)
+            logger.warning(f"Could not check hosting intent for {domain_name}: {intent_error}")
         
         # Fallback to domain-only registration flow
         await start_domain_registration(query, domain_name)
         
     except Exception as e:
-        logger.error("Error handling QR back to payment for %s: %s", domain_name, e)
+        logger.error(f"Error handling QR back to payment for {domain_name}: {e}")
         # If deletion fails, try to continue anyway
         try:
             await start_domain_registration(query, domain_name)
@@ -10643,7 +10643,7 @@ async def handle_qr_cancel_order(query):
         await show_search_interface(query)
         
     except Exception as e:
-        logger.error("Error handling QR cancel order: %s", e)
+        logger.error(f"Error handling QR cancel order: {e}")
         # If deletion fails, try to continue anyway
         try:
             await show_search_interface(query)
@@ -10696,7 +10696,7 @@ async def check_wallet_deposit_status(query, order_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error checking wallet deposit status: %s", e)
+        logger.error(f"Error checking wallet deposit status: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not check deposit status.")
 
 async def show_domain_management(query, domain_id):
@@ -10725,16 +10725,16 @@ async def handle_dns_callback(query, context, callback_data):
         
         # Parse callback: dns:{domain}:{action}[:type][:id][:page]
         parts = callback_data.split(':')
-        logger.info("DNS callback parts: %s", parts)
+        logger.info(f"DNS callback parts: {parts}")
         
         if len(parts) < 3:
-            logger.warning("Invalid DNS callback - insufficient parts: %s", callback_data)
+            logger.warning(f"Invalid DNS callback - insufficient parts: {callback_data}")
             await safe_edit_message(query, "❌ Invalid DNS Action\n\nPlease try again.")
             return
         
         domain = parts[1]
         action = parts[2]
-        logger.info("DNS action parsed - domain: %s, action: %s", domain, action)
+        logger.info(f"DNS action parsed - domain: {domain}, action: {action}")
         
         # Route to appropriate handler
         if action == "view":
@@ -10808,7 +10808,7 @@ async def handle_dns_callback(query, context, callback_data):
             await safe_edit_message(query, "❌ Unknown DNS Action\n\nPlease try again.")
             
     except Exception as e:
-        logger.error("Error handling DNS callback %s: %s", callback_data, e)
+        logger.error(f"Error handling DNS callback {callback_data}: {e}")
         await safe_edit_message(query, "❌ DNS Error\n\nCould not process action. Please try again.")
 
 async def handle_setup_dns_zone(query, context, domain_name):
@@ -10860,7 +10860,7 @@ async def handle_setup_dns_zone(query, context, domain_name):
             await safe_edit_message(query, message, reply_markup=reply_markup)
             
     except Exception as e:
-        logger.error("Error setting up DNS zone for %s: %s", domain_name, e)
+        logger.error(f"Error setting up DNS zone for {domain_name}: {e}")
         import traceback
         traceback.print_exc()
         
@@ -10915,9 +10915,9 @@ async def show_dns_dashboard(query, domain_name):
         if not nameservers:
             zone_info = await cloudflare.get_zone_info(zone_id)
             nameservers = zone_info.get('name_servers', []) if zone_info else []
-            logger.info("Using Cloudflare API nameservers for %s (no stored nameservers found)", domain_name)
+            logger.info(f"Using Cloudflare API nameservers for {domain_name} (no stored nameservers found)")
         else:
-            logger.info("Using stored nameservers for %s: %s", domain_name, nameservers)
+            logger.info(f"Using stored nameservers for {domain_name}: {nameservers}")
         
         # Detect nameserver provider and format display
         provider_type, provider_name = detect_nameserver_provider(nameservers)
@@ -10958,16 +10958,16 @@ async def show_dns_dashboard(query, domain_name):
                         'id': db_record.get('cloudflare_record_id', ''),
                         'proxied': False  # Default, can be enhanced later
                     })
-                logger.info("📦 DNS DASHBOARD: Using %s records from database for %s", len(dns_records), domain_name)
+                logger.info(f"📦 DNS DASHBOARD: Using {len(dns_records)} records from database for {domain_name}")
             else:
                 # Database miss - fall back to Cloudflare API
-                logger.info("🔄 DNS DASHBOARD: Database empty, fetching from Cloudflare API for %s", domain_name)
+                logger.info(f"🔄 DNS DASHBOARD: Database empty, fetching from Cloudflare API for {domain_name}")
                 dns_records = await cloudflare.list_dns_records(zone_id)
                 
                 # Step 3: Save API data to database for future lookups
                 if dns_records:
                     await save_dns_records_to_db(domain_name, dns_records)
-                    logger.info("💾 DNS DASHBOARD: Saved %s records to database for %s", len(dns_records), domain_name)
+                    logger.info(f"💾 DNS DASHBOARD: Saved {len(dns_records)} records to database for {domain_name}")
             
             # Count records by type and show ALL records (not just preview)
             for record in dns_records:
@@ -11027,7 +11027,7 @@ async def show_dns_dashboard(query, domain_name):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing DNS dashboard for %s: %s", domain_name, e)
+        logger.error(f"Error showing DNS dashboard for {domain_name}: {e}")
         error_message = t('dns.dashboard_error', user_lang, domain=domain_name, error=str(e)[:100])
         await safe_edit_message(query, error_message)
 
@@ -11129,7 +11129,7 @@ Please type the IP address:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -11174,7 +11174,7 @@ async def show_dns_record_list(query, domain, page=1):
                     'id': db_record.get('cloudflare_record_id', ''),
                     'proxied': False  # Default, can be enhanced later
                 })
-            logger.info("📦 DNS RECORD LIST: Using %s records from database for %s", len(all_records), domain)
+            logger.info(f"📦 DNS RECORD LIST: Using {len(all_records)} records from database for {domain}")
         else:
             # Database miss - fall back to Cloudflare API
             cf_zone = await get_cloudflare_zone(domain)
@@ -11182,14 +11182,14 @@ async def show_dns_record_list(query, domain, page=1):
                 await safe_edit_message(query, t('domain.dns_unavailable', user_lang, domain=domain))
                 return
             
-            logger.info("🔄 DNS RECORD LIST: Database empty, fetching from Cloudflare API for %s", domain)
+            logger.info(f"🔄 DNS RECORD LIST: Database empty, fetching from Cloudflare API for {domain}")
             cloudflare = CloudflareService()
             all_records = await cloudflare.list_dns_records(cf_zone['cf_zone_id'])
             
             # Step 3: Save API data to database for future lookups
             if all_records:
                 await save_dns_records_to_db(domain, all_records)
-                logger.info("💾 DNS RECORD LIST: Saved %s records to database for %s", len(all_records), domain)
+                logger.info(f"💾 DNS RECORD LIST: Saved {len(all_records)} records to database for {domain}")
         
         # Paginate records (8 per page)
         per_page = 8
@@ -11251,7 +11251,7 @@ async def show_dns_record_list(query, domain, page=1):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing DNS record list: %s", e)
+        logger.error(f"Error showing DNS record list: {e}")
         await safe_edit_message(query, t('dns.load_records_error', user_lang))
 
 async def show_dns_record_detail(query, domain, record_id):
@@ -11291,7 +11291,7 @@ async def show_dns_record_detail(query, domain, record_id):
                 'id': db_record.get('cloudflare_record_id', ''),
                 'proxied': False  # Default, can be enhanced later
             }
-            logger.info("📦 DNS RECORD DETAIL: Using record %s... from database for %s", record_id[, domain)
+            logger.info(f"📦 DNS RECORD DETAIL: Using record {record_id[:8]}... from database for {domain}")
         else:
             # Database miss - fall back to Cloudflare API
             cf_zone = await get_cloudflare_zone(domain)
@@ -11299,7 +11299,7 @@ async def show_dns_record_detail(query, domain, record_id):
                 await safe_edit_message(query, t('domain.dns_unavailable', user_lang, domain=domain))
                 return
             
-            logger.info("🔄 DNS RECORD DETAIL: Database miss, fetching from Cloudflare API for %s", domain)
+            logger.info(f"🔄 DNS RECORD DETAIL: Database miss, fetching from Cloudflare API for {domain}")
             cloudflare = CloudflareService()
             zone_id = cf_zone['cf_zone_id']
             record = await cloudflare.get_dns_record(zone_id, record_id)
@@ -11313,7 +11313,7 @@ async def show_dns_record_detail(query, domain, record_id):
             all_records = await cloudflare.list_dns_records(zone_id)
             if all_records:
                 await save_dns_records_to_db(domain, all_records)
-                logger.info("💾 DNS RECORD DETAIL: Saved %s records to database for %s", len(all_records), domain)
+                logger.info(f"💾 DNS RECORD DETAIL: Saved {len(all_records)} records to database for {domain}")
         
         # Format record details
         record_type = record.get('type', 'Unknown')
@@ -11370,7 +11370,7 @@ async def show_dns_record_detail(query, domain, record_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing DNS record detail for %s/%s: %s", domain, record_id, e)
+        logger.error(f"Error showing DNS record detail for {domain}/{record_id}: {e}")
         error_message = t('dns.record_load_error', user_lang, id=f"<code>{escape_html(record_id[:8])}...</code>", domain=f"<code>{escape_html(domain)}</code>", error=escape_html(str(e)[:100]))
         await safe_edit_message(query, error_message)
 
@@ -11450,7 +11450,7 @@ async def start_dns_edit_wizard(query, context, domain, record_id):
             await safe_edit_message(query, f"✏️ <b>Edit {escape_html(record_type)} Record</b>\n\nEditing {escape_html(record_type)} records is not yet supported. You can delete and recreate the record instead.")
             
     except Exception as e:
-        logger.error("Error starting DNS edit wizard: %s", e)
+        logger.error(f"Error starting DNS edit wizard: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not start edit wizard.")
 
 async def confirm_dns_delete(query, context, domain, record_id):
@@ -11516,7 +11516,7 @@ async def confirm_dns_delete(query, context, domain, record_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error confirming DNS record deletion: %s", e)
+        logger.error(f"Error confirming DNS record deletion: {e}")
         await safe_edit_message(query, t('dns.load_record_error', user_lang))
 
 async def execute_dns_delete(query, context, domain, record_id):
@@ -11563,9 +11563,9 @@ async def execute_dns_delete(query, context, domain, record_id):
             try:
                 from database import delete_single_dns_record_from_db
                 await delete_single_dns_record_from_db(record_id)
-                logger.debug("✅ DNS record removed from database: %s", record_id)
+                logger.debug(f"✅ DNS record removed from database: {record_id}")
             except Exception as db_err:
-                logger.warning("Failed to remove DNS record from database: %s", db_err)
+                logger.warning(f"Failed to remove DNS record from database: {db_err}")
                 # Don't fail - Cloudflare deletion succeeded
             
             # Success message
@@ -11590,7 +11590,7 @@ async def execute_dns_delete(query, context, domain, record_id):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error executing DNS record deletion: %s", e)
+        logger.error(f"Error executing DNS record deletion: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not delete DNS record. Please try again.")
 
 def clear_dns_wizard_custom_subdomain_state(context):
@@ -11770,7 +11770,7 @@ async def handle_dns_wizard_callback(query, context, callback_data):
                     wizard_state['data']['priority'] = int(value)
                     context.user_data['dns_wizard'] = wizard_state
                 except (ValueError, TypeError):
-                    logger.warning("Invalid priority value in MX wizard: %s", value)
+                    logger.warning(f"Invalid priority value in MX wizard: {value}")
             
             # Pass the most current state directly
             current_state = context.user_data.get('dns_wizard', wizard_state)
@@ -11780,7 +11780,7 @@ async def handle_dns_wizard_callback(query, context, callback_data):
             await safe_edit_message(query, create_error_message(f"Unknown record type: {record_type}"))
             
     except Exception as e:
-        logger.error("Error in DNS wizard callback: %s", e)
+        logger.error(f"Error in DNS wizard callback: {e}")
         await safe_edit_message(query, "❌ <b>Wizard error</b>\n\nPlease try again.")
 
 async def continue_a_record_wizard(query, context, wizard_state):
@@ -11925,7 +11925,7 @@ Type your subdomain:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12078,9 +12078,9 @@ async def create_dns_record_from_wizard(query, context, wizard_state):
             try:
                 from database import update_single_dns_record_in_db
                 await update_single_dns_record_in_db(domain, record_info)
-                logger.info("✅ DNS record saved to database: %s %s", record_type, name_display)
+                logger.info(f"✅ DNS record saved to database: {record_type} {name_display}")
             except Exception as db_err:
-                logger.warning("Failed to save DNS record to database: %s", db_err)
+                logger.warning(f"Failed to save DNS record to database: {db_err}")
                 # Don't fail the operation - Cloudflare creation succeeded
             
             if record_type == "A":
@@ -12142,7 +12142,7 @@ This {record_type} record already exists in your DNS.
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error creating DNS record: %s", e)
+        logger.error(f"Error creating DNS record: {e}")
         # Clear wizard state and custom subdomain flags on error
         if 'dns_wizard' in context.user_data:
             del context.user_data['dns_wizard']
@@ -12194,7 +12194,7 @@ async def show_a_record_confirmation(query, wizard_state):
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12234,7 +12234,7 @@ async def show_txt_record_confirmation(query, wizard_state):
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12274,7 +12274,7 @@ async def show_cname_record_confirmation(query, wizard_state):
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12315,7 +12315,7 @@ async def show_mx_record_confirmation(query, wizard_state):
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12428,7 +12428,7 @@ Type your subdomain:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12546,7 +12546,7 @@ Type your subdomain:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12568,14 +12568,14 @@ async def continue_mx_record_wizard(query, context, wizard_state):
     domain = wizard_state['domain']
     data = wizard_state.get('data', {})
     
-    logger.info("Entering continue_mx_record_wizard for domain %s, data: %s", domain, data)
+    logger.info(f"Entering continue_mx_record_wizard for domain {domain}, data: {data}")
     
     # Step 1: Dynamic Name Selection for MX Record
     # Check if 'name' is in data and not empty
     has_name = 'name' in data and data.get('name') is not None and str(data.get('name', '')).strip() != ''
     
     if not has_name:
-        logger.info("MX Wizard: Step 1 (Name Selection) - Data: %s", data)
+        logger.info(f"MX Wizard: Step 1 (Name Selection) - Data: {data}")
         # Get Cloudflare zone to check existing records
         cf_zone = await get_cloudflare_zone(domain)
         if not cf_zone:
@@ -12634,7 +12634,7 @@ async def continue_mx_record_wizard(query, context, wizard_state):
             'domain': domain,
             'wizard_state': wizard_state
         }
-        logger.info("MX Wizard: Prompted for custom subdomain for user %s", user.id)
+        logger.info(f"MX Wizard: Prompted for custom subdomain for user {user.id}")
         return
     elif 'server' not in data:
         # Step 2: Mail Server
@@ -12695,7 +12695,7 @@ async def continue_mx_record_wizard(query, context, wizard_state):
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -12720,7 +12720,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
                 maintenance_message,
                 parse_mode=ParseMode.HTML
             )
-            logger.info("🔧 MAINTENANCE: Blocked message from non-admin user %s", user.id)
+            logger.info(f"🔧 MAINTENANCE: Blocked message from non-admin user {user.id}")
             return
     
     # Skip if domain linking is active to prevent double processing
@@ -12790,10 +12790,10 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         from admin_handlers import handle_admin_credit_text
         admin_handled = await handle_admin_credit_text(update, context)
         if admin_handled:
-            logger.info("✅ TEXT ROUTING: Admin credit handler processed message successfully")
+            logger.info(f"✅ TEXT ROUTING: Admin credit handler processed message successfully")
             return
         else:
-            logger.warning("⚠️ TEXT ROUTING: Admin credit handler declined message, continuing to generic handler")
+            logger.warning(f"⚠️ TEXT ROUTING: Admin credit handler declined message, continuing to generic handler")
     
     # Check for hosting domain input context
     hosting_flow = user_data.get('hosting_flow')
@@ -12921,7 +12921,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
         # CRITICAL: Check if this is an admin user who might have just sent a broadcast
         # Admin broadcasts should never trigger domain searches
         if user and is_admin_user(user.id):
-            logger.info("🔍 TEXT_HANDLER: Admin user %s text detected - checking for recent broadcast activity", user.id)
+            logger.info(f"🔍 TEXT_HANDLER: Admin user {user.id} text detected - checking for recent broadcast activity")
             # Check if admin recently sent a broadcast (within last 30 seconds) 
             # This prevents admin broadcast messages from being treated as domain searches
             user_data = context.user_data or {}
@@ -12929,7 +12929,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             current_time = time.time()
             
             if current_time - last_broadcast_time < 30:  # 30 second window
-                logger.info("🔍 TEXT_HANDLER: Admin %s recently sent broadcast - skipping domain search for: %s", user.id, text[)
+                logger.info(f"🔍 TEXT_HANDLER: Admin {user.id} recently sent broadcast - skipping domain search for: {text[:50]}")
                 return
         
         # Only proceed if it's a valid domain name  
@@ -13025,7 +13025,7 @@ async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE
             await searching_msg.edit_text(message, reply_markup=reply_markup)
             
         except Exception as e:
-            logger.error("Error searching domain %s: %s", domain_name, e)
+            logger.error(f"Error searching domain {domain_name}: {e}")
             await searching_msg.edit_text(t('errors.domain_search_failed', user_lang))
         
         return
@@ -13232,7 +13232,7 @@ TTL: {ttl_display}
             asyncio.create_task(auto_apply_with_feedback(query, None, session))
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13329,7 +13329,7 @@ TTL: {ttl_display}
             asyncio.create_task(auto_apply_with_feedback(query, None, session))
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13429,7 +13429,7 @@ TTL: {ttl_display}
             asyncio.create_task(auto_apply_with_feedback(query, None, session))
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13459,7 +13459,7 @@ async def handle_delete_callback(query, context, callback_data):
         await execute_dns_delete(query, context, domain, record_id)
         
     except Exception as e:
-        logger.error("Error handling delete callback %s: %s", callback_data, e)
+        logger.error(f"Error handling delete callback {callback_data}: {e}")
         await safe_edit_message(query, "❌ Delete Error\n\nCould not process deletion. Please try again.")
 
 async def prompt_for_content_change(query, context, domain, record_id):
@@ -13494,7 +13494,7 @@ Type your new TXT content:
         await safe_edit_message(query, message, reply_markup=reply_markup)
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13534,7 +13534,7 @@ Type your new IP address:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -13572,7 +13572,7 @@ Type your new CNAME target:
         await safe_edit_message(query, message, reply_markup=reply_markup)
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13607,7 +13607,7 @@ Type your new MX server:
         await safe_edit_message(query, message, reply_markup=reply_markup)
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13645,7 +13645,7 @@ Choose your MX priority:
         await safe_edit_message(query, message, reply_markup=reply_markup)
     except Exception as e:
         if "Message is not modified" in str(e):
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             raise e
 
@@ -13679,7 +13679,7 @@ Select the new TTL for this DNS record:
     except Exception as e:
         if "Message is not modified" in str(e):
             # Message content is identical, just answer the callback
-            logger.info("Prevented duplicate message update for user %s", query.from_user.id)
+            logger.info(f"Prevented duplicate message update for user {query.from_user.id}")
         else:
             # Re-raise other errors
             raise e
@@ -13733,7 +13733,7 @@ async def toggle_proxy_setting(query, context, domain, record_id):
         await continue_a_record_edit_wizard(query, context, wizard_state)
         
     except Exception as e:
-        logger.error("Error toggling proxy setting: %s", e)
+        logger.error(f"Error toggling proxy setting: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not toggle proxy setting.")
 
 async def handle_dns_edit_callback(query, context, callback_data):
@@ -13780,7 +13780,7 @@ async def handle_dns_edit_callback(query, context, callback_data):
             await safe_edit_message(query, "❌ Unknown Edit Action\n\nPlease try again.")
             
     except Exception as e:
-        logger.error("Error handling DNS edit callback %s: %s", callback_data, e)
+        logger.error(f"Error handling DNS edit callback {callback_data}: {e}")
         await safe_edit_message(query, "❌ Edit Error\n\nCould not process edit action.")
 
 async def handle_revert_changes(query, context, domain, record_type, record_id):
@@ -13814,7 +13814,7 @@ async def handle_revert_changes(query, context, domain, record_type, record_id):
             await show_dns_record_detail(query, domain, record_id)
             
     except Exception as e:
-        logger.error("Error reverting changes for %s record %s: %s", record_type, record_id, e)
+        logger.error(f"Error reverting changes for {record_type} record {record_id}: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not revert changes.")
 
 async def handle_ttl_selection(query, context, callback_data):
@@ -13858,7 +13858,7 @@ async def handle_ttl_selection(query, context, callback_data):
         await continue_a_record_edit_wizard(query, context, wizard_state)
         
     except Exception as e:
-        logger.error("Error handling TTL selection %s: %s", callback_data, e)
+        logger.error(f"Error handling TTL selection {callback_data}: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not update TTL.")
 
 async def handle_mx_priority_selection(query, context, callback_data):
@@ -13901,7 +13901,7 @@ async def handle_mx_priority_selection(query, context, callback_data):
         await continue_mx_record_edit_wizard(query, wizard_state)
         
     except Exception as e:
-        logger.error("Error handling MX priority selection %s: %s", callback_data, e)
+        logger.error(f"Error handling MX priority selection {callback_data}: {e}")
         await safe_edit_message(query, "❌ Priority Update Error\n\nCould not update priority. Please try again.")
 
 async def handle_content_input(update, context, text, edit_input):
@@ -13976,7 +13976,7 @@ async def handle_content_input(update, context, text, edit_input):
             pass  # Ignore if we can't delete
             
     except Exception as e:
-        logger.error("Error handling content input: %s", e)
+        logger.error(f"Error handling content input: {e}")
         await update.message.reply_text(
             "❌ Input Error\n\nPlease try again."
         )
@@ -14070,7 +14070,7 @@ async def handle_dns_wizard_txt_input(update, context, txt_content, wizard_state
             pass  # Ignore if we can't delete
             
     except Exception as e:
-        logger.error("Error handling TXT content input: %s", e)
+        logger.error(f"Error handling TXT content input: {e}")
         await update.message.reply_text(
             "❌ Input Error\n\nPlease try entering your TXT content again:"
         )
@@ -14141,7 +14141,7 @@ async def handle_cname_target_input(update, context, target_content, edit_input)
             pass  # Ignore if we can't delete
         
     except Exception as e:
-        logger.error("Error handling CNAME target input: %s", e)
+        logger.error(f"Error handling CNAME target input: {e}")
         await update.message.reply_text("❌ Error\n\nCould not process CNAME target.")
 
 async def handle_mx_server_input(update, context, server_content, edit_input):
@@ -14210,7 +14210,7 @@ async def handle_mx_server_input(update, context, server_content, edit_input):
             pass  # Ignore if we can't delete
         
     except Exception as e:
-        logger.error("Error handling MX server input: %s", e)
+        logger.error(f"Error handling MX server input: {e}")
         await update.message.reply_text("❌ Error\n\nCould not process MX server.")
 
 async def continue_cname_record_edit_wizard_as_message(update, context, wizard_state):
@@ -14378,7 +14378,7 @@ async def handle_custom_subdomain_input(update, context, subdomain_name, custom_
             pass
             
     except Exception as e:
-        logger.error("Error handling custom subdomain input: %s", e)
+        logger.error(f"Error handling custom subdomain input: {e}")
         await update.message.reply_text(
             "❌ <b>Input Error</b>\n\nPlease try entering your subdomain again:"
         )
@@ -14471,7 +14471,7 @@ async def handle_custom_subdomain_a_input(update, context, subdomain_name, custo
             pass
             
     except Exception as e:
-        logger.error("Error handling A record custom subdomain input: %s", e)
+        logger.error(f"Error handling A record custom subdomain input: {e}")
         await update.message.reply_text(
             "❌ <b>Input Error</b>\n\nPlease try entering your subdomain again:"
         )
@@ -14550,7 +14550,7 @@ async def handle_custom_subdomain_txt_input(update, context, subdomain_name, cus
             pass
             
     except Exception as e:
-        logger.error("Error handling TXT record custom subdomain input: %s", e)
+        logger.error(f"Error handling TXT record custom subdomain input: {e}")
         await update.message.reply_text(
             "❌ <b>Input Error</b>\n\nPlease try entering your subdomain again:"
         )
@@ -14611,7 +14611,7 @@ async def handle_dns_wizard_cname_input(update, context, target_content, wizard_
             pass  # Ignore if we can't delete
             
     except Exception as e:
-        logger.error("Error handling CNAME target input: %s", e)
+        logger.error(f"Error handling CNAME target input: {e}")
         await update.message.reply_text(
             "❌ <b>Input Error</b>\n\nPlease try entering your CNAME target again:"
         )
@@ -14703,7 +14703,7 @@ async def handle_custom_subdomain_mx_input(update, context, subdomain_name, cust
             pass
             
     except Exception as e:
-        logger.error("Error handling MX record custom subdomain input: %s", e)
+        logger.error(f"Error handling MX record custom subdomain input: {e}")
         await update.message.reply_text(
             f"❌ <b>{t('errors.input_error', user_lang)}</b>\n\n{t('errors.try_again', user_lang)}"
         )
@@ -14764,7 +14764,7 @@ async def handle_dns_wizard_mx_input(update, context, server_content, wizard_sta
             pass  # Ignore if we can't delete
             
     except Exception as e:
-        logger.error("Error handling MX server input: %s", e)
+        logger.error(f"Error handling MX server input: {e}")
         await update.message.reply_text(
             "❌ Input Error\n\nPlease try entering your mail server again:"
         )
@@ -14803,7 +14803,7 @@ async def handle_dns_wizard_ip_input(update, context, ip_address, wizard_state):
         await show_next_wizard_step(update.message, context, wizard_state)
         
     except Exception as e:
-        logger.error("Error handling DNS wizard IP input: %s", e)
+        logger.error(f"Error handling DNS wizard IP input: {e}")
         await update.message.reply_text("❌ Error\n\nCould not process IP address.")
 
 async def handle_ip_input(update, context, ip_address, edit_input):
@@ -14896,7 +14896,7 @@ async def handle_ip_input(update, context, ip_address, edit_input):
             pass  # Ignore if we can't delete
         
     except Exception as e:
-        logger.error("Error handling IP input: %s", e)
+        logger.error(f"Error handling IP input: {e}")
         await update.message.reply_text("❌ Error\n\nCould not process IP address.")
 
 async def continue_a_record_edit_wizard_as_message(update, context, wizard_state):
@@ -15130,9 +15130,9 @@ Editing {record_type} records is not yet supported. You can:
                 record_data = result.get('result', {})
                 if record_data:
                     await update_single_dns_record_in_db(domain, record_data)
-                    logger.info("✅ DNS record update synced to database: %s for %s", record_type, domain)
+                    logger.info(f"✅ DNS record update synced to database: {record_type} for {domain}")
             except Exception as db_err:
-                logger.warning("Failed to sync DNS record update to database: %s", db_err)
+                logger.warning(f"Failed to sync DNS record update to database: {db_err}")
             
             keyboard = [
                 [InlineKeyboardButton(t("buttons.view_record_details", user_lang), callback_data=f"dns:{domain}:record:{record_id}")],
@@ -15152,7 +15152,7 @@ Editing {record_type} records is not yet supported. You can:
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error saving DNS record changes: %s", e)
+        logger.error(f"Error saving DNS record changes: {e}")
         await safe_edit_message(query, "❌ Update Error\n\nCould not save changes. Please try again.")
 
 async def show_next_wizard_step(message, context, wizard_state):
@@ -15251,7 +15251,7 @@ Confirm to create this DNS record?
         await message.reply_text(message_text, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing next wizard step: %s", e)
+        logger.error(f"Error showing next wizard step: {e}")
         await message.reply_text("❌ Error\n\nCould not continue wizard.")
 
 # =============================================================================
@@ -15343,7 +15343,7 @@ Type new nameservers:
         }
         
     except Exception as e:
-        logger.error("Error showing nameserver management: %s", e)
+        logger.error(f"Error showing nameserver management: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not load nameserver information.")
 
 async def confirm_switch_to_cloudflare_ns(query, domain_name):
@@ -15380,7 +15380,7 @@ async def confirm_switch_to_cloudflare_ns(query, domain_name):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing Cloudflare NS confirmation: %s", e)
+        logger.error(f"Error showing Cloudflare NS confirmation: {e}")
         user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code if hasattr(query.from_user, 'language_code') else None)
         await safe_edit_message(query, t('nameservers.prepare_switch_error', user_lang))
 
@@ -15411,18 +15411,18 @@ async def execute_switch_to_cloudflare_ns(query, context, domain_name):
         cf_ns_display = format_nameserver_display(cf_nameservers, max_display=4)
         
         # Try to update nameservers via OpenProvider API
-        logger.info("Attempting to switch %s to Cloudflare nameservers via OpenProvider API", domain_name)
+        logger.info(f"Attempting to switch {domain_name} to Cloudflare nameservers via OpenProvider API")
         
         # CRITICAL FIX: Get domain ID from database first
         domain_id = await get_domain_provider_id(domain_name)
         domain_id = str(domain_id) if domain_id else None
         
         if not domain_id:
-            logger.error("❌ No provider domain ID found for %s in database", domain_name)
+            logger.error(f"❌ No provider domain ID found for {domain_name} in database")
             await safe_edit_message(query, t('nameservers.registration_data_not_found', user_lang, support=BrandConfig().support_contact))
             return
         
-        logger.info("Using domain ID %s for Cloudflare nameserver switch", domain_id)
+        logger.info(f"Using domain ID {domain_id} for Cloudflare nameserver switch")
         openprovider = OpenProviderService()
         update_result = await openprovider.update_nameservers(domain_name, cf_nameservers, domain_id)
         
@@ -15432,9 +15432,9 @@ async def execute_switch_to_cloudflare_ns(query, context, domain_name):
             # CRITICAL: Update database with new Cloudflare nameservers for sync
             db_updated = await update_domain_nameservers(domain_name, cf_nameservers)
             if db_updated:
-                logger.info("✅ Database updated with Cloudflare nameservers for %s", domain_name)
+                logger.info(f"✅ Database updated with Cloudflare nameservers for {domain_name}")
             else:
-                logger.warning("⚠️ Failed to update database nameservers for %s", domain_name)
+                logger.warning(f"⚠️ Failed to update database nameservers for {domain_name}")
             
             # Compact nameserver display for mobile
             ns_count = len(cf_nameservers)
@@ -15453,7 +15453,7 @@ Propagation: 24-48 hours
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
             ]
             
-            logger.info("Successfully switched %s to Cloudflare nameservers via OpenProvider API", domain_name)
+            logger.info(f"Successfully switched {domain_name} to Cloudflare nameservers via OpenProvider API")
             
         elif update_result and not update_result.get('success'):
             # API call failed - show error with fallback instructions
@@ -15486,7 +15486,7 @@ Once updated, all DNS management for this domain will be handled through Cloudfl
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
             ]
             
-            logger.warning("Nameserver API update failed for %s Cloudflare switch: %s (Error %s)", domain_name, error_msg, error_code)
+            logger.warning(f"Nameserver API update failed for {domain_name} Cloudflare switch: {error_msg} (Error {error_code})")
             
         else:
             # API unavailable - show fallback instructions
@@ -15520,13 +15520,13 @@ Once updated, all DNS management for this domain will be handled through Cloudfl
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
             ]
             
-            logger.warning("Nameserver API unavailable for Cloudflare nameserver switch of %s", domain_name)
+            logger.warning(f"Nameserver API unavailable for Cloudflare nameserver switch of {domain_name}")
         
         reply_markup = InlineKeyboardMarkup(keyboard)
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error executing Cloudflare NS switch for %s: %s", domain_name, e)
+        logger.error(f"Error executing Cloudflare NS switch for {domain_name}: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not process nameserver switch. Please try again.")
 
 async def handle_nameserver_input(update: Update, context: ContextTypes.DEFAULT_TYPE, text: str, nameserver_input_context):
@@ -15604,7 +15604,7 @@ async def handle_nameserver_input(update: Update, context: ContextTypes.DEFAULT_
         await execute_nameserver_update_text(effective_message, context, domain_name, valid_nameservers, user)
         
     except Exception as e:
-        logger.error("Error handling nameserver input: %s", e)
+        logger.error(f"Error handling nameserver input: {e}")
         if update.effective_message:
             await update.effective_message.reply_text(
                 "❌ Error Processing Nameservers\n\n"
@@ -15697,7 +15697,7 @@ Update nameservers at your registrar after entering.
         }
         
     except Exception as e:
-        logger.error("Error showing custom nameserver form: %s", e)
+        logger.error(f"Error showing custom nameserver form: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not load nameserver form.")
 
 async def execute_nameserver_update_text(message, context, domain_name, nameservers, user):
@@ -15721,9 +15721,9 @@ async def execute_nameserver_update_text(message, context, domain_name, nameserv
             # Store updated nameservers in database
             db_update_success = await update_domain_nameservers(domain_name, nameservers)
             if db_update_success:
-                logger.info("✅ Stored updated nameservers in database for %s", domain_name)
+                logger.info(f"✅ Stored updated nameservers in database for {domain_name}")
             else:
-                logger.warning("⚠️ Failed to store nameservers in database for %s", domain_name)
+                logger.warning(f"⚠️ Failed to store nameservers in database for {domain_name}")
             
             ns_list = "\n".join([f"• {ns}" for ns in nameservers])
             success_message = f"""
@@ -15759,7 +15759,7 @@ Changes propagate globally within 24-48 hours.
                 reply_markup=reply_markup
             )
             
-            logger.info("Nameservers updated successfully for %s", domain_name)
+            logger.info(f"Nameservers updated successfully for {domain_name}")
             
         elif api_success and not api_success.get('success'):
             # API returned an error response
@@ -15835,7 +15835,7 @@ Please try again or contact support.
                 parse_mode='HTML'
             )
             
-            logger.warning("Nameserver update failed for %s: %s", domain_name, error_code)
+            logger.warning(f"Nameserver update failed for {domain_name}: {error_code}")
             
         else:
             # API unavailable - show manual instructions
@@ -15865,16 +15865,16 @@ Return here after updating (24-48h propagation).
                 reply_markup=reply_markup
             )
             
-            logger.warning("Nameserver API unavailable for nameserver update of %s", domain_name)
+            logger.warning(f"Nameserver API unavailable for nameserver update of {domain_name}")
             
     except Exception as e:
-        logger.error("Error executing nameserver update for %s: %s", domain_name, e)
+        logger.error(f"Error executing nameserver update for {domain_name}: {e}")
         try:
             await message.reply_text(
                 "❌ Error\n\nCould not process nameserver update. Please try again."
             )
         except Exception as reply_error:
-            logger.error("Error sending error message: %s", reply_error)
+            logger.error(f"Error sending error message: {reply_error}")
 
 async def handle_retry_nameserver_update(query, context, callback_data):
     """Handle retry nameserver update callback: retry_ns_update:{domain_name}:{user_id}"""
@@ -15899,7 +15899,7 @@ async def handle_retry_nameserver_update(query, context, callback_data):
         await show_custom_nameserver_form(query, context, domain_name)
         
     except Exception as e:
-        logger.error("Error handling retry nameserver update: %s", e)
+        logger.error(f"Error handling retry nameserver update: {e}")
         user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code if hasattr(query.from_user, 'language_code') else None)
         await safe_edit_message(query, t('nameservers.retry_error', user_lang))
 
@@ -15951,7 +15951,7 @@ async def execute_nameserver_update(query, context, domain_name, ns_data_token):
         provider_domain_id = await get_domain_provider_id(domain_name)
         
         # Try to update nameservers via OpenProvider API
-        logger.info("Attempting to update nameservers for %s (ID: %s) via OpenProvider API", domain_name, provider_domain_id)
+        logger.info(f"Attempting to update nameservers for {domain_name} (ID: {provider_domain_id}) via OpenProvider API")
         openprovider = OpenProviderService()
         update_result = await openprovider.update_nameservers(domain_name, valid_nameservers, provider_domain_id)
         
@@ -15960,9 +15960,9 @@ async def execute_nameserver_update(query, context, domain_name, ns_data_token):
             # Store updated nameservers in database
             db_update_success = await update_domain_nameservers(domain_name, valid_nameservers)
             if db_update_success:
-                logger.info("✅ Stored updated nameservers in database for %s", domain_name)
+                logger.info(f"✅ Stored updated nameservers in database for {domain_name}")
             else:
-                logger.warning("⚠️ Failed to store nameservers in database for %s", domain_name)
+                logger.warning(f"⚠️ Failed to store nameservers in database for {domain_name}")
             
             ns_display = format_nameserver_display(valid_nameservers, max_display=4)
             provider_type, provider_name = detect_nameserver_provider(valid_nameservers)
@@ -15991,7 +15991,7 @@ DNS changes propagate within 48 hours.
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
             ]
             
-            logger.info("Successfully updated nameservers for %s via OpenProvider API: %s", domain_name, valid_nameservers)
+            logger.info(f"Successfully updated nameservers for {domain_name} via OpenProvider API: {valid_nameservers}")
             
         elif update_result and not update_result.get('success'):
             # API call failed - show error with fallback instructions
@@ -16070,7 +16070,7 @@ The automated update failed (Error {error_code}). Please update manually at your
                     [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
                 ]
             
-            logger.warning("Nameserver API update failed for %s: %s (Error %s)", domain_name, error_msg, error_code)
+            logger.warning(f"Nameserver API update failed for {domain_name}: {error_msg} (Error {error_code})")
             
         else:
             # API unavailable - show fallback instructions
@@ -16101,7 +16101,7 @@ Automated update is currently unavailable. Please update manually.
                 [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain_name}:nameservers")]
             ]
             
-            logger.warning("Nameserver API unavailable for nameserver update of %s", domain_name)
+            logger.warning(f"Nameserver API unavailable for nameserver update of {domain_name}")
         
         reply_markup = InlineKeyboardMarkup(keyboard)
         await safe_edit_message(query, message, reply_markup=reply_markup)
@@ -16111,7 +16111,7 @@ Automated update is currently unavailable. Please update manually.
             del context.user_data['expecting_nameserver_input']
         
     except Exception as e:
-        logger.error("Error executing nameserver update for %s: %s", domain_name, e)
+        logger.error(f"Error executing nameserver update for {domain_name}: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not process nameserver update. Please try again.")
 
 # =============================================================================
@@ -16142,14 +16142,14 @@ async def show_security_settings(query, domain_name):
             
             # If no nameservers stored, try to fetch from Cloudflare API as fallback
             if not nameservers:
-                logger.info("No stored nameservers for %s, attempting Cloudflare API fallback", domain_name)
+                logger.info(f"No stored nameservers for {domain_name}, attempting Cloudflare API fallback")
                 cloudflare = CloudflareService()
                 zone_info = await cloudflare.get_zone_by_name(domain_name)
                 
                 if zone_info and zone_info.get('name_servers'):
                     # Found zone via API - persist nameservers and update database
                     api_nameservers = zone_info.get('name_servers', [])
-                    logger.info("✅ Fetched nameservers from Cloudflare API for %s: %s", domain_name, api_nameservers)
+                    logger.info(f"✅ Fetched nameservers from Cloudflare API for {domain_name}: {api_nameservers}")
                     
                     # Persist nameservers to database
                     await update_domain_nameservers(domain_name, api_nameservers)
@@ -16165,7 +16165,7 @@ async def show_security_settings(query, domain_name):
                         )
                         # Reload zone from database now that it's saved
                         cf_zone = await get_cloudflare_zone(domain_name)
-                        logger.info("✅ Saved Cloudflare zone info for %s", domain_name)
+                        logger.info(f"✅ Saved Cloudflare zone info for {domain_name}")
             
             # If still no Cloudflare zone after API fallback, check nameserver provider
             if not cf_zone:
@@ -16235,7 +16235,7 @@ Adjust security settings for your domain:
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing security settings: %s", e)
+        logger.error(f"Error showing security settings: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not load security settings.")
 
 async def toggle_javascript_challenge(query, domain_name, action):
@@ -16388,7 +16388,7 @@ Please try again later.
             await safe_edit_message(query, message, reply_markup=reply_markup)
             
     except Exception as e:
-        logger.error("Error toggling JavaScript Challenge setting: %s", e)
+        logger.error(f"Error toggling JavaScript Challenge setting: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not update JavaScript Challenge setting.")
 
 async def toggle_force_https_setting(query, domain_name, action):
@@ -16532,7 +16532,7 @@ Please try again later.
             await safe_edit_message(query, message, reply_markup=reply_markup)
             
     except Exception as e:
-        logger.error("Error toggling Force HTTPS setting: %s", e)
+        logger.error(f"Error toggling Force HTTPS setting: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not update Force HTTPS setting.")
 
 async def toggle_auto_proxy_setting(query, domain_name, action):
@@ -16621,7 +16621,7 @@ Please try again later.
             await safe_edit_message(query, message, reply_markup=reply_markup)
             
     except Exception as e:
-        logger.error("Error toggling auto-proxy setting: %s", e)
+        logger.error(f"Error toggling auto-proxy setting: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not update auto-proxy setting.")
 
 async def force_enable_proxy_and_feature(query, domain_name, feature_type):
@@ -16682,12 +16682,12 @@ async def force_enable_proxy_and_feature(query, domain_name, feature_type):
                         'type': record.get('type'),
                         'content': record.get('content')
                     })
-                    logger.info("✅ Force enabled proxy for %s", record_name)
+                    logger.info(f"✅ Force enabled proxy for {record_name}")
                 else:
                     errors = result.get('errors', [])
                     error_msg = errors[0].get('message', 'Unknown error') if errors else 'Unknown error'
                     failed_records.append({'name': record_name, 'error': error_msg})
-                    logger.error("❌ Failed to force enable proxy for %s: %s", record_name, error_msg)
+                    logger.error(f"❌ Failed to force enable proxy for {record_name}: {error_msg}")
             
             if failed_records:
                 error_list = "\n".join([f"• {r['name']}: {r['error']}" for r in failed_records])
@@ -16735,7 +16735,7 @@ Please try enabling {feature_name} again from the security settings.
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error in force_enable_proxy_and_feature: %s", e)
+        logger.error(f"Error in force_enable_proxy_and_feature: {e}")
         await safe_edit_message(query, "❌ Error\n\nCould not enable proxy and security feature.")
 
 async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name: str, query=None) -> Dict:
@@ -16754,17 +16754,17 @@ async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name:
     """
     try:
         cloudflare = CloudflareService()
-        logger.info("🔄 Auto-proxy check for %s on %s", feature_name, domain_name)
+        logger.info(f"🔄 Auto-proxy check for {feature_name} on {domain_name}")
         
         # Check user's auto-proxy preference for this domain
         auto_proxy_enabled = await get_domain_auto_proxy_enabled(domain_name)
-        logger.info("Auto-proxy preference for %s: %s", domain_name, auto_proxy_enabled)
+        logger.info(f"Auto-proxy preference for {domain_name}: {auto_proxy_enabled}")
         
         # Get web records that should be proxied for web features
         web_records = await cloudflare.get_web_records_for_proxy(zone_id, domain_name)
         
         if not web_records:
-            logger.info("No web records found for %s", domain_name)
+            logger.info(f"No web records found for {domain_name}")
             return {
                 'success': True,
                 'modified_records': [],
@@ -16808,7 +16808,7 @@ async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name:
             record_names = [r.get('name', 'unknown') for r in proxy_needed]
             record_count = len(proxy_needed)
             
-            logger.info("Auto-proxy disabled for %s, requiring user confirmation for %s records", domain_name, record_count)
+            logger.info(f"Auto-proxy disabled for {domain_name}, requiring user confirmation for {record_count} records")
             
             # Return special status requiring user confirmation
             return {
@@ -16820,20 +16820,20 @@ async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name:
             }
         
         # Auto-proxy is enabled, proceed with automatic proxy enablement
-        logger.info("Auto-proxy enabled for %s, proceeding with automatic proxy enablement", domain_name)
+        logger.info(f"Auto-proxy enabled for {domain_name}, proceeding with automatic proxy enablement")
         
         # Enable proxy for eligible records
         modified_records = []
         failed_records = []
         
-        logger.info("🔧 Enabling proxy for %s records", len(proxy_needed))
+        logger.info(f"🔧 Enabling proxy for {len(proxy_needed)} records")
         
         for record in proxy_needed:
             record_id = record.get('id')
             record_name = record.get('name', 'unknown')
             
             if not record_id:
-                logger.warning("No record ID for %s, skipping", record_name)
+                logger.warning(f"No record ID for {record_name}, skipping")
                 continue
             
             result = await cloudflare.update_record_proxied(zone_id, record_id, True)
@@ -16845,12 +16845,12 @@ async def ensure_proxy_for_feature(zone_id: str, domain_name: str, feature_name:
                     'type': record.get('type'),
                     'content': record.get('content')
                 })
-                logger.info("✅ Proxy enabled for %s", record_name)
+                logger.info(f"✅ Proxy enabled for {record_name}")
             else:
                 errors = result.get('errors', [])
                 error_msg = errors[0].get('message', 'Unknown error') if errors else 'Unknown error'
                 failed_records.append({'name': record_name, 'error': error_msg})
-                logger.error("❌ Failed to enable proxy for %s: %s", record_name, error_msg)
+                logger.error(f"❌ Failed to enable proxy for {record_name}: {error_msg}")
         
         # Prepare user-friendly message
         success_count = len(modified_records)
@@ -16927,7 +16927,7 @@ _This is required for {feature_name} to work properly. Your feature will be enab
             }
         
     except Exception as e:
-        logger.error("❌ Error in auto-proxy for %s: %s", feature_name, e)
+        logger.error(f"❌ Error in auto-proxy for {feature_name}: {e}")
         return {
             'success': False,
             'modified_records': [],
@@ -16953,7 +16953,7 @@ async def rollback_proxy_changes(zone_id: str, modified_records: List[Dict]) -> 
         cloudflare = CloudflareService()
         rollback_success = True
         
-        logger.info("🔄 Rolling back proxy changes for %s records", len(modified_records))
+        logger.info(f"🔄 Rolling back proxy changes for {len(modified_records)} records")
         
         for record in modified_records:
             record_id = record.get('id')
@@ -16965,9 +16965,9 @@ async def rollback_proxy_changes(zone_id: str, modified_records: List[Dict]) -> 
             result = await cloudflare.update_record_proxied(zone_id, record_id, False)
             
             if result.get('success'):
-                logger.info("↩️ Proxy disabled for %s (rollback)", record_name)
+                logger.info(f"↩️ Proxy disabled for {record_name} (rollback)")
             else:
-                logger.error("❌ Failed to rollback proxy for %s", record_name)
+                logger.error(f"❌ Failed to rollback proxy for {record_name}")
                 rollback_success = False
         
         if rollback_success:
@@ -16978,7 +16978,7 @@ async def rollback_proxy_changes(zone_id: str, modified_records: List[Dict]) -> 
         return rollback_success
         
     except Exception as e:
-        logger.error("❌ Error during proxy rollback: %s", e)
+        logger.error(f"❌ Error during proxy rollback: {e}")
         return False
 
 def format_proxy_notification(domain_name: str, feature_name: str, modified_records: List[Dict]) -> str:
@@ -17040,7 +17040,7 @@ Price: ${price}/month
         await update_hosting_intent_status(intent_id, 'payment_pending')
         
     except Exception as e:
-        logger.error("Error showing hosting payment options with intent %s: %s", intent_id, e)
+        logger.error(f"Error showing hosting payment options with intent {intent_id}: {e}")
         await safe_edit_message(query, "❌ Error showing payment options. Please try again.")
 
 async def show_hosting_payment_options(query, subscription_id: int, price: float, plan_name: str, domain_name: str):
@@ -17079,7 +17079,7 @@ Price: ${price}/month
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing hosting payment options: %s", e)
+        logger.error(f"Error showing hosting payment options: {e}")
         await safe_edit_message(query, "❌ Error loading payment options. Please try again.")
 
 async def process_hosting_crypto_payment(query, crypto_type: str, subscription_id: str, price: str):
@@ -17176,10 +17176,10 @@ Send exactly this amount to:
         
         await safe_edit_message(query, payment_message, reply_markup=reply_markup)
         
-        logger.info("Hosting crypto payment generated: %s for subscription %s", crypto_type.upper(), subscription_id)
+        logger.info(f"Hosting crypto payment generated: {crypto_type.upper()} for subscription {subscription_id}")
         
     except Exception as e:
-        logger.error("Error generating hosting crypto payment: %s", e)
+        logger.error(f"Error generating hosting crypto payment: {e}")
         await safe_edit_message(query, "❌ Error generating payment. Please try again.")
 
 async def process_hosting_wallet_payment(query, subscription_id: str, price: str):
@@ -17219,7 +17219,7 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
             await safe_edit_message(query, "❌ Insufficient wallet balance or payment error.")
             return
         
-        logger.info("💳 WALLET HOLD: Created reservation %s for hosting subscription %s", hold_id, subscription_id)
+        logger.info(f"💳 WALLET HOLD: Created reservation {hold_id} for hosting subscription {subscription_id}")
         
         # Create payment details for wallet payments (matching registration fix pattern)
         wallet_payment_details = {
@@ -17243,12 +17243,12 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
             # Create hosting account with hold protection
             await create_hosting_account_after_payment(int(subscription_id), subscription, wallet_payment_details)
             hosting_success = True
-            logger.info("✅ Hosting account created successfully for subscription %s", subscription_id)
+            logger.info(f"✅ Hosting account created successfully for subscription {subscription_id}")
             
         except Exception as hosting_exc:
             hosting_success = False
             hosting_error = str(hosting_exc)
-            logger.error("❌ Hosting account creation failed for subscription %s: %s", subscription_id, hosting_error)
+            logger.error(f"❌ Hosting account creation failed for subscription {subscription_id}: {hosting_error}")
         
         # 🔒 CRITICAL: Finalize wallet payment based on hosting outcome
         from database import finalize_wallet_reservation
@@ -17261,7 +17261,7 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
                 "UPDATE hosting_subscriptions SET status = 'paid', updated_at = CURRENT_TIMESTAMP WHERE id = %s",
                 (int(subscription_id),)
             )
-            logger.info("✅ REVENUE PROTECTION: Hosting subscription %s completed with successful wallet charge", subscription_id)
+            logger.info(f"✅ REVENUE PROTECTION: Hosting subscription {subscription_id} completed with successful wallet charge")
             
             # Success message
             message = f"""{t('hosting.wallet_payment.success_title', user_lang)}
@@ -17281,7 +17281,7 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
             
         elif hosting_success and not finalization_success:
             # Hosting created but wallet charge failed - REVENUE PROTECTION CRITICAL
-            logger.error("🚨 REVENUE PROTECTION: Hosting created but wallet settlement failed for subscription %s", subscription_id)
+            logger.error(f"🚨 REVENUE PROTECTION: Hosting created but wallet settlement failed for subscription {subscription_id}")
             
             # TODO: Send critical alert to admins when alert system is implemented  
             logger.error(f"ADMIN ALERT: HostingWalletSettlementFailure - domain {subscription['domain_name']} needs manual intervention")
@@ -17308,7 +17308,7 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
             
         else:
             # Hosting creation failed - wallet hold refunded
-            logger.info("💰 REVENUE PROTECTION: Hosting creation failed, wallet refunded for subscription %s", subscription_id)
+            logger.info(f"💰 REVENUE PROTECTION: Hosting creation failed, wallet refunded for subscription {subscription_id}")
             
             # Mark as failed
             await execute_update(
@@ -17334,18 +17334,18 @@ async def process_hosting_wallet_payment(query, subscription_id: str, price: str
         
         # Final logging
         if hosting_success and finalization_success:
-            logger.info("✅ Hosting wallet payment successful: User %s, Subscription %s, Amount $%s", user.id, subscription_id, amount)
+            logger.info(f"✅ Hosting wallet payment successful: User {user.id}, Subscription {subscription_id}, Amount ${amount}")
         else:
-            logger.warning("⚠️ Hosting wallet payment issue: User %s, Subscription %s, Hosting=%s, Settlement=%s", user.id, subscription_id, hosting_success, finalization_success)
+            logger.warning(f"⚠️ Hosting wallet payment issue: User {user.id}, Subscription {subscription_id}, Hosting={hosting_success}, Settlement={finalization_success}")
         
     except Exception as e:
-        logger.error("Error in hosting wallet payment: %s", e)
+        logger.error(f"Error in hosting wallet payment: {e}")
         await safe_edit_message(query, "❌ Payment error. Please try again.")
 
 async def create_hosting_account_after_payment(subscription_id: int, subscription: Dict, payment_details: Optional[Dict] = None):
     """Create cPanel hosting account after successful payment"""
     try:
-        logger.info("🚀 Creating hosting account for subscription %s", subscription_id)
+        logger.info(f"🚀 Creating hosting account for subscription {subscription_id}")
         # Use configured service email for hosting account creation
         from utils.email_config import get_hosting_contact_email
         user_email = get_hosting_contact_email(subscription['user_id'])
@@ -17354,7 +17354,7 @@ async def create_hosting_account_after_payment(subscription_id: int, subscriptio
         plan = next((p for p in plans if p.get('id') == subscription['hosting_plan_id']), None)
         
         if not plan:
-            logger.error("❌ Plan not found for subscription %s", subscription_id)
+            logger.error(f"❌ Plan not found for subscription {subscription_id}")
             return
         
         account_details = await cpanel.create_hosting_account(
@@ -17378,20 +17378,20 @@ async def create_hosting_account_after_payment(subscription_id: int, subscriptio
             )
             
             await send_hosting_account_notification(subscription['user_id'], account_details, subscription)
-            logger.info("✅ Hosting account created successfully for subscription %s", subscription_id)
+            logger.info(f"✅ Hosting account created successfully for subscription {subscription_id}")
             
         else:
-            logger.error("❌ Failed to create hosting account for subscription %s", subscription_id)
+            logger.error(f"❌ Failed to create hosting account for subscription {subscription_id}")
             
     except Exception as e:
-        logger.error("Error creating hosting account after payment: %s", e)
+        logger.error(f"Error creating hosting account after payment: {e}")
 
 async def send_hosting_account_notification(user_id: int, account_details: Dict, subscription: Dict):
     """Send hosting account details to user via Telegram"""
     try:
         user = await execute_query("SELECT telegram_id FROM users WHERE id = %s", (user_id,))
         if not user:
-            logger.error("User not found for hosting notification: %s", user_id)
+            logger.error(f"User not found for hosting notification: {user_id}")
             return
         
         telegram_id = user[0]['telegram_id']
@@ -17419,10 +17419,10 @@ async def send_hosting_account_notification(user_id: int, account_details: Dict,
         
         from webhook_handler import queue_user_message
         await queue_user_message(telegram_id, message)
-        logger.info("✅ Hosting account notification sent to user %s", telegram_id)
+        logger.info(f"✅ Hosting account notification sent to user {telegram_id}")
             
     except Exception as e:
-        logger.error("Error sending hosting account notification: %s", e)
+        logger.error(f"Error sending hosting account notification: {e}")
 
 # PRIORITY 2.1: DOMAIN + HOSTING BUNDLE INTEGRATION
 async def show_domain_hosting_bundle(query):
@@ -17479,7 +17479,7 @@ async def show_domain_hosting_bundle(query):
         await safe_edit_message(query, message, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error showing domain hosting bundle: %s", e)
+        logger.error(f"Error showing domain hosting bundle: {e}")
         await safe_edit_message(query, "❌ Error loading bundle options. Please try again.")
 
 async def show_bundle_how_it_works(query):
@@ -17535,7 +17535,7 @@ Enter domain name:
         context.user_data['bundle_domain_search'] = {'plan_id': plan_id}
         
     except Exception as e:
-        logger.error("Error starting bundle domain search: %s", e)
+        logger.error(f"Error starting bundle domain search: {e}")
         await safe_edit_message(query, "❌ Error starting domain search. Please try again.")
 
 async def process_bundle_domain_search(update: Update, context: ContextTypes.DEFAULT_TYPE, domain_name: str, plan_id: str):
@@ -17649,7 +17649,7 @@ Ready to complete your bundle purchase?"""
             await searching_msg.edit_text(response_text, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error processing bundle domain search: %s", e)
+        logger.error(f"Error processing bundle domain search: {e}")
         if message:
             await message.reply_text(t('errors.domain_search_failed', user_lang))
 
@@ -17702,7 +17702,7 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
             )
             if intent_id:
                 subscription_id = intent_id  # Use intent_id as subscription_id for bundle flow
-                logger.info("✅ Created hosting provision intent %s for bundle order", intent_id)
+                logger.info(f"✅ Created hosting provision intent {intent_id} for bundle order")
             else:
                 subscription_id = None
         
@@ -17720,10 +17720,10 @@ async def confirm_bundle_purchase(query, plan_id: str, domain_name: str):
         # Show combined payment options (hosting price + domain price)
         await show_hosting_payment_options(query, subscription_id, bundle_total, f"{plan_name} + {domain_name}", domain_name)
         
-        logger.info("✅ Bundle order created: User %s, Domain %s, Plan %s, Total $%s", user.id, domain_name, plan_name, bundle_total)
+        logger.info(f"✅ Bundle order created: User {user.id}, Domain {domain_name}, Plan {plan_name}, Total ${bundle_total}")
         
     except Exception as e:
-        logger.error("Error confirming bundle purchase: %s", e)
+        logger.error(f"Error confirming bundle purchase: {e}")
         user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code if hasattr(query.from_user, 'language_code') else None)
         await safe_edit_message(query, t('errors.bundle_purchase_processing_failed', user_lang))
 
@@ -17773,7 +17773,7 @@ async def handle_unified_checkout_review(query, subscription_id: str):
         )
         
     except Exception as e:
-        logger.error("Error in unified checkout review: %s", e)
+        logger.error(f"Error in unified checkout review: {e}")
         user_lang = await resolve_user_language(query.from_user.id, query.from_user.language_code if hasattr(query.from_user, 'language_code') else None)
         await safe_edit_message(query, t('errors.payment_options_load_failed', user_lang))
 
@@ -17793,7 +17793,7 @@ RDP_SMART_DEFAULTS = {
 def get_rdp_default(key):
     """Get smart default with logging"""
     default = RDP_SMART_DEFAULTS.get(key)
-    logger.info("📋 Using RDP default: %s=%s", key, default)
+    logger.info(f"📋 Using RDP default: {key}={default}")
     return default
 
 async def send_provisioning_error(telegram_id: int, message: str):
@@ -17812,7 +17812,7 @@ async def send_provisioning_error(telegram_id: int, message: str):
             parse_mode='HTML'
         )
     except Exception as e:
-        logger.error("Failed to send provisioning error to user %s: %s", telegram_id, e)
+        logger.error(f"Failed to send provisioning error to user {telegram_id}: {e}")
 
 async def handle_rdp_main(query):
     """Show RDP main menu"""
@@ -17837,7 +17837,7 @@ async def handle_rdp_main(query):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP main menu: %s", e)
+        logger.error(f"Error in RDP main menu: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.menu_error', user.id))
 
@@ -17845,7 +17845,7 @@ async def handle_rdp_purchase_start(query, context):
     """Phase 1 Optimized: Two-path entry point for RDP purchase"""
     user = query.from_user
     try:
-        logger.info("🚀 RDP purchase start - two-path entry for user %s", user.id)
+        logger.info(f"🚀 RDP purchase start - two-path entry for user {user.id}")
         
         # Initialize wizard state (context.user_data is managed by PTB, just update it)
         context.user_data['rdp_wizard'] = {
@@ -17900,7 +17900,7 @@ async def handle_rdp_purchase_start(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP purchase start: %s", e)
+        logger.error(f"Error in RDP purchase start: {e}")
         await safe_edit_message(query, await t_for_user('rdp.errors.purchase_start_error', user.id))
 
 async def handle_rdp_quick_deploy(query, context):
@@ -17913,11 +17913,11 @@ async def handle_rdp_quick_deploy(query, context):
         
         # Check if user lookup failed
         if not db_user_id:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_load_error', user.id))
             return
         
-        logger.info("⚡ Quick Deploy for user %s", user.id)
+        logger.info(f"⚡ Quick Deploy for user {user.id}")
         
         # Retrieve last successful order
         last_server = await execute_query("""
@@ -17949,7 +17949,7 @@ async def handle_rdp_quick_deploy(query, context):
             source = "last order"
         else:
             # First-time user: smart defaults
-            logger.warning("📋 No previous RDP servers for user %s, using smart defaults", user.id)
+            logger.warning(f"📋 No previous RDP servers for user {user.id}, using smart defaults")
             
             # Windows 2025 Standard (vultr_os_id = 2514)
             template = await execute_query("""
@@ -17980,7 +17980,7 @@ async def handle_rdp_quick_deploy(query, context):
             
             # Check if queries returned data
             if not template or len(template) == 0 or not plan or len(plan) == 0:
-                logger.error("❌ RDP catalog empty - template: %s, plan: %s", bool(template), bool(plan))
+                logger.error(f"❌ RDP catalog empty - template: {bool(template)}, plan: {bool(plan)}")
                 await safe_edit_message(query, await t_for_user('rdp.errors.catalog_empty', user.id))
                 return
             
@@ -18089,7 +18089,7 @@ async def handle_rdp_quick_deploy(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in Quick Deploy: %s", e)
+        logger.error(f"Error in Quick Deploy: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.quick_deploy_error', user.id))
 
@@ -18097,7 +18097,7 @@ async def handle_rdp_customize_start(query, context):
     """Phase 1: Bundled Plan + OS Selection (Customize Path)"""
     try:
         user = query.from_user
-        logger.info("🛠️ Customize start for user %s", user.id)
+        logger.info(f"🛠️ Customize start for user {user.id}")
         
         # Initialize wizard if needed
         if not context.user_data.get('rdp_wizard'):
@@ -18186,7 +18186,7 @@ async def handle_rdp_customize_start(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in Customize start: %s", e)
+        logger.error(f"Error in Customize start: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.customize_error', user.id))
 
@@ -18203,13 +18203,13 @@ async def handle_rdp_select_plan(query, context, plan_id: str):
             context.user_data['rdp_wizard'] = {}
         context.user_data['rdp_wizard']['plan_id'] = int(plan_id)
         
-        logger.info("📦 Plan %s selected", plan_id)
+        logger.info(f"📦 Plan {plan_id} selected")
         
         # Proceed to smart region selection
         await handle_rdp_region_smart(query, context)
         
     except Exception as e:
-        logger.error("Error selecting plan: %s", e)
+        logger.error(f"Error selecting plan: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.regions_error', user.id))
 
@@ -18249,7 +18249,7 @@ async def handle_rdp_change_windows(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing Windows versions: %s", e)
+        logger.error(f"Error showing Windows versions: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.windows_error', user.id))
 
@@ -18260,13 +18260,13 @@ async def handle_rdp_set_template(query, context, template_id: str):
             context.user_data['rdp_wizard'] = {}
         context.user_data['rdp_wizard']['template_id'] = int(template_id)
         
-        logger.info("🪟 Template %s selected", template_id)
+        logger.info(f"🪟 Template {template_id} selected")
         
         # Return to customize start
         await handle_rdp_customize_start(query, context)
         
     except Exception as e:
-        logger.error("Error setting template: %s", e)
+        logger.error(f"Error setting template: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.windows_error', user.id))
 
@@ -18276,7 +18276,7 @@ async def handle_rdp_region_smart(query, context):
         user = query.from_user
         user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         
-        logger.info("🌍 Smart region selection for user %s", user.id)
+        logger.info(f"🌍 Smart region selection for user {user.id}")
         
         # Detect user location from language code
         user_lang = user.language_code or 'en'
@@ -18353,7 +18353,7 @@ async def handle_rdp_region_smart(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in smart region selection: %s", e)
+        logger.error(f"Error in smart region selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.regions_error', user.id))
 
@@ -18361,7 +18361,7 @@ async def handle_rdp_regions_all(query, context):
     """Show all available regions for selection"""
     try:
         user = query.from_user
-        logger.info("🌐 Showing all regions to user %s", user.id)
+        logger.info(f"🌐 Showing all regions to user {user.id}")
         
         # All available regions
         all_regions = [
@@ -18410,7 +18410,7 @@ async def handle_rdp_regions_all(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing all regions: %s", e)
+        logger.error(f"Error showing all regions: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.regions_error', user.id))
 
@@ -18424,7 +18424,7 @@ async def handle_rdp_billing_confirm(query, context, billing_cycle: str):
             context.user_data['rdp_wizard'] = {}
         context.user_data['rdp_wizard']['billing_cycle'] = billing_cycle
         
-        logger.info("📅 Billing cycle updated to: %s", billing_cycle)
+        logger.info(f"📅 Billing cycle updated to: {billing_cycle}")
         
         # Return to the appropriate confirmation screen based on source
         wizard = context.user_data.get('rdp_wizard', {})
@@ -18436,7 +18436,7 @@ async def handle_rdp_billing_confirm(query, context, billing_cycle: str):
             await handle_rdp_compact_confirmation(query, context)
         
     except Exception as e:
-        logger.error("Error confirming billing: %s", e)
+        logger.error(f"Error confirming billing: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.billing_error', user.id))
 
@@ -18452,7 +18452,7 @@ async def handle_rdp_change_billing(query, context, region_code: str):
         plan_id = wizard.get('plan_id')
         
         if not plan_id:
-            logger.error("❌ No plan_id in wizard data")
+            logger.error(f"❌ No plan_id in wizard data")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -18505,7 +18505,7 @@ async def handle_rdp_change_billing(query, context, region_code: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in change billing: %s", e)
+        logger.error(f"Error in change billing: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.billing_error', user.id))
 
@@ -18523,13 +18523,13 @@ async def handle_rdp_set_region(query, context, region_code: str):
         context.user_data['rdp_wizard']['billing_cycle'] = 'monthly'
         context.user_data['rdp_wizard']['confirmation_source'] = 'customize'
         
-        logger.info("📍 Region %s selected", region_code)
+        logger.info(f"📍 Region {region_code} selected")
         
         # Show compact confirmation
         await handle_rdp_compact_confirmation(query, context)
         
     except Exception as e:
-        logger.error("Error setting region: %s", e)
+        logger.error(f"Error setting region: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.regions_error', user.id))
 
@@ -18541,7 +18541,7 @@ async def handle_rdp_compact_confirmation(query, context):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -18552,7 +18552,7 @@ async def handle_rdp_compact_confirmation(query, context):
         billing_cycle = wizard.get('billing_cycle', 'monthly')
         
         if not all([template_id, plan_id, region]):
-            logger.warning("❌ Incomplete RDP wizard data: template=%s, plan=%s, region=%s", template_id, plan_id, region)
+            logger.warning(f"❌ Incomplete RDP wizard data: template={template_id}, plan={plan_id}, region={region}")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -18571,7 +18571,7 @@ async def handle_rdp_compact_confirmation(query, context):
         
         # Check if queries returned data
         if not plan or len(plan) == 0 or not template or len(template) == 0:
-            logger.error("❌ Failed to load RDP configuration - plan: %s, template: %s", bool(plan), bool(template))
+            logger.error(f"❌ Failed to load RDP configuration - plan: {bool(plan)}, template: {bool(template)}")
             await safe_edit_message(query, await t_for_user('rdp.errors.plan_not_found', user.id))
             return
         
@@ -18691,7 +18691,7 @@ async def handle_rdp_compact_confirmation(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in compact confirmation: %s", e)
+        logger.error(f"Error in compact confirmation: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.confirmation_error', user.id))
 
@@ -18699,12 +18699,12 @@ async def handle_rdp_quick_confirm(query, context):
     """Quick Deploy - instant deployment without confirmation screen"""
     try:
         user = query.from_user
-        logger.info("⚡ Quick Deploy - instant deployment for user %s", user.id)
+        logger.info(f"⚡ Quick Deploy - instant deployment for user {user.id}")
         
         db_user = await get_internal_user_id_from_telegram_id(user.id)
         
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -18715,7 +18715,7 @@ async def handle_rdp_quick_confirm(query, context):
         billing_cycle = wizard.get('billing_cycle', 'monthly')
         
         if not all([template_id, plan_id, region]):
-            logger.warning("❌ Incomplete RDP wizard data")
+            logger.warning(f"❌ Incomplete RDP wizard data")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -18727,7 +18727,7 @@ async def handle_rdp_quick_confirm(query, context):
         """, (plan_id,))
         
         if not plan or len(plan) == 0:
-            logger.error("❌ Plan not found")
+            logger.error(f"❌ Plan not found")
             await safe_edit_message(query, await t_for_user('rdp.errors.plan_not_found', user.id))
             return
         
@@ -18820,7 +18820,7 @@ async def handle_rdp_quick_confirm(query, context):
             WHERE id = %s
         """, (order['id'],))
         
-        logger.info("💰 Payment processed: $%s (%s, %s months) from user %s", float(total_price), billing_cycle, period_months, db_user)
+        logger.info(f"💰 Payment processed: ${float(total_price):.2f} ({billing_cycle}, {period_months} months) from user {db_user}")
         
         # Show provisioning message
         provision_title = await t_for_user('rdp.provision.title', user.id)
@@ -18836,7 +18836,7 @@ async def handle_rdp_quick_confirm(query, context):
         asyncio.create_task(provision_rdp_server(user.id, order['id'], order['metadata']))
         
     except Exception as e:
-        logger.error("Error in Quick Deploy: %s", e)
+        logger.error(f"Error in Quick Deploy: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.deployment_error', user.id))
 
@@ -18907,7 +18907,7 @@ async def handle_rdp_template_selection(query, context, template_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP template selection: %s", e)
+        logger.error(f"Error in RDP template selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.plans_error', user.id))
 
@@ -18994,7 +18994,7 @@ async def handle_rdp_plan_selection(query, context, plan_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP plan selection: %s", e)
+        logger.error(f"Error in RDP plan selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.regions_error', user.id))
 
@@ -19059,7 +19059,7 @@ async def handle_rdp_region_selection(query, context, region_id: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP region selection: %s", e)
+        logger.error(f"Error in RDP region selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.billing_error', user.id))
 
@@ -19096,7 +19096,7 @@ async def handle_rdp_billing_selection(query, context, billing_cycle: str):
         
         # Check if queries returned data
         if not plan or len(plan) == 0 or not template or len(template) == 0:
-            logger.error("❌ Failed to load RDP billing configuration - plan: %s, template: %s", bool(plan), bool(template))
+            logger.error(f"❌ Failed to load RDP billing configuration - plan: {bool(plan)}, template: {bool(template)}")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -19123,7 +19123,7 @@ async def handle_rdp_billing_selection(query, context, billing_cycle: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -19194,7 +19194,7 @@ async def handle_rdp_billing_selection(query, context, billing_cycle: str):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in RDP billing selection: %s", e)
+        logger.error(f"Error in RDP billing selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.billing_error', user.id))
 
@@ -19210,7 +19210,7 @@ async def handle_rdp_confirm_and_create_order(query, context):
         # Get user ID
         db_user = await get_internal_user_id_from_telegram_id(user.id)
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -19222,7 +19222,7 @@ async def handle_rdp_confirm_and_create_order(query, context):
         billing_cycle = wizard.get('billing_cycle', 'monthly')
         
         if not all([template_id, plan_id, region]):
-            logger.warning("❌ Incomplete RDP wizard data: template=%s, plan=%s, region=%s", template_id, plan_id, region)
+            logger.warning(f"❌ Incomplete RDP wizard data: template={template_id}, plan={plan_id}, region={region}")
             await safe_edit_message(query, await t_for_user('rdp.errors.config_incomplete', user.id))
             return
         
@@ -19268,19 +19268,19 @@ async def handle_rdp_confirm_and_create_order(query, context):
         )
         
         if not order_uuid:
-            logger.error("❌ Failed to create RDP order for user %s", user.id)
+            logger.error(f"❌ Failed to create RDP order for user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.order_creation_failed', user.id))
             return
         
         # Store order UUID in context
         context.user_data['rdp_order_uuid'] = order_uuid
-        logger.info("✅ Created RDP order %s for user %s, total: $%s", order_uuid, user.id, total_price)
+        logger.info(f"✅ Created RDP order {order_uuid} for user {user.id}, total: ${total_price:.2f}")
         
         # Now show payment method selection
         await handle_rdp_select_payment_method(query, context)
         
     except Exception as e:
-        logger.error("Error creating RDP order: %s", e)
+        logger.error(f"Error creating RDP order: {e}")
         import traceback
         traceback.print_exc()
         user = query.from_user
@@ -19362,7 +19362,7 @@ async def handle_rdp_select_payment_method(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error in payment method selection: %s", e)
+        logger.error(f"Error in payment method selection: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.payment_error', user.id))
 
@@ -19415,7 +19415,7 @@ async def handle_rdp_pay_crypto(query, context):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing crypto currencies: %s", e)
+        logger.error(f"Error showing crypto currencies: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.payment_error', user.id))
 
@@ -19453,7 +19453,7 @@ async def handle_rdp_crypto_currency(query, context, currency: str):
             WHERE order_id = %s AND user_id = %s AND status IN ('pending', 'creating_address', 'address_created')
         """, (order_uuid, db_user))
         
-        logger.info("✅ Cancelled any existing payment intents for order %s to allow payment method change", order_uuid)
+        logger.info(f"✅ Cancelled any existing payment intents for order {order_uuid} to allow payment method change")
         
         # Use unified payment infrastructure with fallback
         from services.payment_provider import create_payment_address
@@ -19480,7 +19480,7 @@ async def handle_rdp_crypto_currency(query, context, currency: str):
         )
         
         if not payment_result or not payment_result.get('address'):
-            logger.error("Failed to create payment address for RDP order %s", order_uuid)
+            logger.error(f"Failed to create payment address for RDP order {order_uuid}")
             await safe_edit_message(query, await t_for_user('rdp.payment.crypto_error', user.id))
             return
         
@@ -19549,7 +19549,7 @@ async def handle_rdp_crypto_currency(query, context, currency: str):
         await safe_edit_message(query, payment_message, reply_markup=final_keyboard, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error generating crypto payment for RDP: %s", e)
+        logger.error(f"Error generating crypto payment for RDP: {e}")
         import traceback
         traceback.print_exc()
         user = query.from_user
@@ -19614,7 +19614,7 @@ async def handle_rdp_crypto_from_qr(query, context, order_uuid: str):
         )
         
     except Exception as e:
-        logger.error("Error handling RDP crypto from QR: %s", e)
+        logger.error(f"Error handling RDP crypto from QR: {e}")
         import traceback
         traceback.print_exc()
         # Fallback: just send a simple message
@@ -19632,7 +19632,7 @@ async def handle_rdp_payment_back(query, context, order_uuid: str):
         try:
             await query.message.delete()
         except Exception as e:
-            logger.warning("Could not delete RDP QR code message: %s", e)
+            logger.warning(f"Could not delete RDP QR code message: {e}")
         
         # Store order UUID in context for crypto selection
         context.user_data['rdp_order_uuid'] = order_uuid
@@ -19685,7 +19685,7 @@ async def handle_rdp_payment_back(query, context, order_uuid: str):
         )
         
     except Exception as e:
-        logger.error("Error going back from RDP QR: %s", e)
+        logger.error(f"Error going back from RDP QR: {e}")
         import traceback
         traceback.print_exc()
         user = query.from_user
@@ -19713,7 +19713,7 @@ async def handle_rdp_cancel_order(query, context, order_uuid: str):
             WHERE order_id = %s AND status IN ('pending', 'address_created')
         """, (order_uuid,))
         
-        logger.info("Cancelled RDP order %s for user %s", order_uuid, user.id)
+        logger.info(f"Cancelled RDP order {order_uuid} for user {user.id}")
         
         # Show cancellation message
         cancel_msg = await t_for_user('rdp.payment.order_cancelled', user.id)
@@ -19725,7 +19725,7 @@ async def handle_rdp_cancel_order(query, context, order_uuid: str):
         await safe_edit_message(query, cancel_msg, reply_markup=reply_markup)
         
     except Exception as e:
-        logger.error("Error cancelling RDP order: %s", e)
+        logger.error(f"Error cancelling RDP order: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.payment_error', user.id))
 
@@ -19737,7 +19737,7 @@ async def handle_rdp_pay_wallet(query, context):
         # Get order details
         order_uuid = context.user_data.get('rdp_order_uuid')
         if not order_uuid:
-            logger.warning("❌ No order UUID found in context for user %s", user.id)
+            logger.warning(f"❌ No order UUID found in context for user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.order_not_found', user.id))
             return
         
@@ -19753,7 +19753,7 @@ async def handle_rdp_pay_wallet(query, context):
         
         # Check if order exists
         if not order_result or len(order_result) == 0:
-            logger.error("❌ Order not found in database: %s", order_uuid)
+            logger.error(f"❌ Order not found in database: {order_uuid}")
             await safe_edit_message(query, await t_for_user('rdp.errors.order_not_found', user.id))
             return
         
@@ -19768,7 +19768,7 @@ async def handle_rdp_pay_wallet(query, context):
         
         # Check if user lookup failed
         if not db_user_id:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.payment_error', user.id))
             return
         
@@ -19777,7 +19777,7 @@ async def handle_rdp_pay_wallet(query, context):
         
         # Verify sufficient balance
         if wallet_balance < total_amount:
-            logger.warning("❌ Insufficient balance for user %s: %s < %s", db_user_id, wallet_balance, total_amount)
+            logger.warning(f"❌ Insufficient balance for user {db_user_id}: {wallet_balance} < {total_amount}")
             
             # Get localized strings for insufficient balance error
             title = await t_for_user('rdp.payment.insufficient_title', user.id)
@@ -19830,21 +19830,21 @@ async def handle_rdp_pay_wallet(query, context):
         asyncio.create_task(provision_rdp_server(user.id, order['id'], order['metadata']))
         
     except Exception as e:
-        logger.error("Error in RDP wallet payment: %s", e)
+        logger.error(f"Error in RDP wallet payment: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.payment_support_error', user.id))
 
 async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
     """Provision RDP server asynchronously after payment"""
     try:
-        logger.info("🚀 Starting RDP server provisioning for order %s", order_id)
+        logger.info(f"🚀 Starting RDP server provisioning for order {order_id}")
         
         # Get user
         db_user = await get_internal_user_id_from_telegram_id(telegram_id)
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", telegram_id)
+            logger.error(f"❌ Failed to get user ID for telegram user {telegram_id}")
             error_msg = await t_for_user('rdp.provision.error_user_data', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
@@ -19858,7 +19858,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
         
         # Validate required parameters
         if not all([template_id, plan_id, region]):
-            logger.error("❌ Missing required provisioning parameters: template=%s, plan=%s, region=%s", template_id, plan_id, region)
+            logger.error(f"❌ Missing required provisioning parameters: template={template_id}, plan={plan_id}, region={region}")
             error_msg = await t_for_user('rdp.provision.error_config', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
@@ -19878,7 +19878,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
         
         # Check if queries returned data
         if not template or len(template) == 0 or not plan or len(plan) == 0:
-            logger.error("❌ Template or plan not found for order %s: template=%s, plan=%s", order_id, bool(template), bool(plan))
+            logger.error(f"❌ Template or plan not found for order {order_id}: template={bool(template)}, plan={bool(plan)}")
             error_msg = await t_for_user('rdp.provision.error_not_found', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
@@ -19894,7 +19894,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
         
         # Validate region before creating instance
         if not region:
-            logger.error("❌ No region specified for order %s", order_id)
+            logger.error(f"❌ No region specified for order {order_id}")
             error_msg = await t_for_user('rdp.provision.error_region', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
@@ -19910,7 +19910,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
         
         # Check if instance creation succeeded
         if not instance or not instance.get('id'):
-            logger.error("❌ Failed to create Vultr instance for order %s: %s", order_id, instance)
+            logger.error(f"❌ Failed to create Vultr instance for order {order_id}: {instance}")
             error_msg = await t_for_user('rdp.provision.error_failed_refund', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
@@ -19947,21 +19947,21 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
                 VALUES (%s, %s, 0)
             """, (order_id, server_id))
         else:
-            logger.warning("⚠️ Failed to get server ID for instance %s", instance_id)
+            logger.warning(f"⚠️ Failed to get server ID for instance {instance_id}")
         
         # Validate instance_id before waiting
         if not instance_id:
-            logger.error("❌ No instance ID received for order %s", order_id)
+            logger.error(f"❌ No instance ID received for order {order_id}")
             error_msg = await t_for_user('rdp.provision.error_failed', telegram_id)
             await send_provisioning_error(telegram_id, error_msg)
             return
         
         # Wait for instance to be ready
-        logger.info("⏳ Waiting for instance %s to be ready...", instance_id)
+        logger.info(f"⏳ Waiting for instance {instance_id} to be ready...")
         instance_ready = await vultr_service.wait_for_instance_ready(instance_id, timeout=600)
         
         if not instance_ready:
-            logger.error("❌ Instance %s did not become ready in time", instance_id)
+            logger.error(f"❌ Instance {instance_id} did not become ready in time")
             # Update status
             await execute_update("""
                 UPDATE rdp_servers
@@ -19992,7 +19992,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
             WHERE vultr_instance_id = %s
         """, (public_ip, encrypted_password, instance_id))
         
-        logger.info("✅ RDP server %s provisioned successfully", instance_id)
+        logger.info(f"✅ RDP server {instance_id} provisioned successfully")
         
         # Send admin success notification
         await send_info_alert(
@@ -20053,7 +20053,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
         )
         
     except Exception as e:
-        logger.error("❌ Error provisioning RDP server: %s", e)
+        logger.error(f"❌ Error provisioning RDP server: {e}")
         
         # Send admin error notification
         await send_error_alert(
@@ -20099,7 +20099,7 @@ async def handle_rdp_my_servers(query, context=None):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20169,7 +20169,7 @@ async def handle_rdp_my_servers(query, context=None):
         await safe_edit_message(query, message, reply_markup=reply_markup, parse_mode='HTML')
         
     except Exception as e:
-        logger.error("Error showing RDP servers: %s", e)
+        logger.error(f"Error showing RDP servers: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.loading_servers', user.id))
 
@@ -20183,7 +20183,7 @@ async def handle_rdp_server_details(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20197,7 +20197,7 @@ async def handle_rdp_server_details(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20317,7 +20317,7 @@ async def handle_rdp_server_details(query, context, server_id: str):
             asyncio.create_task(auto_refresh())
         
     except Exception as e:
-        logger.error("Error showing RDP server details: %s", e)
+        logger.error(f"Error showing RDP server details: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.loading_details', user.id))
 
@@ -20333,7 +20333,7 @@ async def handle_rdp_start_server(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20345,7 +20345,7 @@ async def handle_rdp_start_server(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20366,7 +20366,7 @@ async def handle_rdp_start_server(query, context, server_id: str):
             await safe_edit_message(query, await t_for_user('rdp.control.start_failed', user.id))
         
     except Exception as e:
-        logger.error("Error starting RDP server: %s", e)
+        logger.error(f"Error starting RDP server: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.start_error', user.id))
 
@@ -20382,7 +20382,7 @@ async def handle_rdp_stop_server(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20394,7 +20394,7 @@ async def handle_rdp_stop_server(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20415,7 +20415,7 @@ async def handle_rdp_stop_server(query, context, server_id: str):
             await safe_edit_message(query, await t_for_user('rdp.control.stop_failed', user.id))
         
     except Exception as e:
-        logger.error("Error stopping RDP server: %s", e)
+        logger.error(f"Error stopping RDP server: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.stop_error', user.id))
 
@@ -20431,7 +20431,7 @@ async def handle_rdp_restart_server(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20443,7 +20443,7 @@ async def handle_rdp_restart_server(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20460,7 +20460,7 @@ async def handle_rdp_restart_server(query, context, server_id: str):
             await safe_edit_message(query, await t_for_user('rdp.control.restart_failed', user.id))
         
     except Exception as e:
-        logger.error("Error restarting RDP server: %s", e)
+        logger.error(f"Error restarting RDP server: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.restart_error', user.id))
 
@@ -20514,7 +20514,7 @@ async def handle_rdp_reinstall(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20526,7 +20526,7 @@ async def handle_rdp_reinstall(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20561,7 +20561,7 @@ async def handle_rdp_reinstall(query, context, server_id: str):
             await safe_edit_message(query, await t_for_user('rdp.reinstall.failed', user.id))
         
     except Exception as e:
-        logger.error("Error reinstalling RDP server: %s", e)
+        logger.error(f"Error reinstalling RDP server: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.reinstall_error', user.id))
 
@@ -20578,7 +20578,7 @@ async def smart_auto_start_server(instance_id: str, server_id: Optional[int], is
         logger.info(f"🚀 Smart auto-start initiated for {'new' if is_new else 'reinstalled'} server {instance_id}")
         
         # Give Vultr 10 seconds to stabilize after provisioning/reinstall
-        logger.info("⏳ Waiting 10s for server stabilization...")
+        logger.info(f"⏳ Waiting 10s for server stabilization...")
         await asyncio.sleep(10)
         
         # Exponential backoff delays: 5s, 10s, 20s (total ~45s over 4 attempts)
@@ -20586,7 +20586,7 @@ async def smart_auto_start_server(instance_id: str, server_id: Optional[int], is
         
         # Try to start with retries (4 attempts with exponential backoff)
         for attempt in range(1, 5):
-            logger.info("🔄 Auto-start attempt %s/4 for %s", attempt, instance_id)
+            logger.info(f"🔄 Auto-start attempt {attempt}/4 for {instance_id}")
             
             start_success = vultr_service.start_instance(instance_id)
             
@@ -20607,21 +20607,21 @@ async def smart_auto_start_server(instance_id: str, server_id: Optional[int], is
                         WHERE vultr_instance_id = %s
                     """, (instance_id,))
                 
-                logger.info("✅ Server %s successfully auto-started on attempt %s", instance_id, attempt)
+                logger.info(f"✅ Server {instance_id} successfully auto-started on attempt {attempt}")
                 return True
             
             # If failed and not last attempt, wait before retry with exponential backoff
             if attempt < 4:
                 delay = retry_delays[attempt - 1]
-                logger.info("⏳ Start failed, retrying in %ss with exponential backoff (attempt %s/4)", delay, attempt)
+                logger.info(f"⏳ Start failed, retrying in {delay}s with exponential backoff (attempt {attempt}/4)")
                 await asyncio.sleep(delay)
         
         # All retries failed
-        logger.warning("⚠️ Auto-start failed after 4 attempts for %s", instance_id)
+        logger.warning(f"⚠️ Auto-start failed after 4 attempts for {instance_id}")
         return False
         
     except Exception as e:
-        logger.error("❌ Error in smart auto-start for %s: %s", instance_id, e)
+        logger.error(f"❌ Error in smart auto-start for {instance_id}: {e}")
         return False
 
 async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance_id: str):
@@ -20631,7 +20631,7 @@ async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance
         instance_ready = await vultr_service.wait_for_instance_ready(instance_id, timeout=900)  # 15 min timeout
         
         if not instance_ready:
-            logger.error("❌ Instance %s reinstall timed out", instance_id)
+            logger.error(f"❌ Instance {instance_id} reinstall timed out")
             return
         
         # Get new password
@@ -20647,7 +20647,7 @@ async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance
             WHERE id = %s
         """, (encrypted_password, server_id))
         
-        logger.info("✅ Reinstalled server ready, launching auto-start")
+        logger.info(f"✅ Reinstalled server ready, launching auto-start")
         
         # Launch async auto-start with smart retry
         asyncio.create_task(smart_auto_start_server(instance_id, server_id=server_id, is_new=False))
@@ -20698,7 +20698,7 @@ async def wait_for_reinstall_complete(telegram_id: int, server_id: int, instance
             )
         
     except Exception as e:
-        logger.error("❌ Error waiting for reinstall: %s", e)
+        logger.error(f"❌ Error waiting for reinstall: {e}")
 
 async def handle_rdp_delete_confirm(query, context, server_id: str):
     """Show delete server confirmation"""
@@ -20749,7 +20749,7 @@ async def handle_rdp_delete(query, context, server_id: str):
         
         # Check if user lookup failed
         if not db_user:
-            logger.error("❌ Failed to get user ID for telegram user %s", user.id)
+            logger.error(f"❌ Failed to get user ID for telegram user {user.id}")
             await safe_edit_message(query, await t_for_user('rdp.errors.user_data_error', user.id))
             return
         
@@ -20761,7 +20761,7 @@ async def handle_rdp_delete(query, context, server_id: str):
         
         # Check if server exists
         if not server or len(server) == 0:
-            logger.warning("❌ Server %s not found for user %s", server_id, db_user)
+            logger.warning(f"❌ Server {server_id} not found for user {db_user}")
             await safe_edit_message(query, await t_for_user('rdp.errors.server_not_found', user.id))
             return
         
@@ -20798,6 +20798,6 @@ async def handle_rdp_delete(query, context, server_id: str):
             await safe_edit_message(query, await t_for_user('rdp.delete.failed', user.id))
         
     except Exception as e:
-        logger.error("Error deleting RDP server: %s", e)
+        logger.error(f"Error deleting RDP server: {e}")
         user = query.from_user
         await safe_edit_message(query, await t_for_user('rdp.errors.delete_error', user.id))

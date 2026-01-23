@@ -2878,7 +2878,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from services.maintenance_manager import MaintenanceManager
     is_active = await MaintenanceManager.is_maintenance_active()
     if is_active and not is_admin_user(user.id):
-        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
+        user_lang = await get_user_language_cached(update, context)
         maintenance_message = await MaintenanceManager.get_maintenance_message(user_lang)
         await message.reply_text(maintenance_message, parse_mode=ParseMode.HTML)
         logger.info(f"🔧 MAINTENANCE: Blocked /start command from non-admin user {user.id}")

@@ -18183,9 +18183,6 @@ async def handle_rdp_customize_start(query, context):
         keyboard = []
         for plan in plans:
             icon = plan_icons.get(plan['plan_name'], '💻')
-            vcpu = plan['vcpu_count']
-            ram_gb = plan['ram_mb'] / 1024
-            storage = plan['storage_gb']
             price = float(plan['our_monthly_price'])
             
             button_text = f"{icon} {plan['plan_name'].upper()} • ${price}/mo"

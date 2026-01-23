@@ -3445,7 +3445,7 @@ async def _emergency_dashboard_fallback(update: Update, context: ContextTypes.DE
                     safe_edit_message(query, error_message, reply_markup),
                     timeout=10.0
                 )
-            except:
+            except Exception:
                 await asyncio.wait_for(
                     context.bot.send_message(
                         chat_id=user.id,

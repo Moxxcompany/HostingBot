@@ -18641,7 +18641,6 @@ async def handle_rdp_compact_confirmation(query, context):
         payment_method = await t_for_user('rdp.confirmation.payment_method', user.id)
         total_template = await t_for_user('rdp.confirmation.total', user.id)
         wallet_balance_template = await t_for_user('rdp.confirmation.wallet_balance', user.id)
-        confirm_pay_btn = await t_for_user('rdp.buttons.confirm_pay', user.id)
         edit_btn = await t_for_user('rdp.buttons.edit', user.id)
         cancel_btn = await t_for_user('rdp.buttons.cancel', user.id)
         

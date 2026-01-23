@@ -4145,7 +4145,6 @@ async def handle_validate_openprovider_credentials(query, context):
 async def handle_set_default_openprovider_account(query, context, account_id: int):
     """Handle setting a new default OpenProvider account"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
     
     if not is_admin_user(user.id):
         await query.answer("Access denied", show_alert=True)

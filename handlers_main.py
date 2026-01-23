@@ -17609,7 +17609,6 @@ async def process_bundle_domain_search(update: Update, context: ContextTypes.DEF
             # Domain is available - show bundle pricing
             price_info = availability.get('price_info', {})
             domain_price = price_info.get('create_price', 0)
-            currency = price_info.get('currency', 'USD')
             is_premium = availability.get('premium', False)
             
             bundle_total = domain_price + monthly_price

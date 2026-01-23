@@ -1545,7 +1545,7 @@ async def show_hosting_management(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1642,7 +1642,7 @@ async def show_hosting_management(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting management: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_hosting_details(query, subscription_id: str):
@@ -1653,7 +1653,7 @@ async def show_hosting_details(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1704,7 +1704,7 @@ async def show_hosting_details(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting details: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_cpanel_login(query, subscription_id: str):
@@ -1715,7 +1715,7 @@ async def show_cpanel_login(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1757,7 +1757,7 @@ async def show_cpanel_login(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing cPanel login: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def show_hosting_usage(query, subscription_id: str):
@@ -1768,7 +1768,7 @@ async def show_hosting_usage(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -1812,7 +1812,7 @@ async def show_hosting_usage(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing hosting usage: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def handle_renew_suspended_hosting(query, subscription_id: str):
@@ -1829,7 +1829,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
         subscription = await get_hosting_subscription_details(int(subscription_id), db_user['id'])
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         if not subscription:
             await safe_edit_message(query, f"❌ {t('hosting.not_found_or_denied', user_lang)}")
@@ -1900,7 +1900,7 @@ async def handle_renew_suspended_hosting(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing renewal options: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, f"❌ {t('errors.general', user_lang)}")
 
 async def process_manual_renewal_wallet(query, subscription_id: str):
@@ -1908,7 +1908,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
     user = query.from_user
     
     # Get user language early for translations
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import (get_or_create_user, get_hosting_subscription_details,
@@ -1951,7 +1951,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
 async def process_manual_renewal_crypto(query, subscription_id: str):
     """Process manual renewal payment via cryptocurrency"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     # Reuse existing hosting payment flow
     await safe_edit_message(query, f"🔧 {t('renewal.crypto_coming_soon', user_lang)}")
 
@@ -1973,7 +1973,7 @@ async def handle_manual_renewal(query, subscription_id: str):
         subscription = await get_hosting_subscription_details(int(subscription_id), db_user['id'])
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         if not subscription:
             await safe_edit_message(query, f"❌ {t('hosting.not_found_or_denied', user_lang)}")
@@ -2096,14 +2096,14 @@ async def handle_manual_renewal(query, subscription_id: str):
             
     except Exception as e:
         logger.error(f"Error in handle_manual_renewal: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, f"❌ <b>{t('renewal.error_processing', user_lang)}</b>\n\n{t('renewal.unexpected_error', user_lang)}", parse_mode='HTML')
 
 
 async def show_insufficient_funds_message(query, subscription_id: str):
     """Show message about insufficient wallet funds with add funds option"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, get_user_wallet_balance, get_hosting_plan
@@ -2167,7 +2167,7 @@ async def suspend_hosting_account(query, subscription_id: str):
         from database import get_or_create_user, get_hosting_subscription_details
         
         # Get user language early for translations
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         
         # Get user from database
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -2209,13 +2209,13 @@ async def suspend_hosting_account(query, subscription_id: str):
         
     except Exception as e:
         logger.error(f"Error showing suspension confirmation: {e}")
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
         await safe_edit_message(query, t("errors.generic_try_again", user_lang))
 
 async def confirm_hosting_suspension(query, subscription_id: str):
     """Execute hosting account suspension"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, update_hosting_subscription_status
@@ -2287,7 +2287,7 @@ async def confirm_hosting_suspension(query, subscription_id: str):
 async def unsuspend_hosting_account(query, subscription_id: str):
     """Execute hosting account unsuspension"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details, update_hosting_subscription_status
@@ -2359,7 +2359,7 @@ async def unsuspend_hosting_account(query, subscription_id: str):
 async def restart_hosting_services(query, subscription_id: str):
     """Restart hosting services for an account"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details
@@ -2431,7 +2431,7 @@ async def restart_hosting_services(query, subscription_id: str):
 async def check_hosting_status(query, subscription_id: str):
     """Check current hosting account status"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         from database import get_or_create_user, get_hosting_subscription_details
@@ -2532,7 +2532,7 @@ async def check_hosting_status(query, subscription_id: str):
 async def recheck_hosting_nameservers(query, plan_id: str, domain_name: str):
     """Recheck nameserver configuration for hosting domain"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         plans = cpanel.get_hosting_plans()
@@ -3623,7 +3623,7 @@ async def show_wallet_interface_message(update: Update):
         logger.error("Missing user or message in wallet interface")
         return
     
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
         user_record = await get_or_create_user(user.id)
@@ -3684,7 +3684,7 @@ async def show_wallet_interface_message(update: Update):
         logger.error(f"Error showing wallet interface: {e}")
         if effective_message:
             # Get user_lang for error message
-            user_lang = await get_user_lang_fast(user, context) if user else 'en'
+            user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None) if user else 'en'
             await effective_message.reply_text(t('errors.wallet_load_failed', user_lang))
 
 async def credit_wallet_command(update: Update, context: ContextTypes.DEFAULT_TYPE):

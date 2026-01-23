@@ -10409,7 +10409,7 @@ async def _show_rdp_payment_qr(query, order_id, rdp_order):
         bio.seek(0)
         
         # Send QR code image with timeout protection
-        qr_message = await asyncio.wait_for(
+        await asyncio.wait_for(
             query.message.reply_photo(
                 photo=bio,
                 caption=message,

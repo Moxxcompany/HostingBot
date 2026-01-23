@@ -617,6 +617,207 @@ class CloudflareService:
         
         return {'success': False, 'errors': [{'message': 'Unknown error occurred'}]}
     
+    async def create_dns_records_batch(self, zone_id: str, records: List[Dict]) -> Dict:
+        """
+        Create multiple DNS records in parallel for improved performance.
+        
+        Args:
+            zone_id: Cloudflare zone ID
+            records: List of record dicts, each containing:
+                - record_type: str (A, CNAME, MX, TXT, etc.)
+                - name: str (record name)
+                - content: str (record content)
+                - ttl: int (optional, default 300)
+                - priority: int (optional, for MX records)
+                - proxied: bool (optional, default False)
+        
+        Returns:
+            Dict with 'success', 'results' list, and 'errors' list
+        
+        Example:
+            records = [
+                {'record_type': 'A', 'name': 'example.com', 'content': '1.2.3.4'},
+                {'record_type': 'CNAME', 'name': 'www', 'content': 'example.com'},
+                {'record_type': 'MX', 'name': '@', 'content': 'mail.example.com', 'priority': 10}
+            ]
+            result = await cloudflare.create_dns_records_batch(zone_id, records)
+        """
+        import asyncio
+        
+        if not records:
+            return {'success': True, 'results': [], 'errors': [], 'created_count': 0}
+        
+        logger.info(f"📦 BATCH DNS: Creating {len(records)} records in parallel for zone {zone_id}")
+        start_time = time.time() if 'time' in dir() else 0
+        
+        # Create tasks for parallel execution
+        tasks = []
+        for record in records:
+            task = self.create_dns_record(
+                zone_id=zone_id,
+                record_type=record.get('record_type', 'A'),
+                name=record.get('name', ''),
+                content=record.get('content', ''),
+                ttl=record.get('ttl', 300),
+                priority=record.get('priority'),
+                weight=record.get('weight'),
+                port=record.get('port'),
+                proxied=record.get('proxied', False)
+            )
+            tasks.append(task)
+        
+        # Execute all in parallel with exception handling
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Process results
+        successful = []
+        errors = []
+        
+        for i, result in enumerate(results):
+            record_info = f"{records[i].get('record_type', 'A')} {records[i].get('name', '')}"
+            
+            if isinstance(result, Exception):
+                logger.error(f"❌ Batch DNS error for {record_info}: {result}")
+                errors.append({
+                    'record': records[i],
+                    'error': str(result)
+                })
+            elif isinstance(result, dict):
+                if result.get('success'):
+                    successful.append({
+                        'record': records[i],
+                        'result': result.get('result', {})
+                    })
+                    logger.debug(f"✅ Batch DNS created: {record_info}")
+                else:
+                    errors.append({
+                        'record': records[i],
+                        'error': result.get('errors', [{'message': 'Unknown error'}])
+                    })
+                    logger.warning(f"⚠️ Batch DNS failed: {record_info}")
+        
+        elapsed = (time.time() - start_time) if start_time else 0
+        logger.info(f"📦 BATCH DNS complete: {len(successful)}/{len(records)} created in {elapsed:.2f}s")
+        
+        return {
+            'success': len(errors) == 0,
+            'results': successful,
+            'errors': errors,
+            'created_count': len(successful),
+            'failed_count': len(errors),
+            'total_count': len(records)
+        }
+    
+    async def update_dns_records_batch(self, zone_id: str, records: List[Dict]) -> Dict:
+        """
+        Update multiple DNS records in parallel.
+        
+        Args:
+            zone_id: Cloudflare zone ID
+            records: List of record dicts, each containing:
+                - record_id: str (required)
+                - record_type: str
+                - name: str
+                - content: str
+                - ttl: int (optional)
+                - priority: int (optional)
+                - proxied: bool (optional)
+        
+        Returns:
+            Dict with 'success', 'results', and 'errors'
+        """
+        import asyncio
+        
+        if not records:
+            return {'success': True, 'results': [], 'errors': [], 'updated_count': 0}
+        
+        logger.info(f"📦 BATCH DNS UPDATE: Updating {len(records)} records in parallel")
+        
+        tasks = []
+        for record in records:
+            if not record.get('record_id'):
+                logger.warning(f"⚠️ Skipping record without record_id: {record}")
+                continue
+                
+            task = self.update_dns_record(
+                zone_id=zone_id,
+                record_id=record['record_id'],
+                record_type=record.get('record_type', 'A'),
+                name=record.get('name', ''),
+                content=record.get('content', ''),
+                ttl=record.get('ttl', 300),
+                priority=record.get('priority'),
+                weight=record.get('weight'),
+                port=record.get('port'),
+                proxied=record.get('proxied', False)
+            )
+            tasks.append(task)
+        
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        successful = []
+        errors = []
+        
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                errors.append({'record': records[i], 'error': str(result)})
+            elif isinstance(result, dict):
+                if result.get('success'):
+                    successful.append({'record': records[i], 'result': result.get('result', {})})
+                else:
+                    errors.append({'record': records[i], 'error': result.get('errors', [])})
+        
+        logger.info(f"📦 BATCH DNS UPDATE complete: {len(successful)}/{len(records)} updated")
+        
+        return {
+            'success': len(errors) == 0,
+            'results': successful,
+            'errors': errors,
+            'updated_count': len(successful),
+            'failed_count': len(errors)
+        }
+    
+    async def delete_dns_records_batch(self, zone_id: str, record_ids: List[str]) -> Dict:
+        """
+        Delete multiple DNS records in parallel.
+        
+        Args:
+            zone_id: Cloudflare zone ID
+            record_ids: List of record IDs to delete
+        
+        Returns:
+            Dict with 'success', 'deleted_count', and 'errors'
+        """
+        import asyncio
+        
+        if not record_ids:
+            return {'success': True, 'deleted_count': 0, 'errors': []}
+        
+        logger.info(f"📦 BATCH DNS DELETE: Deleting {len(record_ids)} records in parallel")
+        
+        tasks = [self.delete_dns_record(zone_id, record_id) for record_id in record_ids]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        deleted_count = 0
+        errors = []
+        
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                errors.append({'record_id': record_ids[i], 'error': str(result)})
+            elif result is True:
+                deleted_count += 1
+            else:
+                errors.append({'record_id': record_ids[i], 'error': 'Delete failed'})
+        
+        logger.info(f"📦 BATCH DNS DELETE complete: {deleted_count}/{len(record_ids)} deleted")
+        
+        return {
+            'success': len(errors) == 0,
+            'deleted_count': deleted_count,
+            'failed_count': len(errors),
+            'errors': errors
+        }
+
     async def update_dns_record(self, zone_id: str, record_id: str, record_type: str, name: str, content: str, ttl: int = 300, priority: Optional[int] = None, weight: Optional[int] = None, port: Optional[int] = None, proxied: bool = False) -> Dict:
         """Update an existing DNS record"""
         try:

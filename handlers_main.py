@@ -16195,10 +16195,10 @@ Automated update is currently unavailable. Please update manually.
 # CLOUDFLARE SECURITY SETTINGS FUNCTIONS
 # =============================================================================
 
-async def show_security_settings(query, domain_name):
+async def show_cloudflare_security_settings(query, domain_name):
     """Show Cloudflare security settings interface with JavaScript Challenge toggle"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
     
     try:
         user_record = await get_or_create_user(user.id)

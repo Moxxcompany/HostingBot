@@ -6255,8 +6255,10 @@ We'll help you get started!"""
         # ALWAYS format brand placeholders (whether translated or fallback)
         reseller_message = format_branded_message(reseller_message)
         
-        if 'buttons.' in contact_button_text: contact_button_text = "💬 Contact Support"
-        if 'buttons.' in back_button_text: back_button_text = "⬅️ Back"
+        if 'buttons.' in contact_button_text:
+            contact_button_text = "💬 Contact Support"
+        if 'buttons.' in back_button_text:
+            back_button_text = "⬅️ Back"
         
         keyboard = [
             [InlineKeyboardButton(contact_button_text, url=f"https://t.me/{get_support_contact().lstrip('@')}")],

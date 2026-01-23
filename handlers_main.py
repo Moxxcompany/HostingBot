@@ -6296,7 +6296,8 @@ We'll help you get started!""")
 
 async def show_search_interface(query):
     """Show domain search interface"""
-    user_lang = await get_user_lang_fast(query.from_user, context)
+    user = query.from_user
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
     
     message = f"""
 {t('domain.search.title', user_lang)}
@@ -6314,7 +6315,8 @@ async def show_search_interface(query):
 
 async def show_user_domains(query):
     """Show user's domains - placeholder"""
-    user_lang = await get_user_lang_fast(query.from_user, context)
+    user = query.from_user
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
     message = f"""
 {t('domain.list.title', user_lang)}
 

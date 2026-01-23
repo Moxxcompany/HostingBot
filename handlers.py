@@ -4975,8 +4975,8 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = query.from_user
     logger.info(f"🖱️ USER_ACTIVITY: Button click from user {user.id if user else 'unknown'} (@{user.username if user else 'no_username'}) - action: {query.data}")
     
-    # Resolve user language early for error messages
-    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None) if user else 'en'
+    # Resolve user language early for error messages - using cached version
+    user_lang = await get_user_language_cached(update, context) if user else 'en'
     
     # MAINTENANCE MODE CHECK - Block non-admin users during maintenance
     from services.maintenance_manager import MaintenanceManager

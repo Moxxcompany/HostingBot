@@ -11859,6 +11859,11 @@ async def continue_a_record_wizard(query, context, wizard_state):
     domain = wizard_state['domain']
     data = wizard_state['data']
     
+    # Initialize variables
+    keyboard = None
+    reply_markup = None
+    message = None
+    
     # Handle custom subdomain input prompt
     if data.get('name') == 'custom':
         message = f"""

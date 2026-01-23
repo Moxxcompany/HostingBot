@@ -12395,6 +12395,11 @@ async def continue_cname_record_wizard(query, context, wizard_state):
     user = query.from_user
     user_lang = await get_user_lang_fast(user, context)
     
+    # Initialize variables
+    keyboard = None
+    reply_markup = None
+    message = None
+    
     domain = wizard_state['domain']
     data = wizard_state['data']
     

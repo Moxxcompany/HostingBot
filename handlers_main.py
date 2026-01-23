@@ -6455,7 +6455,7 @@ async def show_profile_interface(query):
     config = BrandConfig()
     
     # Get user language for localization
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
     
     # Get localized text
     language_settings_text = await t_for_user('profile.language_settings', user.id)
@@ -6491,7 +6491,7 @@ async def show_profile_interface(query):
 async def show_contact_support(query):
     """Show contact support information"""
     user = query.from_user
-    user_lang = await get_user_lang_fast(user, context)
+    user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
     platform_name = get_platform_name()
     
     # Use the new HTML-formatted message template

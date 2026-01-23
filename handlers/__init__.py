@@ -75,6 +75,9 @@ from .common import (
     get_region_name,
 )
 
+# Import hosting helpers
+from .hosting_handlers import get_hosting_nameservers
+
 # Module references for convenient access
 from . import common
 from . import core_handlers

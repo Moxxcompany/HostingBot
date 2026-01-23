@@ -14211,8 +14211,8 @@ async def handle_mx_server_input(update, context, server_content, edit_input):
         # Brief pause then show updated interface with auto-apply
         await asyncio.sleep(0.5)
         
-        # Create a query adapter for the auto-apply edit wizard
-        query_adapter = WizardQueryAdapter(
+        # Create a query adapter for the auto-apply edit wizard (for future use)
+        WizardQueryAdapter(
             bot=context.bot,
             chat_id=update.message.chat.id,
             message_id=update.message.message_id,

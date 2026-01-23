@@ -4753,7 +4753,6 @@ async def handle_domain_linking_callback(query, callback_data: str, context, use
             await safe_edit_message(query, t('domain_linking.verification_coming_soon', user_lang))
             
         elif action.startswith("analyze_"):
-            domain_name = action.replace("analyze_", "")
             # Note: query.answer() already called by main callback router
             await safe_edit_message(query, t('domain_linking.analysis_coming_soon', user_lang))
             

@@ -12626,6 +12626,11 @@ async def continue_mx_record_wizard(query, context, wizard_state):
     user = query.from_user
     user_lang = await get_user_lang_fast(user, context)
     
+    # Initialize variables
+    keyboard = None
+    reply_markup = None
+    message = None
+    
     # CRITICAL REFRESH: Always use the state from context.user_data if it exists
     # This prevents the local variable 'wizard_state' from being stale
     if 'dns_wizard' in context.user_data:

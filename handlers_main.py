@@ -4747,7 +4747,6 @@ async def handle_domain_linking_callback(query, callback_data: str, context, use
             await show_domain_linking_help(query, user_lang)
             
         elif action.startswith("verify_"):
-            domain_name = action.replace("verify_", "")
             # Note: query.answer() already called by main callback router
             await safe_edit_message(query, t('domain_linking.verification_coming_soon', user_lang))
             

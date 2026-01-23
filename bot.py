@@ -28,22 +28,26 @@ logging.getLogger("aiohttp.access").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
-# Import our handlers and services
-from handlers import (
-    start_command, 
-    domain_command, 
-    dns_command, 
-    wallet_command,
-    search_command,
-    profile_command,
-    hosting_command,
-    language_command,
-    link_domain_command,
+# Import our handlers from modular package
+from handlers.common import cleanup_expired_tokens
+from handlers.core_handlers import (
+    start_command,
     handle_callback,
-    handle_text_message,
-    handle_domain_linking_text_input,
-    cleanup_expired_tokens
 )
+
+# Import remaining handlers from main handlers module (for now)
+# These will be migrated to modular structure incrementally
+import handlers as handlers_main
+domain_command = handlers_main.domain_command
+dns_command = handlers_main.dns_command
+wallet_command = handlers_main.wallet_command
+search_command = handlers_main.search_command
+profile_command = handlers_main.profile_command
+hosting_command = handlers_main.hosting_command
+language_command = handlers_main.language_command
+link_domain_command = handlers_main.link_domain_command
+handle_text_message = handlers_main.handle_text_message
+handle_domain_linking_text_input = handlers_main.handle_domain_linking_text_input
 
 # Import consolidated admin handlers
 from admin_handlers import (

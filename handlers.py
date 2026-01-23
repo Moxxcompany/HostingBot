@@ -12593,26 +12593,22 @@ Type your subdomain:
             [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:TXT:name:back")]
         ]
     elif 'ttl' not in data:
-        # Step 3: TTL
+        # Step 3: TTL - Use cached keyboard
         name_display = data['name'] if data['name'] != '@' else domain
         content_preview = escape_content_for_display(data['content'], mode="full")  # Use full mode for safe HTML
         name_safe = escape_content_for_display(name_display, mode="full")
         message = f"📝 {t('dns_wizard.txt_record_title', user_lang, step=3, domain=domain)}\n\n" \
                   f"{name_safe[0]} → {content_preview[0]}\n\n" \
                   f"{t('dns_wizard.select_ttl', user_lang)}"
-        keyboard = [
-            [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:1")],
-            [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:300")],
-            [InlineKeyboardButton(t("buttons.1_hour_label", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:3600"),
-             InlineKeyboardButton(t("buttons.1_day", user_lang), callback_data=f"dns_wizard:{domain}:TXT:ttl:86400")],
-            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:TXT:content:back")]
-        ]
+        reply_markup = get_ttl_selection_keyboard(domain, 'TXT', user_lang, 'content')
     else:
         # Step 4: Confirmation
         await show_txt_record_confirmation(query, wizard_state)
         return
     
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # Create reply_markup from keyboard if not already set by cached keyboard
+    if reply_markup is None and keyboard is not None:
+        reply_markup = InlineKeyboardMarkup(keyboard)
     
     # Use HTML parse mode for TTL step to safely display user content
     parse_mode = ParseMode.HTML

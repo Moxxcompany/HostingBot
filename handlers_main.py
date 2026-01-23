@@ -5990,7 +5990,7 @@ async def show_personalized_dashboard(query):
     try:
         # Get user data and wallet balance
         try:
-            db_user = await asyncio.wait_for(
+            await asyncio.wait_for(
                 get_or_create_user(
                     telegram_id=user.id,
                     username=user.username,

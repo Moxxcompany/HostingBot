@@ -19210,7 +19210,6 @@ async def handle_rdp_confirm_and_create_order(query, context):
     """Create RDP order before showing payment method selection"""
     try:
         user = query.from_user
-        user_lang = await get_user_lang_fast(user, context)
         
         # Show loading message
         await safe_edit_message(query, await t_for_user('rdp.payment.creating_order', user.id))

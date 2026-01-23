@@ -889,7 +889,9 @@ async def lifespan(app: FastAPI):
             _service_status['database'] = True
             
         except Exception as e:
-            logger.warning(f"⚠️ Database pre-warming failed: {e}")
+            logger.error(f"❌ Database pre-warming failed: {e}")
+            import traceback
+            logger.error(f"   Traceback: {traceback.format_exc()}")
             _service_status['database'] = False
         
         # 2. Pre-authenticate with OpenProvider (with timeout)
@@ -945,10 +947,17 @@ async def lifespan(app: FastAPI):
             logger.info("✅ Language system pre-initialized")
             _service_status['language_system'] = True
         except Exception as e:
-            logger.warning(f"⚠️ Language system pre-warming failed: {e}")
+            logger.error(f"❌ Language system pre-warming failed: {e}")
+            import traceback
+            logger.error(f"   Traceback: {traceback.format_exc()}")
             _service_status['language_system'] = False
         
-        logger.info("🎯 Background initialization complete!")
+        # Log final background initialization status
+        logger.info("=" * 60)
+        logger.info("🎯 BACKGROUND INITIALIZATION COMPLETE")
+        logger.info(f"   🗄️  Database:        {'✅ Connected' if _service_status['database'] else '❌ Failed'}")
+        logger.info(f"   🌍 Language System: {'✅ Loaded' if _service_status['language_system'] else '❌ Failed'}")
+        logger.info("=" * 60)
     
     # Start background initialization task (runs after server is accepting requests)
     background_init_task = asyncio.create_task(background_initialization())

@@ -8605,7 +8605,7 @@ async def handle_unified_text_input(update: Update, context: ContextTypes.DEFAUL
                 
         elif unified_flow == 'awaiting_existing_domain':
             # Handle existing domain connection with immediate feedback
-            analyzing_msg = await message.reply_text(
+            await message.reply_text(
                 f"🔄 <b>Analyzing {domain_name}...</b>\n\n"
                 "• Checking domain status\n"
                 "• Verifying DNS records\n"

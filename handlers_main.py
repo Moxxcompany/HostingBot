@@ -4457,12 +4457,11 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_lang = await get_user_lang_fast(user, context)
         
         # Get user data for wallet balance and terms status
-        user_data = await get_or_create_user(user.id, user.username, user.first_name, user.language_code)
+        await get_or_create_user(user.id, user.username, user.first_name, user.language_code)
         wallet_balance = await get_user_wallet_balance(user.id)
         has_accepted_terms = await has_user_accepted_terms(user.id)
         
         # Build profile information using localized strings
-        username_display = f"@{user.username}" if user.username else "Not set"
         full_name = f"{user.first_name or ''} {user.last_name or ''}".strip() or "Not set"
         
         # Get brand configuration for community engagement

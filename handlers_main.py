@@ -6729,7 +6729,6 @@ async def analyze_domain_status(domain_name: str, user_id: Optional[int] = None)
         
         if ownership_state in ['internal_owned', 'external_verified']:
             # Domain is owned - check DNS configuration
-            existing_domain = await get_domain_by_name(domain_name)
             cf_zone = await get_cloudflare_zone(domain_name)
             nameservers = await get_domain_nameservers(domain_name)
             

@@ -11103,8 +11103,6 @@ async def continue_dns_add_wizard(query, domain, record_type, step):
     user = query.from_user
     user_lang = await resolve_user_language(user.id, getattr(user, 'language_code', None))
     
-    flow_id = f"{user.id}_{domain}_{record_type}"
-    
     # Initialize default values to prevent LSP "possibly unbound" warnings
     message = f"🚧 {record_type} Record Wizard\n\nComing soon!"
     keyboard = [[InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns:{domain}:add")]]

@@ -1,10 +1,9 @@
 """
 Domain Handlers - Domain registration and management
 
-Handles:
-- Domain search and availability
-- Domain registration flow
-- Domain linking (external domains)
+Contains actual implementations for:
+- Domain search interface
+- User domains listing
 - Domain management dashboard
 """
 
@@ -17,7 +16,6 @@ from telegram.constants import ParseMode
 from handlers.common import (
     safe_edit_message,
     escape_html,
-    get_user_lang_fast,
     is_valid_domain,
     validate_domain_name,
 )
@@ -26,14 +24,128 @@ logger = logging.getLogger(__name__)
 
 
 # ============================================================================
-# Domain Search
+# Imports helper
 # ============================================================================
 
-async def show_search_interface(query):
-    """Show domain search interface"""
-    from handlers_main import show_search_interface as _handler
-    return await _handler(query)
+def _get_imports():
+    """Lazy imports to avoid circular dependencies"""
+    from localization import t, btn_t
+    from database import get_or_create_user, get_user_domains
+    return t, btn_t, get_or_create_user, get_user_domains
 
+
+async def get_user_lang_fast(user, context):
+    """Get user language with caching"""
+    from handlers.common import get_user_lang_fast as _get_user_lang_fast
+    return await _get_user_lang_fast(user, context)
+
+
+# ============================================================================
+# Domain Search (Implemented)
+# ============================================================================
+
+async def show_search_interface(query, context=None):
+    """Show domain search interface"""
+    t, btn_t, _, _ = _get_imports()
+    
+    user_lang = await get_user_lang_fast(query.from_user, context)
+    
+    message = f"""
+{t('domain.search.title', user_lang)}
+
+{t('domain.search.prompt_line1', user_lang)}
+
+{t('domain.search.prompt_line2', user_lang)}
+"""
+    keyboard = [
+        [InlineKeyboardButton(t("buttons.back", user_lang), callback_data="main_menu")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    # Set context to expect domain search input
+    if context and context.user_data is not None:
+        context.user_data['expecting_domain_search'] = True
+    
+    await safe_edit_message(query, message, reply_markup=reply_markup)
+
+
+async def show_user_domains(query, context=None):
+    """Show user's domains - simple placeholder"""
+    t, _, _, _ = _get_imports()
+    
+    user_lang = await get_user_lang_fast(query.from_user, context)
+    message = f"""
+{t('domain.list.title', user_lang)}
+
+{t('domain.list.loading', user_lang)}
+"""
+    await safe_edit_message(query, message)
+
+
+async def show_user_domains_complete(query, context=None):
+    """Show complete domains management interface with all user domains"""
+    t, btn_t, get_or_create_user, get_user_domains = _get_imports()
+    
+    # Clear admin states when navigating to domains
+    try:
+        from admin_handlers import clear_admin_states
+        if context:
+            clear_admin_states(context)
+    except ImportError:
+        pass
+    
+    user = query.from_user
+    user_lang = await get_user_lang_fast(user, context)
+    
+    try:
+        user_record = await get_or_create_user(user.id)
+        domains = await get_user_domains(user_record['id'])
+        
+        if not domains:
+            message = f"{t('dashboard.domains_list_title', user_lang)}\n\n{t('dashboard.no_domains_message', user_lang)}"
+            keyboard = [
+                [InlineKeyboardButton(t("buttons.search_domains", user_lang), callback_data="search_domains")],
+                [InlineKeyboardButton(t("buttons.back", user_lang), callback_data="main_menu")]
+            ]
+        else:
+            message = f"{t('dashboard.domains_list_title', user_lang)}\n\n{t('dashboard.domain_count', user_lang, count=len(domains))}\n\n"
+            keyboard = []
+            
+            for domain in domains:
+                domain_name = domain['domain_name']
+                status = domain['status']
+                restriction = domain.get('registrar_restriction')
+                
+                # Determine emoji and status based on restriction
+                if restriction:
+                    emoji = "🔒"
+                    status_text = t('common_labels.restricted', user_lang, fallback='Restricted')
+                elif status == 'active':
+                    emoji = "✅"
+                    status_text = t(f'common_labels.{status}', user_lang) if status else status.title()
+                else:
+                    emoji = "⏳"
+                    status_text = t(f'common_labels.{status}', user_lang) if status else status.title()
+                
+                message += f"{emoji} {domain_name} ({status_text})\n"
+                keyboard.append([InlineKeyboardButton(f"🌐 {domain_name}", callback_data=f"dns_{domain_name}")])
+            
+            keyboard.extend([
+                [InlineKeyboardButton(btn_t("register_new_domain", user_lang), callback_data="search_domains")],
+                [InlineKeyboardButton(t("buttons.back", user_lang), callback_data="main_menu")]
+            ])
+        
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await safe_edit_message(query, message, reply_markup=reply_markup)
+        
+    except Exception as e:
+        logger.error("Error showing domains interface: %s", e)
+        await safe_edit_message(query, "❌ Error\n\nCould not load domains.")
+
+
+# ============================================================================
+# Domain Search Results (Delegated)
+# ============================================================================
 
 async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /search command"""
@@ -54,7 +166,7 @@ async def show_domain_search_results(query, domain_name: str, context):
 
 
 # ============================================================================
-# Domain Registration
+# Domain Registration (Delegated)
 # ============================================================================
 
 async def start_domain_registration(query, context, domain_name: str):
@@ -82,20 +194,8 @@ async def process_domain_registration_crypto(query, domain_name: str, crypto_typ
 
 
 # ============================================================================
-# User Domains
+# Domain Management (Delegated)
 # ============================================================================
-
-async def show_user_domains(query):
-    """Show user's domains (simple list)"""
-    from handlers_main import show_user_domains as _handler
-    return await _handler(query)
-
-
-async def show_user_domains_complete(query, context=None):
-    """Show user's domains with full details"""
-    from handlers_main import show_user_domains_complete as _handler
-    return await _handler(query, context)
-
 
 async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /domains command"""
@@ -103,11 +203,7 @@ async def domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await _handler(update, context)
 
 
-# ============================================================================
-# Domain Management
-# ============================================================================
-
-async def show_domain_management(query, domain_name: str, context):
+async def show_domain_management(query, domain_name: str, context=None):
     """Show domain management dashboard"""
     from handlers_main import show_domain_management as _handler
     return await _handler(query, domain_name, context)
@@ -126,7 +222,7 @@ async def show_domain_renewal_options(query, domain_name: str, context):
 
 
 # ============================================================================
-# Domain Linking (External Domains)
+# Domain Linking (Delegated)
 # ============================================================================
 
 async def link_domain_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -153,12 +249,6 @@ async def start_domain_linking_flow(query, context, user_lang: str):
     return await _handler(query, context, user_lang)
 
 
-async def show_domain_linking_help(query, user_lang: str):
-    """Show domain linking help"""
-    from handlers_main import show_domain_linking_help as _handler
-    return await _handler(query, user_lang)
-
-
 async def handle_domain_linking_text_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle domain linking text input"""
     from handlers_main import handle_domain_linking_text_input as _handler
@@ -172,7 +262,7 @@ async def initiate_domain_linking_process(user, message, domain_name: str, conte
 
 
 # ============================================================================
-# Domain Analysis
+# Domain Analysis (Delegated)
 # ============================================================================
 
 async def analyze_domain_status(domain_name: str) -> Dict:
@@ -193,11 +283,17 @@ async def smart_domain_handler(query, context, plan_id: str):
 
 def is_valid_domain_format(domain: str) -> bool:
     """Check if domain format is valid"""
-    from handlers_main import is_valid_domain_format as _func
-    return _func(domain)
+    return is_valid_domain(domain)
 
 
-def get_domain_validation_error(domain_name: str, user_lang: str = None) -> str:
+def get_domain_validation_error(domain_name: str, user_lang: str = 'en') -> str:
     """Get domain validation error message"""
-    from handlers_main import get_domain_validation_error as _func
-    return _func(domain_name, user_lang)
+    t, _, _, _ = _get_imports()
+    
+    if not domain_name:
+        return t('domain.validation.empty', user_lang, fallback='Please enter a domain name')
+    
+    if not is_valid_domain(domain_name):
+        return t('domain.validation.invalid_format', user_lang, fallback='Invalid domain format')
+    
+    return ""

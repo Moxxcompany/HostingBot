@@ -6272,7 +6272,7 @@ We'll help you get started!"""
     except Exception as e:
         logger.error(f"Error showing reseller info for user {user.id}: {e}")
         # Get user_lang for fallback
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         fallback_message = format_branded_message("""🤝 <b>Reseller Program</b>
 
 Grow your business by partnering with {platform_name}!

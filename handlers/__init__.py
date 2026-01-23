@@ -121,6 +121,9 @@ __all__ = [
     'set_wizard_state',
     'get_region_name',
     
+    # Hosting helpers (used by API routes)
+    'get_hosting_nameservers',
+    
     # Modules
     'common',
     'core_handlers',

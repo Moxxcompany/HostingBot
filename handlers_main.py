@@ -8032,7 +8032,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
             if 'intent_id' in locals() and intent_id:
                 intent_id_int = int(intent_id)
                 await update_hosting_intent_status(intent_id_int, 'pending_payment')
-        except:
+        except Exception:
             pass
         await safe_edit_message(query, "❌ Payment processing error. Please try again.")
 
@@ -8240,7 +8240,7 @@ async def create_unified_hosting_account_after_payment(subscription_id: int):
         try:
             from database import update_hosting_subscription_status
             await update_hosting_subscription_status(subscription_id, 'failed')
-        except:
+        except Exception:
             pass
 
 async def register_unified_domain(domain_name: str, user_id: int, subscription_id: int) -> bool:

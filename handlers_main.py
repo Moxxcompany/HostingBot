@@ -10662,7 +10662,7 @@ async def back_to_wallet_payment(query, order_id):
         try:
             await query.message.delete()
             await show_wallet_deposit_options(query)
-        except:
+        except Exception:
             pass  # If everything fails, just let it be
 
 async def handle_qr_back_to_payment(query, domain_name):
@@ -10709,7 +10709,7 @@ async def handle_qr_back_to_payment(query, domain_name):
         # If deletion fails, try to continue anyway
         try:
             await start_domain_registration(query, domain_name)
-        except:
+        except Exception:
             pass  # If everything fails, just let it be
 
 async def handle_qr_cancel_order(query):
@@ -10726,7 +10726,7 @@ async def handle_qr_cancel_order(query):
         # If deletion fails, try to continue anyway
         try:
             await show_search_interface(query)
-        except:
+        except Exception:
             pass  # If everything fails, just let it be
 
 async def check_wallet_deposit_status(query, order_id):

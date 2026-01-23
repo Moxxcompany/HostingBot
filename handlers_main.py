@@ -10299,7 +10299,7 @@ async def _show_domain_payment_qr(query, order_id, payment_intent):
         bio.seek(0)
         
         # Send QR code image with timeout protection
-        qr_message = await asyncio.wait_for(
+        await asyncio.wait_for(
             query.message.reply_photo(
                 photo=bio,
                 caption=message,

@@ -11676,7 +11676,6 @@ def clear_all_dns_wizard_state(context):
 
 async def handle_dns_wizard_callback(query, context, callback_data):
     """Handle DNS wizard step callbacks: dns_wizard:{domain}:{type}:{field}:{value}"""
-    user = query.from_user
     
     try:
         # Parse: dns_wizard:{domain}:{type}:{field}:{value}

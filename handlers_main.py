@@ -349,7 +349,6 @@ class AutoApplySession:
         normalized_value = self._normalize_field_value(field, value)
         
         # Update draft state
-        old_value = self.draft_state.get(field)
         self.draft_state[field] = normalized_value
         
         # Track dirty fields by comparing with original state

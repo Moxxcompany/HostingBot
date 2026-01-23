@@ -18,83 +18,65 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 from typing import Optional, Dict, List, Any, Tuple, Literal
 from database import (
-    get_or_create_user, get_user_domains, create_domain_with_uuid, save_cloudflare_zone, 
+    get_or_create_user, get_user_domains, save_cloudflare_zone, 
     execute_update, execute_query, get_user_wallet_balance, get_user_wallet_balance_by_id, debit_wallet_balance,
     credit_user_wallet, get_user_wallet_transactions, reserve_wallet_balance, create_wallet_deposit_with_uuid,
     finalize_wallet_reservation, get_cloudflare_zone, get_domain_provider_id,
     update_domain_nameservers, get_domain_nameservers, get_domain_auto_proxy_enabled,
     set_domain_auto_proxy_enabled, accept_user_terms, has_user_accepted_terms,
-    get_or_create_user_with_status, create_hosting_subscription_with_uuid,
-    create_cpanel_account, get_hosting_subscription_details, get_domain_by_name,
+    get_or_create_user_with_status, create_cpanel_account, get_domain_by_name,
     log_domain_search, create_registration_intent, update_intent_status,
     finalize_domain_registration, get_active_registration_intent, check_domain_ownership_state,
-    create_hosting_intent, update_hosting_intent_status, finalize_hosting_provisioning,
-    get_active_hosting_intent, get_hosting_intent_by_id,
-    # UUID-based functions for new record creation
-    create_payment_intent_with_uuid, create_order_with_uuid, get_order_by_uuid,
+    create_hosting_intent, update_hosting_intent_status, get_active_hosting_intent, create_order_with_uuid, get_order_by_uuid,
     # Domain order functions for single-table consolidation
     create_domain_order_crypto,
     # Hosting order functions for single-table consolidation
     create_hosting_order_crypto,
     # DNS Optimistic Concurrency Control functions
     get_dns_record_version, update_dns_record_version, check_dns_record_conflict,
-    force_update_dns_record_version,
-    check_zone_creation_lock, create_zone_with_lock, get_zone_by_domain_id
+    force_update_dns_record_version
 )
 from services.cloudflare import CloudflareService
 from services.openprovider import OpenProviderService
-from services.payment_provider import create_payment_address, check_payment_status, get_current_provider_name
+from services.payment_provider import create_payment_address
 from services.cpanel import CPanelService
 from services.vultr import vultr_service
 from brand_config import (
     get_welcome_message, get_platform_name, get_dns_management_intro,
-    get_service_error_message, get_payment_success_message, 
-    get_domain_success_message, format_branded_message, BrandConfig,
+    format_branded_message, BrandConfig,
     get_support_contact
 )
 from admin_handlers import (
     handle_admin_broadcast, handle_admin_credit_wallet, handle_cancel_broadcast,
-    execute_admin_credit, show_admin_credit_search, handle_admin_credit_user_search,
-    handle_admin_credit_amount, is_admin_user
+    execute_admin_credit, is_admin_user
 )
 from pricing_utils import format_money, calculate_marked_up_price
 from crypto_config import crypto_config
 from message_utils import (
-    escape_html, format_bold, format_code_block, format_inline_code,
-    create_success_message, create_error_message, create_info_message,
-    create_warning_message, create_contact_support_message, get_platform_name as get_platform_name_html,
-    render_crypto_payment, t_fmt
+    escape_html, format_inline_code,
+    create_error_message, create_warning_message, create_contact_support_message, render_crypto_payment, t_fmt
 )
 from services.registration_orchestrator import start_domain_registration as orchestrator_start_registration
 from services.supported_tlds import is_supported_tld, get_unsupported_tld_message
 from services.domain_linking_orchestrator import DomainLinkingOrchestrator
 from localization import (
-    t, t_for_user, resolve_user_language, t_html, t_html_for_user,
-    set_user_language_preference, get_supported_languages, is_language_supported,
+    t, t_for_user, resolve_user_language, t_html, set_user_language_preference, get_supported_languages, is_language_supported,
     get_user_language_preference, btn_t
 )
 # Performance utilities for caching
 from utils.user_context import (
-    get_user_language_cached, 
-    invalidate_user_language_cache,
-    get_user_context_cached
+    get_user_language_cached
 )
 from utils.keyboard_cache import (
-    get_dns_record_type_keyboard,
     get_ttl_selection_keyboard,
-    get_mx_priority_keyboard,
-    get_cache_stats as get_keyboard_cache_stats,
-    clear_keyboard_cache
+    get_mx_priority_keyboard
 )
 # Import unified ID handling functions
 from unified_user_id_handlers import (
-    ensure_user_exists_by_telegram_id,
-    get_internal_user_id_from_telegram_id,
-    get_wallet_balance_by_telegram_id
+    get_internal_user_id_from_telegram_id
 )
 
 # Import modular handlers for delegated implementations
-from handlers import dns_handlers as _dns_handlers
 
 # ============================================================================
 # PERFORMANCE HELPER: Fast user language resolution with context caching
@@ -154,13 +136,11 @@ def get_region_name(region_code: str) -> str:
 
 # PRODUCTION MONITORING: Enhanced logging and monitoring integration
 from monitoring.production_logging import (
-    get_production_logger, log_performance_metric,
-    log_business_event, log_error_with_context
+    get_production_logger
 )
-from utils.timezone_utils import ensure_utc
 from performance_monitor import PerformanceMonitor
-from health_monitor import get_health_monitor, log_error
-from admin_alerts import send_error_alert, send_warning_alert, send_info_alert, AlertSeverity, AlertCategory
+from health_monitor import get_health_monitor
+from admin_alerts import send_error_alert, send_info_alert
 
 logger = logging.getLogger(__name__)
 
@@ -1379,7 +1359,6 @@ def extract_provider_key(provider_name: str) -> str:
 async def analyze_domain_nameservers(domain_name: str) -> dict:
     """Analyze domain nameservers for hosting setup automation"""
     try:
-        import socket
         import asyncio
         import shutil
         
@@ -1914,8 +1893,7 @@ async def process_manual_renewal_wallet(query, subscription_id: str):
     user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, "language_code") else None)
     
     try:
-        from database import (get_or_create_user, get_hosting_subscription_details,
-                            get_user_wallet_balance, get_hosting_plan)
+        from database import (get_or_create_user, get_hosting_subscription_details)
         from services.renewal_processor import HostingRenewalProcessor
         
         db_user = await get_or_create_user(telegram_id=user.id)
@@ -7620,8 +7598,7 @@ async def process_unified_wallet_payment(query, subscription_id: str, price: str
         
         # CRITICAL: Financial safety validation before any operations
         from database import (
-            get_or_create_user, get_user_wallet_balance, debit_wallet_balance,
-            verify_financial_operation_safety
+            get_or_create_user, get_user_wallet_balance, verify_financial_operation_safety
         )
         
         # Verify financial operation safety
@@ -7885,8 +7862,7 @@ async def process_intent_wallet_payment(query, intent_id: str, price: str):
         # CRITICAL: Get server-side authoritative data FIRST
         from database import (
             get_or_create_user, get_user_wallet_balance, debit_wallet_balance,
-            verify_financial_operation_safety, get_hosting_intent_by_id,
-            finalize_hosting_provisioning, credit_user_wallet
+            verify_financial_operation_safety, get_hosting_intent_by_id
         )
         
         # Get user 
@@ -11353,7 +11329,7 @@ async def show_dns_record_detail(query, domain, record_id):
         # Get the specific DNS record using DATABASE-FIRST PATTERN
         # CRITICAL FIX: Check database before calling Cloudflare API
         # Database stores the DNS records and prevents stale data display
-        from database import get_dns_record_from_db, get_dns_records_from_db, save_dns_records_to_db
+        from database import get_dns_record_from_db, save_dns_records_to_db
         
         # Step 1: Try to get DNS record from database first (source of truth)
         db_record = await get_dns_record_from_db(record_id)

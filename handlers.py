@@ -12478,19 +12478,16 @@ Type your subdomain:
                   f"{t('common_labels.name', user_lang)}: {escape_content_for_display(name_display, mode='summary')[0]}\n" \
                   f"{t('common_labels.target', user_lang)}: {target_preview[0] if isinstance(target_preview, tuple) else target_preview}\n\n" \
                   f"{t('dns_wizard.select_ttl', user_lang)}"
-        keyboard = [
-            [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:1")],
-            [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:300")],
-            [InlineKeyboardButton(t("buttons.1_hour_label", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:3600"),
-             InlineKeyboardButton(t("buttons.1_day", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:ttl:86400")],
-            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:CNAME:target:back")]
-        ]
+        # Use cached TTL keyboard
+        reply_markup = get_ttl_selection_keyboard(domain, 'CNAME', user_lang, 'target')
     else:
         # Step 4: Confirmation
         await show_cname_record_confirmation(query, wizard_state)
         return
     
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    # Create reply_markup from keyboard if not already set by cached keyboard
+    if reply_markup is None and keyboard is not None:
+        reply_markup = InlineKeyboardMarkup(keyboard)
     
     # Prevent "Message is not modified" errors by checking current content
     try:

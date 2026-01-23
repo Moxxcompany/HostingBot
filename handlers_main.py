@@ -3251,7 +3251,6 @@ async def show_dashboard(update: Update, context: ContextTypes.DEFAULT_TYPE, use
                 min_rdp_price = 60
             except Exception as db_error:
                 logger.warning(f"Dashboard database error for user {user.id}: {db_error}, using fallbacks")
-                db_user = {'id': user.id}
                 wallet_balance = 0.0
                 min_hosting_price = 40
                 min_rdp_price = 60

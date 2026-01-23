@@ -1268,6 +1268,7 @@ async def lifespan(app: FastAPI):
     
     # ========================================================================
     # STARTUP COMPLETE - Log comprehensive service status
+    # Note: Database and Language System initialize in background task
     # ========================================================================
     logger.info("=" * 80)
     logger.info("✅ STARTUP COMPLETE - HTTP SERVER READY TO ACCEPT REQUESTS")
@@ -1275,24 +1276,27 @@ async def lifespan(app: FastAPI):
     logger.info("📊 SERVICE STATUS SUMMARY:")
     logger.info(f"   🤖 Telegram Bot:       {'✅ Running' if _service_status['bot'] else '❌ Failed'}")
     logger.info(f"   🌐 Webhook/Polling:    {'✅ Active' if _service_status['webhook'] else '❌ Inactive'}")
-    logger.info(f"   🗄️  Database:           {'✅ Connected' if _service_status['database'] else '❌ Failed'}")
+    logger.info(f"   🗄️  Database:           {'⏳ Initializing...' if not _service_status['database'] else '✅ Connected'}")
     logger.info(f"   📅 Scheduler:          {'✅ Running' if _service_status['scheduler'] else '❌ Failed'}")
     logger.info(f"   🧹 Payment Cleanup:    {'✅ Running' if _service_status['payment_cleanup'] else '❌ Failed'}")
-    logger.info(f"   🌍 Language System:    {'✅ Loaded' if _service_status['language_system'] else '❌ Failed'}")
+    logger.info(f"   🌍 Language System:    {'⏳ Initializing...' if not _service_status['language_system'] else '✅ Loaded'}")
     logger.info(f"   📬 Message Queue:      {'✅ Running' if _service_status['message_queue'] else '❌ Failed'}")
     logger.info("=" * 80)
+    logger.info("📋 NOTE: Database & Language System initialize in background - check logs below")
     
-    # Count successful services
-    successful_services = sum(1 for status in _service_status.values() if status)
-    total_services = len(_service_status)
+    # Count successful services (exclude background tasks that are still initializing)
+    immediate_services = ['bot', 'webhook', 'scheduler', 'payment_cleanup', 'message_queue']
+    successful_immediate = sum(1 for svc in immediate_services if _service_status.get(svc, False))
+    total_immediate = len(immediate_services)
     
-    if successful_services == total_services:
-        logger.info(f"🎉 ALL SERVICES STARTED SUCCESSFULLY ({successful_services}/{total_services})")
-    elif successful_services > 0:
-        logger.warning(f"⚠️ PARTIAL STARTUP: {successful_services}/{total_services} services running")
+    if successful_immediate == total_immediate:
+        logger.info(f"🎉 IMMEDIATE SERVICES STARTED: {successful_immediate}/{total_immediate}")
+        logger.info(f"   Background services (database, language) initializing...")
+    elif successful_immediate > 0:
+        logger.warning(f"⚠️ PARTIAL STARTUP: {successful_immediate}/{total_immediate} immediate services running")
         logger.warning(f"   Failed services may impact functionality but HTTP server is operational")
     else:
-        logger.error(f"❌ DEGRADED MODE: 0/{total_services} services started")
+        logger.error(f"❌ DEGRADED MODE: 0/{total_immediate} immediate services started")
         logger.error(f"   HTTP server is running but bot and services are unavailable")
     
     logger.info("=" * 80)

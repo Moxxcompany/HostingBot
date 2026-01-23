@@ -6,6 +6,7 @@ handlers by their functional domain.
 
 Modules:
 - common.py: Shared utilities, decorators, and helper functions
+- callback_router.py: Centralized callback routing system
 - core_handlers.py: Main commands and callback router
 - dns_handlers.py: DNS wizard and record management
 - domain_handlers.py: Domain registration, linking, management
@@ -23,9 +24,12 @@ Usage:
     
     # Import core handlers
     from handlers.core_handlers import start_command, handle_callback
+    
+    # Import callback router
+    from handlers.callback_router import get_callback_router
 """
 
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 __author__ = 'HostBay'
 
 # Common utilities - always available

@@ -6224,7 +6224,7 @@ async def show_reseller_info(query):
         return
     
     try:
-        user_lang = await get_user_lang_fast(user, context)
+        user_lang = await resolve_user_language(user.id, user.language_code if hasattr(user, 'language_code') else None)
         
         reseller_message = await t_for_user('reseller.message', user.id)
         contact_button_text = await t_for_user('buttons.contact_support', user.id)

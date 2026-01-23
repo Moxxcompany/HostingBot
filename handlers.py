@@ -11940,13 +11940,8 @@ Type your subdomain:
                   f"{t('common_labels.name', user_lang)}: {name_display}\n" \
                   f"IP: {data['ip']}\n\n" \
                   f"{t('dns_wizard.select_ttl', user_lang)}"
-        keyboard = [
-            [InlineKeyboardButton(t("buttons.auto_recommended_label", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:1")],
-            [InlineKeyboardButton(t("buttons.5_minutes_label", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:300")],
-            [InlineKeyboardButton(t("buttons.1_hour_label", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:3600"),
-             InlineKeyboardButton(t("buttons.1_day", user_lang), callback_data=f"dns_wizard:{domain}:A:ttl:86400")],
-            [InlineKeyboardButton(t("buttons.back", user_lang), callback_data=f"dns_wizard:{domain}:A:ip:back")]
-        ]
+        # Use cached TTL keyboard
+        reply_markup = get_ttl_selection_keyboard(domain, 'A', user_lang, 'ip')
     elif 'proxied' not in data:
         # Step 4: Proxy Setting with IP Validation
         name_display = data['name'] if data['name'] != '@' else domain

@@ -2973,9 +2973,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await set_user_language_preference(user.id, auto_language, manually_selected=False)
             logger.info(f"🔄 Auto-assigned language '{auto_language}' to existing user {user.id} who already accepted terms")
         
-        # Get current language preference after potential selection
-        current_lang = await get_user_language_preference(user.id)
-        
+        # Language preference is now set, continue to terms check
         terms_accepted = user_data['terms_accepted_bool']
         logger.info(f"🔍 TERMS CHECK: User {user.id} ({user.username}) terms_accepted = {terms_accepted}")
         

@@ -147,7 +147,7 @@ def get_region_name(region_code: str) -> str:
         try:
             regions = vultr_service.get_regions()
             _region_cache = {r['id']: f"{r['city']}, {r['country']}" for r in regions}
-        except:
+        except Exception:
             pass
     
     return _region_cache.get(region_code, region_code.upper())

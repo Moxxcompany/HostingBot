@@ -20158,7 +20158,7 @@ async def provision_rdp_server(telegram_id: int, order_id: int, metadata: dict):
                     text=error_msg,
                     parse_mode='HTML'
                 )
-        except:
+        except Exception:
             pass
 
 async def handle_rdp_my_servers(query, context=None):
@@ -20388,7 +20388,7 @@ async def handle_rdp_server_details(query, context, server_id: str):
                     if context.user_data.get(current_view_key) == f"server_details_{server_id}":
                         await handle_rdp_server_details(query, context, server_id)
                     # else: User navigated away - stop auto-refresh
-                except:
+                except Exception:
                     pass  # Ignore errors during auto-refresh
             
             # Start background task

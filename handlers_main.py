@@ -10870,9 +10870,9 @@ async def handle_dns_callback(query, context, callback_data):
                     action_type = parts[4]  # This will be "on", "off", or "toggle"
                     await toggle_auto_proxy_setting(query, domain, action_type)
                 else:
-                    await show_security_settings(query, domain)
+                    await show_cloudflare_security_settings(query, domain)
             else:
-                await show_security_settings(query, domain)
+                await show_cloudflare_security_settings(query, domain)
         elif action == "ns_to_cloudflare":
             if len(parts) >= 4 and parts[3] == "confirm":
                 await execute_switch_to_cloudflare_ns(query, context, domain)

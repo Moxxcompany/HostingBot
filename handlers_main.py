@@ -5928,12 +5928,6 @@ async def handle_language_selection_callback(query, lang_code: str, context: Con
             context.user_data.pop('_cached_user_lang_ts', None)
         
         if success:
-            lang_names = {
-                'en': 'English',
-                'fr': 'Français',
-                'es': 'Español'
-            }
-            
             # Use localized confirmation message in the selected language
             confirmation_text = t('onboarding.language_set', lang_code)
             

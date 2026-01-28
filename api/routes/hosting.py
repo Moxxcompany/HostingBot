@@ -141,8 +141,8 @@ async def get_hosting_plans(
                 "duration_days": 30,
                 "billing_cycle": "30days",
                 "display_price": f"${float(HOSTING_PRICES['pro_30day']):.2f}/30days",
-                "savings_percentage": 0.0,
-                "savings_description": "",
+                "savings_percentage": 25.0,
+                "savings_description": "Save 25% compared to regular price",
                 "features": [
                     "Everything in Pro 7 Days",
                     "Unlimited Subdomains",
@@ -150,7 +150,7 @@ async def get_hosting_plans(
                     "White-label Email",
                     "Priority Support",
                     "Custom PHP Settings",
-                    "Best Value (Save 44%)"
+                    "Best Value (Save 25%)"
                 ]
             },
             {

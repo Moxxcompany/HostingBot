@@ -110,6 +110,8 @@ async def get_hosting_plans(
                 "duration_days": 7,
                 "billing_cycle": "7days",
                 "display_price": f"${float(HOSTING_PRICES['pro_7day']):.2f}/7days",
+                "savings_percentage": 0.0,
+                "savings_description": "",
                 "features": [
                     "cPanel Control Panel",
                     "Free SSL Certificate",
@@ -139,6 +141,8 @@ async def get_hosting_plans(
                 "duration_days": 30,
                 "billing_cycle": "30days",
                 "display_price": f"${float(HOSTING_PRICES['pro_30day']):.2f}/30days",
+                "savings_percentage": 0.0,
+                "savings_description": "",
                 "features": [
                     "Everything in Pro 7 Days",
                     "Unlimited Subdomains",

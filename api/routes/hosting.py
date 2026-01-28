@@ -238,12 +238,15 @@ async def get_hosting_plans(
                         "Best Value (Save 42% vs Monthly)"
                     ]
             
-            # Calculate savings percentage for annual plans
+            # Calculate savings percentage based on plan duration
             savings_percentage = 0.0
             savings_description = ""
-            if duration >= 365:
+            if duration == 30:
                 savings_percentage = 25.0
-                savings_description = "Save 25% compared to monthly"
+                savings_description = "Save 25% compared to regular price"
+            elif duration >= 365:
+                savings_percentage = 44.0
+                savings_description = "Save 44% compared to monthly"
             
             plan_data = {
                 "id": plan['id'],

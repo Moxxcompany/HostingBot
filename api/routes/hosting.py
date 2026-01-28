@@ -64,21 +64,154 @@ HOSTING_PRICES = get_hosting_prices()
 async def get_hosting_plans(
     key_data: dict = Depends(get_api_key_from_header)
 ):
-    """Get available hosting plans"""
+    """Get available hosting plans with detailed specifications"""
     check_permission(key_data, "hosting", "read")
     
-    plans = [
-        {"id": "pro_7day", "name": "Pro 7 Days", "price": float(HOSTING_PRICES["pro_7day"]), "billing": "7 days", "savings_percentage": 0.0, "savings_description": ""},
-        {"id": "pro_30day", "name": "Pro 30 Days", "price": float(HOSTING_PRICES["pro_30day"]), "billing": "30 days", "savings_percentage": 0.0, "savings_description": ""},
-        {
-            "id": "pro_annual", 
-            "name": "Pro Annual", 
-            "price": float(HOSTING_PRICES["pro_annual"]), 
-            "billing": "yearly",
-            "savings_percentage": 27.0,
-            "savings_description": "Save 27% compared to monthly"
-        }
-    ]
+    # Fetch plans from database with all details
+    db_plans = await execute_query("""
+        SELECT 
+            id, 
+            plan_name, 
+            plan_type, 
+            billing_cycle, 
+            duration_days, 
+            disk_space_gb, 
+            bandwidth_gb, 
+            databases, 
+            email_accounts, 
+            subdomains, 
+            price, 
+            currency, 
+            features
+        FROM hosting_plans
+        WHERE is_active = TRUE
+        ORDER BY duration_days ASC
+    """)
+    
+    if not db_plans:
+        # Fallback to hardcoded plans if database query fails
+        plans = [
+            {
+                "id": 1,
+                "plan_name": "Pro 7 Days",
+                "name": "Pro 7 Days",
+                "whm_package": "pro_7day",
+                "type": "shared",
+                "disk_space_gb": 50,
+                "bandwidth_gb": 500,
+                "databases": 25,
+                "email_accounts": 50,
+                "subdomains": 25,
+                "daily_price": float(Decimal(str(HOSTING_PRICES["pro_7day"])) / Decimal("7")),
+                "weekly_price": float(HOSTING_PRICES["pro_7day"]),
+                "monthly_price": float(HOSTING_PRICES["pro_7day"]),
+                "period_price": float(HOSTING_PRICES["pro_7day"]),
+                "yearly_price": 0,
+                "duration_days": 7,
+                "billing_cycle": "7days",
+                "display_price": f"${float(HOSTING_PRICES['pro_7day']):.2f}/7days",
+                "features": [
+                    "cPanel Control Panel",
+                    "Free SSL Certificate",
+                    "99.9% Uptime Guarantee",
+                    "24/7 Support",
+                    "Advanced Security",
+                    "Daily Backups",
+                    "Developer Tools",
+                    "Perfect for Testing"
+                ]
+            },
+            {
+                "id": 2,
+                "plan_name": "Pro 30 Days",
+                "name": "Pro 30 Days",
+                "whm_package": "pro_30day",
+                "type": "shared",
+                "disk_space_gb": 100,
+                "bandwidth_gb": 1000,
+                "databases": 50,
+                "email_accounts": 100,
+                "subdomains": 50,
+                "daily_price": float(Decimal(str(HOSTING_PRICES["pro_30day"])) / Decimal("30")),
+                "monthly_price": float(HOSTING_PRICES["pro_30day"]),
+                "period_price": float(HOSTING_PRICES["pro_30day"]),
+                "yearly_price": 0,
+                "duration_days": 30,
+                "billing_cycle": "30days",
+                "display_price": f"${float(HOSTING_PRICES['pro_30day']):.2f}/30days",
+                "features": [
+                    "Everything in Pro 7 Days",
+                    "Unlimited Subdomains",
+                    "Advanced Analytics",
+                    "White-label Email",
+                    "Priority Support",
+                    "Custom PHP Settings",
+                    "Best Value (Save 44%)"
+                ]
+            }
+        ]
+    else:
+        # Transform database plans to API format
+        plans = []
+        for plan in db_plans:
+            plan_price = Decimal(str(plan['price']))
+            duration = plan['duration_days']
+            
+            # Calculate different price breakdowns
+            daily_price = float(plan_price / Decimal(str(duration)))
+            
+            # Map billing cycle to WHM package naming convention
+            whm_package = f"pro_{plan['billing_cycle'].replace('days', 'day')}"
+            
+            # Enhanced features list
+            base_features = plan.get('features', [])
+            if not base_features or len(base_features) < 3:
+                # Add default features if not in database
+                if duration == 7:
+                    base_features = [
+                        "cPanel Control Panel",
+                        "Free SSL Certificate",
+                        "99.9% Uptime Guarantee",
+                        "24/7 Support",
+                        "Advanced Security",
+                        "Daily Backups",
+                        "Developer Tools",
+                        "Perfect for Testing"
+                    ]
+                else:
+                    base_features = [
+                        "Everything in Pro 7 Days",
+                        "Unlimited Subdomains",
+                        "Advanced Analytics",
+                        "White-label Email",
+                        "Priority Support",
+                        "Custom PHP Settings",
+                        "Best Value (Save 44%)"
+                    ]
+            
+            plan_data = {
+                "id": plan['id'],
+                "plan_name": plan['plan_name'],
+                "name": plan['plan_name'],
+                "whm_package": whm_package,
+                "type": plan['plan_type'],
+                "disk_space_gb": plan['disk_space_gb'],
+                "bandwidth_gb": plan['bandwidth_gb'],
+                "databases": plan['databases'],
+                "email_accounts": plan['email_accounts'],
+                "subdomains": plan['subdomains'],
+                "daily_price": daily_price,
+                "weekly_price": float(plan_price) if duration == 7 else 0,
+                "monthly_price": float(plan_price) if duration >= 30 else float(plan_price),
+                "period_price": float(plan_price),
+                "yearly_price": 0,
+                "duration_days": duration,
+                "billing_cycle": plan['billing_cycle'],
+                "display_price": f"${float(plan_price):.2f}/{plan['billing_cycle']}",
+                "features": base_features
+            }
+            plans.append(plan_data)
+    
     return success_response({"plans": plans})
 
 

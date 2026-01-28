@@ -238,6 +238,13 @@ async def get_hosting_plans(
                         "Best Value (Save 42% vs Monthly)"
                     ]
             
+            # Calculate savings percentage for annual plans
+            savings_percentage = 0.0
+            savings_description = ""
+            if duration >= 365:
+                savings_percentage = 25.0
+                savings_description = "Save 25% compared to monthly"
+            
             plan_data = {
                 "id": plan['id'],
                 "plan_name": plan['plan_name'],
@@ -257,6 +264,8 @@ async def get_hosting_plans(
                 "duration_days": duration,
                 "billing_cycle": plan['billing_cycle'],
                 "display_price": f"${float(plan_price):.2f}/{plan['billing_cycle']}",
+                "savings_percentage": savings_percentage,
+                "savings_description": savings_description,
                 "features": base_features
             }
             plans.append(plan_data)
